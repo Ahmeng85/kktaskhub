@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskHub - 多功能任务与服务平台</title>
+    <title>TaskHub - 多功能任务与服务平台 (v38 终极完整版)</title>
     <!-- Tailwind CSS v4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
@@ -21,17 +21,17 @@
                 <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-extrabold text-white text-lg shadow-md shadow-indigo-600/30">TH</div>
                 <div>
                     <h1 class="text-base font-bold tracking-tight text-white">TaskHub</h1>
-                    <p class="text-[10px] text-slate-400">多功能任务平台 (v36)</p>
+                    <p class="text-[10px] text-slate-400">多功能平台 (v38)</p>
                 </div>
             </div>
 
             <!-- 桌面端菜单 -->
             <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold text-slate-300">
-                <button onclick="switchTab('home')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Home / 任务栏</button>
-                <button onclick="switchTab('services')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Member Services / 会员服务</button>
+                <button onclick="switchTab('home')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Home</button>
+                <button onclick="switchTab('services')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Member Services</button>
                 <button onclick="switchTab('bank')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Bank Details</button>
                 <button onclick="switchTab('register')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Register</button>
-                <button onclick="switchTab('profile')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Profile</button>
+                <button onclick="handleProfileNavClick()" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition flex items-center gap-1">🔒 Profile</button>
                 <button onclick="switchTab('postTask')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Post Task</button>
                 <button onclick="switchTab('about')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">About Us</button>
                 <button onclick="switchTab('helpdesk')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Helpdesk</button>
@@ -48,11 +48,11 @@
 
         <!-- 手机端下拉折叠菜单 -->
         <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-t border-slate-800 px-4 py-4 space-y-2 text-sm font-medium">
-            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Home / 任务栏</button>
-            <button onclick="switchTab('services'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Member Services / 会员服务</button>
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Home</button>
+            <button onclick="switchTab('services'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Member Services</button>
             <button onclick="switchTab('bank'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Bank Details</button>
             <button onclick="switchTab('register'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Register</button>
-            <button onclick="switchTab('profile'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Profile</button>
+            <button onclick="handleProfileNavClick(); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">🔒 Profile</button>
             <button onclick="switchTab('postTask'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Post Task</button>
             <button onclick="switchTab('about'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">About Us</button>
             <button onclick="switchTab('helpdesk'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Helpdesk</button>
@@ -63,10 +63,8 @@
     <!-- 主容器 -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
 
-        <!-- 1. HOME TAB / 首页 (公共任务栏) -->
+        <!-- 1. HOME TAB -->
         <div id="tab-home" class="tab-content space-y-6">
-            
-            <!-- 动态平台公告栏 Notice Banner -->
             <div class="bg-indigo-600 text-white p-4 md:p-5 rounded-2xl shadow-sm flex items-start gap-3">
                 <span class="text-xl">📢</span>
                 <div class="flex-grow">
@@ -75,7 +73,6 @@
                 </div>
             </div>
 
-            <!-- 切换前往服务大厅快捷横幅 -->
             <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 shadow-sm">
                 <div>
                     <h3 class="font-bold text-sm">💡 寻找会员提供的专业服务？</h3>
@@ -85,7 +82,6 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
-                <!-- 公共任务栏 (2列) -->
                 <div class="md:col-span-2 bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
                         <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -98,7 +94,6 @@
                     </div>
                 </div>
 
-                <!-- 汇款与支付二维码入口 (1列) -->
                 <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs h-fit space-y-5">
                     <div>
                         <h2 class="text-sm font-bold text-slate-900 mb-1 flex items-center gap-2">
@@ -106,7 +101,6 @@
                         </h2>
                         <p class="text-[11px] text-slate-500">发布前请先汇款 RM1 / Transfer RM1 before posting.</p>
                     </div>
-                    
                     <button onclick="switchTab('bank')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl transition text-xs flex items-center justify-center gap-2 border border-slate-200">
                         <span>🔍</span> 查看完整银行与二维码详情
                     </button>
@@ -114,7 +108,7 @@
             </div>
         </div>
 
-        <!-- 1.2 MEMBER SERVICES TAB / 会员服务大厅 -->
+        <!-- 1.2 MEMBER SERVICES TAB -->
         <div id="tab-services" class="tab-content hidden space-y-6">
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-slate-100 gap-4">
@@ -126,14 +120,11 @@
                     </div>
                     <button onclick="switchTab('home')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition">← 返回任务栏</button>
                 </div>
-
-                <div id="memberServicesList" class="grid sm:grid-cols-2 gap-4">
-                    <!-- 动态渲染会员服务卡片 -->
-                </div>
+                <div id="memberServicesList" class="grid sm:grid-cols-2 gap-4"></div>
             </div>
         </div>
 
-        <!-- 1.3 TASK DETAIL TAB / 专属任务/服务详情页 -->
+        <!-- 1.3 TASK DETAIL TAB -->
         <div id="tab-taskDetail" class="tab-content hidden max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="flex justify-between items-center pb-4 border-b border-slate-100">
                 <button onclick="switchTab('home')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
@@ -168,13 +159,12 @@
 
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs flex items-center justify-between">
                     <div>
-                        <span class="font-bold text-slate-400 block text-[10px] uppercase mb-0.5">WhatsApp Contact / 联络方式</span>
+                        <span class="font-bold text-slate-400 block text-[10px] uppercase mb-0.5">WhatsApp Contact</span>
                         <a id="detailWhatsappLink" href="#" target="_blank" class="text-emerald-600 font-bold underline"></a>
                     </div>
                     <a id="detailWhatsappBtn" href="#" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Chat on WhatsApp</a>
                 </div>
 
-                <!-- 社区评语区域（针对已完成任务） -->
                 <div id="detailReviewContainer" class="hidden p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-1.5">
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-amber-900 text-xs">💬 真实社区评语 (Community Review):</span>
@@ -183,26 +173,13 @@
                     <p id="detailReviewText" class="text-xs text-slate-700 italic leading-relaxed"></p>
                 </div>
 
-                <!-- 💬 留言评论区 (Leave a Comment) -->
                 <div class="pt-4 border-t border-slate-100 space-y-4">
-                    <h3 class="font-bold text-xs text-slate-900 flex items-center gap-2">
-                        <span>💬</span> 咨询与留言 / Discussion & Comments
-                    </h3>
-
-                    <!-- 留言列表容器 -->
-                    <div id="detailCommentsList" class="space-y-3">
-                        <!-- 动态渲染评论 -->
-                    </div>
-
-                    <!-- 发表留言表单 -->
+                    <h3 class="font-bold text-xs text-slate-900 flex items-center gap-2"><span>💬</span> 咨询与留言 / Discussion & Comments</h3>
+                    <div id="detailCommentsList" class="space-y-3"></div>
                     <form onsubmit="handlePostComment(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                        <p class="text-[11px] font-bold text-slate-700">留下您的咨询或留言 / Leave a Comment：</p>
-                        <div>
-                            <input type="text" id="commentAuthor" placeholder="Your Nick Name (您的昵称)" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" required>
-                        </div>
-                        <div>
-                            <textarea id="commentText" placeholder="Write your comment or question here..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="2" required></textarea>
-                        </div>
+                        <p class="text-[11px] font-bold text-slate-700">留下您的咨询或留言：</p>
+                        <div><input type="text" id="commentAuthor" placeholder="Your Nick Name (您的昵称)" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" required></div>
+                        <div><textarea id="commentText" placeholder="Write your comment or question here..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="2" required></textarea></div>
                         <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Post Comment</button>
                     </form>
                 </div>
@@ -213,35 +190,32 @@
             </div>
         </div>
 
-        <!-- 2. BANK DETAILS TAB / 独立银行与二维码详情页 -->
+        <!-- 2. BANK DETAILS TAB -->
         <div id="tab-bank" class="tab-content hidden max-w-xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="text-center">
                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">💳</div>
                 <h2 class="text-xl font-bold text-slate-900">Platform Bank & Payment QR</h2>
                 <p class="text-xs text-slate-500 mt-1">平台官方银行账户及汇款二维码</p>
             </div>
-
             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Official Bank Details / 官方银行资料：</p>
-                <p id="displayBankDetails" class="text-xs text-slate-800 font-semibold leading-relaxed">Bank: Maybank | Acc: 1234567890 (Platform Official)</p>
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Official Bank Details：</p>
+                <p id="displayBankDetails" class="text-xs text-slate-800 font-semibold leading-relaxed">Bank: Maybank | Acc: 1234567890</p>
             </div>
-
             <div class="text-center bg-slate-50 p-6 rounded-xl border border-slate-200">
-                <p class="text-xs font-bold text-slate-700 mb-3">Scan to Pay RM1 / 扫描二维码支付 RM1 (点击可放大)：</p>
+                <p class="text-xs font-bold text-slate-700 mb-3">Scan to Pay RM1 (点击可放大)：</p>
                 <div class="inline-block p-3 bg-white rounded-xl shadow-xs border border-slate-200 cursor-pointer" onclick="openImageViewer(document.getElementById('displayQRCode').src)">
                     <img id="displayQRCode" src="https://via.placeholder.com/180" alt="Payment QR Code" class="w-48 h-48 object-cover rounded-lg hover:opacity-95 transition">
                 </div>
             </div>
-
             <button onclick="switchTab('home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">Back to Home</button>
         </div>
 
-        <!-- 3. REGISTER TAB / 纯昵称注册 -->
+        <!-- 3. REGISTER TAB -->
         <div id="tab-register" class="tab-content hidden max-w-md mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs">
             <div class="text-center mb-6">
                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">👤</div>
-                <h2 class="text-xl font-bold text-slate-900">Set Your Nick Name</h2>
-                <p class="text-xs text-slate-500 mt-1">输入昵称即可开始发布任务（无需 IC）</p>
+                <h2 class="text-xl font-bold text-slate-900">Member Registration</h2>
+                <p class="text-xs text-slate-500 mt-1">设置您的昵称与双重密码（注册登录后方可发布任务）</p>
             </div>
             <form onsubmit="handleRegister(event)" class="space-y-4">
                 <div>
@@ -249,55 +223,62 @@
                     <input type="text" id="regNickName" placeholder="Enter your nick name" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Home Address / 住宅地址 (仅管理员可见)</label>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Home Address (仅管理员可见)</label>
                     <textarea id="regAddress" placeholder="Enter your home address" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" rows="2" required></textarea>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">WhatsApp Number / WhatsApp 号码 (仅管理员可见)</label>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">WhatsApp Number (仅管理员可见)</label>
                     <input type="text" id="regWhatsapp" placeholder="Enter WhatsApp number" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm mt-2">Save & Continue</button>
+                <div class="pt-2 border-t border-slate-100 space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Password / 登录密码</label>
+                        <input type="password" id="regPassword" placeholder="Enter password" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Confirm Password / 确认双重密码</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Re-enter password to verify" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    </div>
+                    <p id="regPasswordError" class="text-[11px] text-rose-600 hidden font-bold">⚠️ 两次输入的密码不一致，请重新核对！</p>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm mt-2">Save & Register</button>
             </form>
         </div>
 
-        <!-- 4. PROFILE TAB / 个人资料修改 -->
-        <div id="tab-profile" class="tab-content hidden max-w-lg mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs">
-            <div class="text-center mb-6">
-                <h2 class="text-xl font-bold text-slate-900">Profile Settings</h2>
-                <p class="text-xs text-slate-500 mt-1">个人资料设置（昵称、住址、WhatsApp）</p>
+        <!-- 4. PROFILE TAB -->
+        <div id="tab-profile" class="tab-content hidden max-w-lg mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Member Secure Profile</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">会员加密个人资料与任务历史</p>
+                </div>
+                <button onclick="handleLogout()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl text-xs font-bold transition">🔒 Logout</button>
             </div>
-            <div class="mb-5 p-3.5 bg-indigo-50/60 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
-                <p><strong>隐私提示：</strong> 真实住址和 WhatsApp 仅超级管理员可见，发布任务时统一仅显示您的昵称。</p>
+            <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100 text-xs space-y-1.5">
+                <p><strong>当前登录昵称:</strong> <span id="profileDisplayNick" class="text-indigo-700 font-bold"></span></p>
+                <p><strong>住宅地址 (仅管理员可见):</strong> <span id="profileDisplayAddress" class="text-slate-700"></span></p>
+                <p><strong>WhatsApp (仅管理员可见):</strong> <span id="profileDisplayWhatsapp" class="text-slate-700"></span></p>
             </div>
-            <form onsubmit="handleSaveProfile(event)" class="space-y-4">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Nick Name / 昵称</label>
-                    <input type="text" id="profNickName" placeholder="Enter nick name" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Home Address / 住宅地址</label>
-                    <textarea id="profAddress" placeholder="Enter your home address" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" rows="2" required></textarea>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">WhatsApp Number / WhatsApp 号码</label>
-                    <input type="text" id="profWhatsapp" placeholder="Enter WhatsApp number" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm mt-2">Update Profile</button>
-            </form>
+            <div>
+                <h3 class="font-bold text-xs text-slate-900 mb-3">我发布的任务记录与审核状态：</h3>
+                <div id="profileMyTasksList" class="space-y-2"></div>
+            </div>
         </div>
 
-        <!-- 5. POST TASK TAB / 发布任务 (含 Others 动态输入框) -->
+        <!-- 5. POST TASK TAB -->
         <div id="tab-postTask" class="tab-content hidden max-w-xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs">
             <div class="text-center mb-6">
                 <h2 class="text-xl font-bold text-slate-900">Post a Task</h2>
-                <p class="text-xs text-slate-500 mt-1">发布任务（需汇款 RM1 费用于平台）</p>
+                <p class="text-xs text-slate-500 mt-1">发布任务（需登录会员身份，并汇款 RM1 费用于平台）</p>
             </div>
-            
+            <div class="mb-5 p-3.5 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl text-xs text-indigo-900 flex justify-between items-center">
+                <p><strong>当前登录会员:</strong> <span id="postTaskMemberBadge" class="font-bold underline"></span></p>
+                <button onclick="switchTab('register')" class="bg-indigo-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition hover:bg-indigo-500 whitespace-nowrap">切换/注册账号</button>
+            </div>
             <div class="mb-5 p-3.5 bg-amber-50 border-l-4 border-amber-400 rounded-r-xl text-xs text-amber-900 flex justify-between items-center">
                 <p><strong>注意：</strong> 提交前请先参考银行与二维码页完成 RM1 汇款。</p>
                 <button onclick="switchTab('bank')" class="bg-amber-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition hover:bg-amber-500 whitespace-nowrap">查看汇款页</button>
             </div>
-
             <form onsubmit="handlePostTask(event)" class="space-y-4">
                 <div>
                     <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Category / 任务分类</label>
@@ -309,35 +290,28 @@
                         <option value="Others">Others / 其他任务</option>
                     </select>
                 </div>
-
-                <!-- 当选择 Others 时动态出现的自定义任务名称输入框 -->
                 <div id="customCategoryContainer" class="hidden">
-                    <label class="block text-[11px] font-bold text-indigo-600 uppercase tracking-wide mb-1">Custom Task Name / 自定义任务名称 (必填)</label>
+                    <label class="block text-[11px] font-bold text-indigo-600 uppercase tracking-wide mb-1">Custom Task Name (必填)</label>
                     <input type="text" id="customTaskName" placeholder="Enter custom task name" class="w-full px-4 py-3 rounded-xl bg-indigo-50/50 border border-indigo-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition">
                 </div>
-                
                 <div>
                     <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Location / 任务地点</label>
                     <input type="text" id="taskLocation" placeholder="e.g. Kota Kinabalu, Sabah" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                 </div>
-
                 <div>
                     <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Offer Price / 任务报价 (RM)</label>
                     <input type="text" id="taskPrice" placeholder="e.g. RM 50" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                 </div>
-
                 <div>
                     <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">WhatsApp / 联络号码</label>
                     <input type="text" id="taskWhatsapp" placeholder="e.g. 012-3456789" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                 </div>
-
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Description / 任务详细描述</label>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Description / 任务描述</label>
                     <textarea id="taskDesc" placeholder="Describe your task details" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" rows="3" required></textarea>
                 </div>
-                
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Image / 任务图片 (支持本地上传或输入链接)</label>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Image / 任务图片</label>
                     <div class="flex gap-2 items-center">
                         <input type="text" id="taskImage" placeholder="Image URL or choose file ->" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                         <label class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-3 rounded-xl cursor-pointer transition whitespace-nowrap">
@@ -346,68 +320,51 @@
                         </label>
                     </div>
                 </div>
-
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm mt-2">Submit Task (Pending)</button>
             </form>
-
             <div class="mt-8 border-t border-slate-100 pt-6">
-                <h3 class="font-bold text-xs text-slate-800 mb-3">My Pending Tasks / 我的待处理任务</h3>
+                <h3 class="font-bold text-xs text-slate-800 mb-3">My Pending Tasks / 我的待处理任务 (含收据上传)</h3>
                 <div id="myPendingList" class="space-y-3">
                     <p class="text-slate-400 text-xs italic">暂无待处理任务 / No pending tasks.</p>
                 </div>
             </div>
         </div>
 
-        <!-- 6. ABOUT US TAB / 关于我们 -->
+        <!-- 6. ABOUT US TAB -->
         <div id="tab-about" class="tab-content hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="text-center">
                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">🏢</div>
                 <h2 class="text-xl font-bold text-slate-900">About Us</h2>
                 <p class="text-xs text-slate-500 mt-1">了解 TaskHub 多功能任务平台</p>
             </div>
-            
-            <div id="displayAboutContent" class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line">
-                TaskHub 是一个专为社区打造的多功能任务平台，旨在连接寻找服务的用户与优质服务提供者。无论是清洁、寻物还是维修，我们都能为您提供最高效、最便捷的连接桥梁。
-            </div>
-
+            <div id="displayAboutContent" class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line"></div>
             <button onclick="switchTab('home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">Back to Home</button>
         </div>
 
-        <!-- 7. HELPDESK TAB / 帮助与客服中心 -->
+        <!-- 7. HELPDESK TAB -->
         <div id="tab-helpdesk" class="tab-content hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="text-center">
                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">🎧</div>
                 <h2 class="text-xl font-bold text-slate-900">Helpdesk & Support</h2>
                 <p class="text-xs text-slate-500 mt-1">帮助中心与客服支持</p>
             </div>
-            
-            <div id="displayHelpdeskContent" class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line">
-                如果您在使用 TaskHub 平台时遇到任何问题（如汇款验证、任务发布、账号设置等），请通过以下方式联系我们的客服团队：
-                
-                • WhatsApp 客服热线: +6012-345 6789
-                • 工作时间: 周一至周日 (9:00 AM - 9:00 PM)
-                • 常见问题: 请确保发布任务前已完成 RM1 汇款并截图保留。
-            </div>
-
+            <div id="displayHelpdeskContent" class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line"></div>
             <button onclick="switchTab('home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">Back to Home</button>
         </div>
 
-        <!-- 8. MEMBER LIST TAB / 独立会员列表页 (管理员专属) -->
+        <!-- 8. MEMBER LIST TAB -->
         <div id="tab-memberList" class="tab-content hidden max-w-4xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="flex justify-between items-center pb-4 border-b border-slate-100">
                 <div>
                     <h2 class="text-xl font-bold text-indigo-600">Registered Members List</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">会员私密资料总览（仅管理员可见真实住址与 WhatsApp）</p>
+                    <p class="text-xs text-slate-500 mt-0.5">会员私密资料总览（仅管理员可见）</p>
                 </div>
                 <button onclick="switchTab('admin')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition">Back to Dashboard</button>
             </div>
-
-            <div id="adminMemberList" class="space-y-3">
-                <p class="text-slate-400 text-xs italic">暂无注册会员 / No registered members.</p>
-            </div>
+            <div id="adminMemberList" class="space-y-3"></div>
         </div>
 
-        <!-- 9. ADMIN DASHBOARD / 超级管理员控制台 -->
+        <!-- 9. ADMIN DASHBOARD -->
         <div id="tab-admin" class="tab-content hidden max-w-5xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="flex justify-between items-center pb-4 border-b border-slate-100">
                 <div>
@@ -420,80 +377,58 @@
                 </div>
             </div>
 
-            <!-- 平台公告 Notice 设置 -->
             <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">📢 Notice Settings (Platform Announcement / 平台公告设置)</h3>
+                <h3 class="font-bold text-xs text-slate-900">📢 Notice Settings</h3>
                 <div class="space-y-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Edit Notice Content / 编辑公告内容</label>
-                        <textarea id="adminNoticeInput" placeholder="Enter platform notice content here..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="3"></textarea>
-                    </div>
+                    <textarea id="adminNoticeInput" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="3"></textarea>
                     <button onclick="saveAdminNotice()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save Notice</button>
                 </div>
             </div>
 
-            <!-- About Us 设置 -->
             <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">🏢 About Us Settings / 关于我们设置</h3>
+                <h3 class="font-bold text-xs text-slate-900">🏢 About Us Settings</h3>
                 <div class="space-y-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Edit About Us Content / 编辑关于我们内容</label>
-                        <textarea id="adminAboutInput" placeholder="Enter About Us content here..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="4"></textarea>
-                    </div>
+                    <textarea id="adminAboutInput" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="4"></textarea>
                     <button onclick="saveAdminAbout()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save About Us</button>
                 </div>
             </div>
 
-            <!-- Helpdesk 设置 -->
             <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">🎧 Helpdesk Settings / 帮助与客服设置</h3>
+                <h3 class="font-bold text-xs text-slate-900">🎧 Helpdesk Settings</h3>
                 <div class="space-y-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Edit Helpdesk Content / 编辑帮助客服内容</label>
-                        <textarea id="adminHelpdeskInput" placeholder="Enter Helpdesk content here..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="4"></textarea>
-                    </div>
+                    <textarea id="adminHelpdeskInput" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="4"></textarea>
                     <button onclick="saveAdminHelpdesk()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save Helpdesk</button>
                 </div>
             </div>
 
-            <!-- 平台设置：修改银行与二维码 (支持本地上传二维码) -->
             <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">⚙️ Platform Settings (Bank Details & Payment QR Code)</h3>
+                <h3 class="font-bold text-xs text-slate-900">⚙️ Platform Settings (Bank & QR)</h3>
                 <div class="space-y-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">New Bank Details / 新银行资料</label>
-                        <input type="text" id="adminBankInput" placeholder="Enter bank details" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Payment QR Code / 支付二维码 (输入图片链接 或 本地上传)</label>
-                        <div class="flex gap-2 items-center">
-                            <input type="text" id="adminQRInput" placeholder="Enter QR image URL or upload ->" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                            <label class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl cursor-pointer transition whitespace-nowrap">
-                                Upload QR 📁
-                                <input type="file" id="adminQRFile" accept="image/*" class="hidden" onchange="handleAdminQRUpload(event)">
-                            </label>
-                        </div>
+                    <input type="text" id="adminBankInput" placeholder="Enter bank details" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                    <div class="flex gap-2 items-center">
+                        <input type="text" id="adminQRInput" placeholder="Enter QR image URL or upload ->" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                        <label class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl cursor-pointer transition whitespace-nowrap">
+                            Upload QR 📁
+                            <input type="file" id="adminQRFile" accept="image/*" class="hidden" onchange="handleAdminQRUpload(event)">
+                        </label>
                     </div>
                     <button onclick="saveAdminSettings()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save Settings</button>
                 </div>
             </div>
 
-            <!-- 待审核任务 -->
             <div>
-                <h3 class="font-bold text-xs mb-3 text-slate-900">📝 Task Approvals (Pending RM1 Check)</h3>
-                <div id="adminApprovalList" class="space-y-3">
-                    <p class="text-slate-400 text-xs italic">暂无等待审核的任务 / No tasks awaiting approval.</p>
-                </div>
+                <h3 class="font-bold text-xs mb-3 text-slate-900">📝 Task Approvals</h3>
+                <div id="adminApprovalList" class="space-y-3"></div>
             </div>
         </div>
 
     </main>
 
-    <!-- Admin Password Modal / 管理员密码验证弹窗 -->
+    <!-- Admin Password Modal (已隐藏明文密码) -->
     <div id="adminModal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
         <div class="bg-white p-6 rounded-2xl shadow-xl w-80 border border-slate-100">
             <h3 class="font-bold text-base mb-1 text-slate-900">Admin Access</h3>
-            <p class="text-xs text-slate-500 mb-3">请输入超级管理员密码 (super123)</p>
+            <p class="text-xs text-slate-500 mb-3">请输入超级管理员密码</p>
             <input type="password" id="adminPasswordInput" placeholder="Enter password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 mb-4">
             <div class="flex justify-end space-x-2">
                 <button onclick="closeAdminModal()" class="bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 transition">Cancel</button>
@@ -502,30 +437,42 @@
         </div>
     </div>
 
-    <!-- Facebook Share Modal / Facebook 两步引导分享弹窗 -->
+    <!-- Profile Login Modal -->
+    <div id="profileLoginModal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
+        <div class="bg-white p-6 rounded-2xl shadow-xl w-80 border border-slate-100 space-y-4">
+            <div>
+                <h3 class="font-bold text-base mb-1 text-slate-900">🔒 Profile Login</h3>
+                <p class="text-xs text-slate-500">请输入您的注册昵称与双重密码</p>
+            </div>
+            <div class="space-y-3">
+                <input type="text" id="profileLoginNick" placeholder="Your Nick Name" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                <input type="password" id="profileLoginPass" placeholder="Your Password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="document.getElementById('profileLoginModal').classList.add('hidden')" class="bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 transition">Cancel</button>
+                <button onclick="verifyProfileLogin()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Facebook Share Modal -->
     <div id="shareModal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
         <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 border border-slate-100 relative space-y-4">
             <button onclick="closeShareModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg font-bold">×</button>
-            
             <div class="text-center">
                 <h3 class="text-base font-bold text-slate-900">Share to Facebook</h3>
                 <p class="text-[11px] text-slate-500 mt-0.5">为了在 Facebook 自动生成直达卡片，请按以下 2 步操作：</p>
             </div>
-
-            <!-- 隐藏的 Canvas 绘图区 -->
             <canvas id="posterCanvas" class="hidden"></canvas>
-
-            <!-- 步骤按钮 1：下载任务海报 -->
+            
             <button onclick="downloadTaskPoster()" class="w-full bg-amber-500 hover:bg-amber-400 text-white font-bold py-3.5 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2">
                 <span>📥</span> 第一步：下载精美海报图片
             </button>
-
-            <!-- 步骤按钮 2：一键复制文案 (链接置顶) -->
+            
             <button onclick="copyShareText()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2">
                 <span>📋</span> 第二步：一键复制文案 (链接已置顶)
             </button>
-
-            <!-- 第三步：打开 Facebook -->
+            
             <button onclick="openFacebookApp()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2">
                 <span>🚀</span> 打开 Facebook 发布 →
             </button>
@@ -540,7 +487,6 @@
         </div>
     </div>
 
-    <!-- 复制成功的 Toast 提示 -->
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg hidden z-50 transition">
         操作成功！
     </div>
@@ -549,284 +495,139 @@
     <script>
         let db = {
             users: [
-                { nickName: "Ahmeng", address: "Kota Kinabalu", whatsapp: "0123456789" },
-                { nickName: "Sarah", address: "Penampang", whatsapp: "0169876543" },
-                { nickName: "Uncle David", address: "Kepayan", whatsapp: "0125558899" },
-                { nickName: "Emily", address: "Luyang", whatsapp: "0168887766" },
-                { nickName: "Ryan", address: "Gaya Street", whatsapp: "0112233445" }
+                { nickName: "Ahmeng", address: "Kota Kinabalu", whatsapp: "0123456789", password: "123" },
+                { nickName: "Sarah", address: "Penampang", whatsapp: "0169876543", password: "123" },
+                { nickName: "Uncle David", address: "Kepayan", whatsapp: "0125558899", password: "123" },
+                { nickName: "Emily", address: "Luyang", whatsapp: "0168887766", password: "123" },
+                { nickName: "Ryan", address: "Gaya Street", whatsapp: "0112233445", password: "123" }
             ],
-            currentNickName: "Ahmeng",
+            currentNickName: "",
+            isLoggedIn: false,
             tasks: [
-                // 13 个公共任务...
                 {
-                    id: 1710000001,
-                    nickName: "Ahmeng",
-                    category: "Find Dog",
-                    location: "Kota Kinabalu",
-                    price: "RM 50",
-                    whatsapp: "0123456789",
+                    id: 1710000001, nickName: "Ahmeng", category: "Find Dog", location: "Kota Kinabalu", price: "RM 50", whatsapp: "0123456789",
                     desc: "寻找走失的小猎犬（名字叫 Lucky），特征是脖子上有蓝色项圈。请帮忙留意，找到必有谢酬！",
                     image: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Active",
-                    review: null,
-                    comments: [{ author: "Ah Ming", text: "请问是在市区哪个路段走失的？", time: "2026-10-05 10:15" }]
+                    status: "approved", taskStatus: "Active", receipt: null, review: null, comments: [{ author: "Ah Ming", text: "请问是在市区哪个路段走失的？", time: "2026-10-05 10:15" }]
                 },
                 {
-                    id: 1710000002,
-                    nickName: "Ah Chai",
-                    category: "Moving",
-                    location: "Inanam -> Likas",
-                    price: "RM 200",
-                    whatsapp: "0149992211",
+                    id: 1710000002, nickName: "Ah Chai", category: "Moving", location: "Inanam -> Likas", price: "RM 200", whatsapp: "0149992211",
                     desc: "需要小型罗厘和人手帮忙搬运几件大型家具（沙发、冰箱）从下南南到里卡士。",
                     image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Active",
-                    review: null,
-                    comments: []
+                    status: "approved", taskStatus: "Active", receipt: null, review: null, comments: []
                 },
                 {
-                    id: 1710000003,
-                    nickName: "Mr. Lee",
-                    category: "Interior Design",
-                    location: "Penampang, Sabah",
-                    price: "RM 500 (协商)",
-                    whatsapp: "0112233445",
+                    id: 1710000003, nickName: "Mr. Lee", category: "Interior Design", location: "Penampang, Sabah", price: "RM 500 (协商)", whatsapp: "0112233445",
                     desc: "找人画图和设计新屋子，地点在兵南邦。寻找室内设计与绘图专员协助规划空间布局。",
                     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Active",
-                    review: null,
-                    comments: []
+                    status: "approved", taskStatus: "Active", receipt: null, review: null, comments: []
                 },
                 {
-                    id: 1710000004,
-                    nickName: "Sarah",
-                    category: "Cleaning Services",
-                    location: "兵南邦 (Penampang)",
-                    price: "RM 120",
-                    whatsapp: "0169876543",
+                    id: 1710000004, nickName: "Sarah", category: "Cleaning Services", location: "兵南邦 (Penampang)", price: "RM 120", whatsapp: "0169876543",
                     desc: "Looking for a reliable cleaner for a 3-bedroom apartment post-renovation deep cleaning.",
                     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“服务非常到位，装修后的灰尘清理得干干净净，极力推荐！👍”", rating: "★★★★★ (5/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“服务非常到位，装修后的灰尘清理得干干净净，极力推荐！👍”", rating: "★★★★★ (5/5)" }, comments: []
                 },
                 {
-                    id: 1710000005,
-                    nickName: "Hassan",
-                    category: "Repair",
-                    location: "达迈 (Damai, KK)",
-                    price: "RM 80",
-                    whatsapp: "0145551234",
+                    id: 1710000005, nickName: "Hassan", category: "Repair", location: "达迈 (Damai, KK)", price: "RM 80", whatsapp: "0145551234",
                     desc: "Perlukan bantuan untuk membaiki paip air sinki dapur yang bocor.",
                     image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“师傅手艺不错，水管修好后没有再漏水了。不过比约定时间迟到了半小时。”", rating: "★★★☆ (3.5/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“师傅手艺不错，水管修好后没有再漏水了。不过比约定时间迟到了半小时。”", rating: "★★★☆ (3.5/5)" }, comments: []
                 },
                 {
-                    id: 1710000006,
-                    nickName: "TechGuy",
-                    category: "Coding / IT Support",
-                    location: "亚庇 (Inanam)",
-                    price: "RM 150",
-                    whatsapp: "0118889999",
-                    desc: "紧急求助：需要懂网页前端开发或 WordPress 的技术人员协助修复一个小错误。",
+                    id: 1710000006, nickName: "TechGuy", category: "Coding / IT Support", location: "亚庇 (Inanam)", price: "RM 150", whatsapp: "0118889999",
+                    desc: "紧急求助：需要懂网页前端开发 or WordPress 的技术人员协助修复一个小错误。",
                     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“老板人很好，不到半小时就把网站 Bug 修复了，专业高效！”", rating: "★★★★★ (5/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“老板人很好，不到半小时就把网站 Bug 修复了，专业高效！”", rating: "★★★★★ (5/5)" }, comments: []
                 },
                 {
-                    id: 1710000007,
-                    nickName: "Teacher Lim",
-                    category: "Tuition / 补习",
-                    location: "Luyang, Kota Kinabalu",
-                    price: "RM 60 / 小时",
-                    whatsapp: "0128881122",
+                    id: 1710000007, nickName: "Teacher Lim", category: "Tuition / 补习", location: "Luyang, Kota Kinabalu", price: "RM 60 / 小时", whatsapp: "0128881122",
                     desc: "寻找有经验的补习老师，辅导中学生数学与科学。",
                     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“老师很有耐心，孩子原本对数学抗拒，上完几堂课后开窍了不少。”", rating: "★★★★★ (5/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“老师很有耐心，孩子原本对数学抗拒，上完几堂课后开窍了不少。”", rating: "★★★★★ (5/5)" }, comments: []
                 },
                 {
-                    id: 1710000008,
-                    nickName: "Amanda",
-                    category: "Yoga Class / 瑜伽",
-                    location: "Kepayan, Kota Kinabalu",
-                    price: "RM 40 / 节",
-                    whatsapp: "0163338899",
+                    id: 1710000008, nickName: "Amanda", category: "Yoga Class / 瑜伽", location: "Kepayan, Kota Kinabalu", price: "RM 40 / 节", whatsapp: "0163338899",
                     desc: "寻找专业的私人瑜伽老师上门指导，适合初学者。",
                     image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“老师上课时一直看手机，感觉不够专心，体验一般般。”", rating: "★★☆☆☆ (2/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“老师上课时一直看手机，感觉不够专心，体验一般般。”", rating: "★★☆☆☆ (2/5)" }, comments: []
                 },
                 {
-                    id: 1710000009,
-                    nickName: "Chef Wong",
-                    category: "Catering / 餐饮外烩",
-                    location: "Damai -> Kolombong",
-                    price: "RM 300",
-                    whatsapp: "0197773344",
+                    id: 1710000009, nickName: "Chef Wong", category: "Catering / 餐饮外烩", location: "Damai -> Kolombong", price: "RM 300", whatsapp: "0197773344",
                     desc: "Cari cater untuk majlis kecil. Lokasi kerja di Damai, dan perlu balik ke Kolombong pukul 5 petang.",
                     image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“准时到达，食物分量足够而且味道很好，宾客都赞不绝口！”", rating: "★★★★☆ (4.5/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“准时到达，食物分量足够而且味道很好，宾客都赞不绝口！”", rating: "★★★★☆ (4.5/5)" }, comments: []
                 },
                 {
-                    id: 1710000010,
-                    nickName: "Kelvin",
-                    category: "Car Services / 汽车美容",
-                    location: "Kepayan, Kota Kinabalu",
-                    price: "RM 70",
-                    whatsapp: "0163338899",
+                    id: 1710000010, nickName: "Kelvin", category: "Car Services / 汽车美容", location: "Kepayan, Kota Kinabalu", price: "RM 70", whatsapp: "0163338899",
                     desc: "寻找上门洗车或汽车深层清洁服务。",
                     image: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“洗得很干净，车厢还帮忙吸尘和喷了香水，很方便。”", rating: "★★★★★ (5/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“洗得很干净，车厢还帮忙吸尘和喷了香水，很方便。”", rating: "★★★★★ (5/5)" }, comments: []
                 },
                 {
-                    id: 1710000011,
-                    nickName: "Jessica",
-                    category: "Pet Care / 宠物照顾",
-                    location: "Luyang, Kota Kinabalu",
-                    price: "RM 35 / 天",
-                    whatsapp: "0125556677",
+                    id: 1710000011, nickName: "Jessica", category: "Pet Care / 宠物照顾", location: "Luyang, Kota Kinabalu", price: "RM 35 / 天", whatsapp: "0125556677",
                     desc: "寻找周末短期猫咪寄养家庭。",
                     image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“每天都有发照片汇报。不过地方稍微有点小，整体还行。”", rating: "★★★☆☆ (3/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“每天都有发照片汇报。不过地方稍微有点小，整体还行。”", rating: "★★★☆☆ (3/5)" }, comments: []
                 },
                 {
-                    id: 1710000012,
-                    nickName: "Ray",
-                    category: "Photography / 摄影服务",
-                    location: "Sutera Harbour, KK",
-                    price: "RM 350",
-                    whatsapp: "0114443322",
+                    id: 1710000012, nickName: "Ray", category: "Photography / 摄影服务", location: "Sutera Harbour, KK", price: "RM 350", whatsapp: "0114443322",
                     desc: "寻找半天生日派对摄影师（含底片全给）。",
                     image: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“抓拍的照片很有氛围感，原片隔天就全发给我们了，赞！”", rating: "★★★★★ (5/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“抓拍的照片很有氛围感，原片隔天就全发给我们了，赞！”", rating: "★★★★★ (5/5)" }, comments: []
                 },
                 {
-                    id: 1710000013,
-                    nickName: "Uncle Chong",
-                    category: "Repair / 家电维修",
-                    location: "Donggongon, Penampang",
-                    price: "RM 90 / 台",
-                    whatsapp: "0192228833",
+                    id: 1710000013, nickName: "Uncle Chong", category: "Repair / 家电维修", location: "Donggongon, Penampang", price: "RM 90 / 台", whatsapp: "0192228833",
                     desc: "住宅冷气机化学清洗。",
                     image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80",
-                    status: "approved",
-                    taskStatus: "Completed",
-                    review: { text: "“洗完之后地上弄得湿漉漉的没有清理干净，不太满意。”", rating: "★★☆☆☆ (2/5)" },
-                    comments: []
+                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“洗完之后地上弄得湿漉漉的没有清理干净，不太满意。”", rating: "★★☆☆☆ (2/5)" }, comments: []
                 }
             ],
-            // 🛠️ 新增：会员主动提供的 8 个服务项目
             services: [
                 {
-                    id: 2710000001,
-                    nickName: "Uncle David",
-                    category: "Caregiving / 照顾服务",
-                    location: "Kepayan, Kota Kinabalu",
-                    price: "RM 25 / 小时",
-                    whatsapp: "0125558899",
+                    id: 2710000001, nickName: "Uncle David", category: "Caregiving / 照顾服务", location: "Kepayan, Kota Kinabalu", price: "RM 25 / 小时", whatsapp: "0125558899",
                     desc: "提供长者日常陪伴、陪同散步、协助就医复诊或去医院拿药。有爱心与耐性。",
                     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
                     comments: [{ author: "Sarah", time: "2026-10-04 14:00", text: "请问周三下午有空陪老人家去复诊吗？" }]
                 },
                 {
-                    id: 2710000002,
-                    nickName: "Emily",
-                    category: "Errand & Help / 个人助理",
-                    location: "Luyang, Kota Kinabalu",
-                    price: "RM 30 / 小时",
-                    whatsapp: "0168887766",
+                    id: 2710000002, nickName: "Emily", category: "Errand & Help / 个人助理", location: "Luyang, Kota Kinabalu", price: "RM 30 / 小时", whatsapp: "0168887766",
                     desc: "提供星期六专属个人时间协助：帮您代购、排队办理政务、代收文件或处理周末琐碎杂务。",
                     image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
                     comments: []
                 },
                 {
-                    id: 2710000003,
-                    nickName: "Ryan",
-                    category: "Part-time / 兼职服务",
-                    location: "Gaya Street, Kota Kinabalu",
-                    price: "RM 15 / 小时",
-                    whatsapp: "0112233445",
+                    id: 2710000003, nickName: "Ryan", category: "Part-time / 兼职服务", location: "Gaya Street, Kota Kinabalu", price: "RM 15 / 小时", whatsapp: "0112233445",
                     desc: "寻找周末或晚间咖啡馆（Cafe）短期兼职，有半年拉花与收银经验，上手快。",
                     image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=600&q=80",
                     comments: []
                 },
                 {
-                    id: 2710000004,
-                    nickName: "Architect Kenny",
-                    category: "Design & Drafting / 专业绘图",
-                    location: "Penampang, Sabah",
-                    price: "RM 120 起",
-                    whatsapp: "0194443322",
+                    id: 2710000004, nickName: "Architect Kenny", category: "Design & Drafting / 专业绘图", location: "Penampang, Sabah", price: "RM 120 起", whatsapp: "0194443322",
                     desc: "提供专业建筑与室内空间绘图、AutoCAD 2D/3D 渲染及结构图纸修改服务。",
                     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
                     comments: []
                 },
                 {
-                    id: 2710000005,
-                    nickName: "hairstylist Jerry",
-                    category: "Personal Grooming / 上门理发",
-                    location: "Kolombong, Kota Kinabalu",
-                    price: "RM 40 / 次",
-                    whatsapp: "0143332211",
+                    id: 2710000005, nickName: "hairstylist Jerry", category: "Personal Grooming / 上门理发", location: "Kolombong, Kota Kinabalu", price: "RM 40 / 次", whatsapp: "0143332211",
                     desc: "专业上门剪发服务（自带工具，适合行动不便的老人家或忙碌上班族），干净卫生。",
                     image: "https://images.unsplash.com/photo-1595476108010-b9d1f4d21e16?auto=format&fit=crop&w=600&q=80",
                     comments: []
                 },
                 {
-                    id: 2710000006,
-                    nickName: "Nicole",
-                    category: "Pet Care / 宠物服务",
-                    location: "Damai, Kota Kinabalu",
-                    price: "RM 35 / 次",
-                    whatsapp: "0123334455",
+                    id: 2710000006, nickName: "Nicole", category: "Pet Care / 宠物服务", location: "Damai, Kota Kinabalu", price: "RM 35 / 次", whatsapp: "0123334455",
                     desc: "假期出远门不用担心！提供上门喂猫、清理猫砂及傍晚带狗狗散步服务。",
                     image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=600&q=80",
                     comments: []
                 },
                 {
-                    id: 2710000007,
-                    nickName: "Tech Sam",
-                    category: "IT Support / 电脑技术",
-                    location: "Inanam, Kota Kinabalu",
-                    price: "RM 80",
-                    whatsapp: "0162221188",
+                    id: 2710000007, nickName: "Tech Sam", category: "IT Support / 电脑技术", location: "Inanam, Kota Kinabalu", price: "RM 80", whatsapp: "0162221188",
                     desc: "解决电脑开机慢、蓝屏、系统重装、清理灰尘及安装办公软件。",
                     image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80",
                     comments: []
                 },
                 {
-                    id: 2710000008,
-                    nickName: "Teacher Jasmine",
-                    category: "Tuition / 课业辅导",
-                    location: "Donggongon, Penampang",
-                    price: "RM 50 / 小时",
-                    whatsapp: "0198882233",
+                    id: 2710000008, nickName: "Teacher Jasmine", category: "Tuition / 课业辅导", location: "Donggongon, Penampang", price: "RM 50 / 小时", whatsapp: "0198882233",
                     desc: "提供小学及初中全科作业辅导，培养良好的学习习惯，周末时间可议。",
                     image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=600&q=80",
                     comments: []
@@ -835,33 +636,26 @@
             bankDetails: "Bank: Maybank | Acc: 1234567890 (Platform Official)",
             qrCodeUrl: "https://via.placeholder.com/180",
             noticeText: "欢迎来到 TaskHub 多功能任务与服务平台！发布任务前请先完成 RM1 汇款验证。",
-            aboutText: "TaskHub 是一个专为社区打造的多功能任务平台，旨在连接寻找服务的用户与优质服务提供者。无论是清洁、寻物还是维修，我们都能为您提供最高效、最便捷的连接桥梁。",
-            helpdeskText: "如果您在使用 TaskHub 平台时遇到任何问题（如汇款验证、任务发布、账号设置等），请通过以下方式联系我们的客服团队：\n\n• WhatsApp 客服热线: +6012-345 6789\n• 工作时间: 周一至周日 (9:00 AM - 9:00 PM)"
+            aboutText: "TaskHub 是一个专为社区打造的多功能任务平台，旨在连接寻找服务的用户与优质服务提供者。",
+            helpdeskText: "如果您在使用 TaskHub 平台时遇到任何问题，请通过 WhatsApp 联系客服: +6012-345 6789"
         };
 
         let currentActiveItemForShare = null;
         let currentShareTextData = "";
         let currentTaskDetailUrl = "";
         let currentViewingId = null;
-        let currentItemType = 'task'; // 'task' 或 'service'
+        let currentItemType = 'task';
 
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+            document.getElementById('mobileMenu').classList.toggle('hidden');
         }
 
         function switchTab(tabId) {
-            if (tabId === 'postTask' && !db.currentNickName) {
-                alert("Please set your Nick Name first! / 请先设置昵称！");
+            if (tabId === 'postTask' && (!db.isLoggedIn || !db.currentNickName)) {
+                alert("Please register or login as a member first! / 您还没有登录会员账号，请先注册或登录！");
                 switchTab('register');
                 return;
             }
-            if (tabId === 'profile' && !db.currentNickName) {
-                alert("Please set your Nick Name first! / 请先设置昵称！");
-                switchTab('register');
-                return;
-            }
-
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
             
@@ -869,10 +663,12 @@
             if (tabId === 'services') renderMemberServices();
             if (tabId === 'bank') renderBankPage();
             if (tabId === 'register') loadRegisterData();
-            if (tabId === 'profile') loadProfileData();
+            if (tabId === 'profile') renderProfilePage();
             if (tabId === 'postTask') {
                 renderMyPendingTasks();
                 handleCategoryChange();
+                const badge = document.getElementById('postTaskMemberBadge');
+                if (badge) badge.innerText = db.currentNickName;
             }
             if (tabId === 'about') renderAboutPage();
             if (tabId === 'helpdesk') renderHelpdeskPage();
@@ -880,7 +676,38 @@
             if (tabId === 'memberList') renderMemberList();
         }
 
-        // 打开会员服务大厅
+        function handleProfileNavClick() {
+            if (db.isLoggedIn && db.currentNickName) {
+                switchTab('profile');
+            } else {
+                document.getElementById('profileLoginNick').value = '';
+                document.getElementById('profileLoginPass').value = '';
+                document.getElementById('profileLoginModal').classList.remove('hidden');
+            }
+        }
+
+        function verifyProfileLogin() {
+            const nick = document.getElementById('profileLoginNick').value.trim();
+            const pass = document.getElementById('profileLoginPass').value;
+            const user = db.users.find(u => u.nickName === nick && u.password === pass);
+            if (user) {
+                db.currentNickName = user.nickName;
+                db.isLoggedIn = true;
+                document.getElementById('profileLoginModal').classList.add('hidden');
+                switchTab('profile');
+                showToast("登录个人中心成功！");
+            } else {
+                alert("昵称或密码错误！请检查后重试。");
+            }
+        }
+
+        function handleLogout() {
+            db.isLoggedIn = false;
+            db.currentNickName = "";
+            showToast("已成功登出");
+            switchTab('home');
+        }
+
         function renderMemberServices() {
             const container = document.getElementById('memberServicesList');
             container.innerHTML = db.services.map(s => `
@@ -903,7 +730,6 @@
             `).join('');
         }
 
-        // 通用详情页打开方法（区分 task 或 service）
         function openDetail(id, type = 'task') {
             currentItemType = type;
             let item = type === 'task' ? db.tasks.find(t => t.id == id) : db.services.find(s => s.id == id);
@@ -916,8 +742,7 @@
             document.getElementById('detailDesc').innerText = item.desc;
             document.getElementById('detailLocation').innerText = item.location;
             document.getElementById('detailPublisher').innerText = item.nickName;
-            
-            document.getElementById('detailDescTitle').innerText = type === 'task' ? "Task Description / 任务详细描述：" : "Service Details / 服务详细说明：";
+            document.getElementById('detailDescTitle').innerText = type === 'task' ? "Task Description：" : "Service Details：";
 
             const waLink = `https://wa.me/${item.whatsapp}`;
             document.getElementById('detailWhatsappLink').href = waLink;
@@ -928,13 +753,13 @@
             const statusBadge = document.getElementById('detailStatusBadge');
             if (type === 'service') {
                 statusBadge.className = "text-[11px] bg-teal-50 text-teal-700 border border-teal-200 px-3 py-1 rounded-full font-bold";
-                statusBadge.innerText = "🛠️ 会员提供服务 / Available Service";
+                statusBadge.innerText = "🛠️ 会员提供服务";
             } else if (isCompleted) {
                 statusBadge.className = "text-[11px] bg-slate-100 text-slate-700 border border-slate-300 px-3 py-1 rounded-full font-bold";
-                statusBadge.innerText = "✅ 已完成 / Completed";
+                statusBadge.innerText = "✅ 已完成";
             } else {
                 statusBadge.className = "text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-bold";
-                statusBadge.innerText = "🔥 寻找中 / Active";
+                statusBadge.innerText = "🔥 寻找中";
             }
 
             const reviewContainer = document.getElementById('detailReviewContainer');
@@ -946,15 +771,10 @@
                 reviewContainer.classList.add('hidden');
             }
 
-            if (db.currentNickName) {
-                document.getElementById('commentAuthor').value = db.currentNickName;
-            }
-
+            if (db.currentNickName) document.getElementById('commentAuthor').value = db.currentNickName;
             renderComments(item);
 
-            document.getElementById('detailShareBtn').onclick = function() {
-                openShareModal(item.id, type);
-            };
+            document.getElementById('detailShareBtn').onclick = function() { openShareModal(item.id, type); };
 
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-taskDetail').classList.remove('hidden');
@@ -964,10 +784,9 @@
         function renderComments(item) {
             const container = document.getElementById('detailCommentsList');
             if (!item.comments || item.comments.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无留言，快来留下第一条评论吧！ / No comments yet.</p>`;
+                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无留言，快来留下第一条评论吧！</p>`;
                 return;
             }
-
             container.innerHTML = item.comments.map(c => `
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
                     <div class="flex justify-between items-center text-[11px]">
@@ -984,13 +803,11 @@
             const author = document.getElementById('commentAuthor').value.trim();
             const text = document.getElementById('commentText').value.trim();
             if (!author || !text) return;
-
             let item = currentItemType === 'task' ? db.tasks.find(t => t.id == currentViewingId) : db.services.find(s => s.id == currentViewingId);
             if (item) {
                 if (!item.comments) item.comments = [];
                 const now = new Date();
                 const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-
                 item.comments.push({ author, text, time: timeStr });
                 document.getElementById('commentText').value = '';
                 renderComments(item);
@@ -1002,7 +819,6 @@
             const categorySelect = document.getElementById('taskCategory');
             const customContainer = document.getElementById('customCategoryContainer');
             const customInput = document.getElementById('customTaskName');
-
             if (categorySelect.value === 'Others') {
                 customContainer.classList.remove('hidden');
                 customInput.setAttribute('required', 'true');
@@ -1027,6 +843,8 @@
                 document.getElementById('regNickName').value = user.nickName || '';
                 document.getElementById('regAddress').value = user.address || '';
                 document.getElementById('regWhatsapp').value = user.whatsapp || '';
+                document.getElementById('regPassword').value = user.password || '';
+                document.getElementById('regConfirmPassword').value = user.password || '';
             }
         }
 
@@ -1035,40 +853,48 @@
             const nickName = document.getElementById('regNickName').value.trim();
             const address = document.getElementById('regAddress').value.trim();
             const whatsapp = document.getElementById('regWhatsapp').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const errorEl = document.getElementById('regPasswordError');
+
+            if (password !== confirmPassword) {
+                errorEl.classList.remove('hidden');
+                return;
+            } else {
+                errorEl.classList.add('hidden');
+            }
 
             let existing = db.users.find(u => u.nickName === nickName);
-            if (!existing) { db.users.push({ nickName, address, whatsapp }); } 
-            else { existing.address = address; existing.whatsapp = whatsapp; }
+            if (!existing) { db.users.push({ nickName, address, whatsapp, password }); } 
+            else { existing.address = address; existing.whatsapp = whatsapp; existing.password = password; }
 
             db.currentNickName = nickName;
-            alert("Nick Name saved successfully! / 昵称设置成功！");
-            switchTab('home');
+            db.isLoggedIn = true;
+            alert("Member Registered & Verified Successfully! / 注册成功！现在您可以发布任务了。");
+            switchTab('postTask');
         }
 
-        function loadProfileData() {
+        function renderProfilePage() {
             const user = db.users.find(u => u.nickName === db.currentNickName);
             if (user) {
-                document.getElementById('profNickName').value = user.nickName || '';
-                document.getElementById('profAddress').value = user.address || '';
-                document.getElementById('profWhatsapp').value = user.whatsapp || '';
-            }
-        }
-
-        function handleSaveProfile(event) {
-            event.preventDefault();
-            const oldNick = db.currentNickName;
-            const newNick = document.getElementById('profNickName').value.trim();
-            const address = document.getElementById('profAddress').value.trim();
-            const whatsapp = document.getElementById('profWhatsapp').value.trim();
-
-            let user = db.users.find(u => u.nickName === oldNick);
-            if (user) {
-                user.nickName = newNick;
-                user.address = address;
-                user.whatsapp = whatsapp;
-                db.currentNickName = newNick;
-                alert("Profile Updated Successfully! / 资料更新成功！");
-                switchTab('home');
+                document.getElementById('profileDisplayNick').innerText = user.nickName;
+                document.getElementById('profileDisplayAddress').innerText = user.address;
+                document.getElementById('profileDisplayWhatsapp').innerText = user.whatsapp;
+                const myTasks = db.tasks.filter(t => t.nickName === db.currentNickName);
+                const container = document.getElementById('profileMyTasksList');
+                if (myTasks.length === 0) {
+                    container.innerHTML = `<p class="text-slate-400 text-xs italic">您还没有发布过任务。</p>`;
+                } else {
+                    container.innerHTML = myTasks.map(t => `
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-slate-800">${t.category}: ${t.desc.substring(0, 30)}...</span>
+                                <span class="text-emerald-600 font-bold ml-2">${t.price}</span>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded font-bold ${t.status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${t.status.toUpperCase()}</span>
+                        </div>
+                    `).join('');
+                }
             }
         }
 
@@ -1077,6 +903,22 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) { document.getElementById('taskImage').value = e.target.result; };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleReceiptUpload(event, taskId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const task = db.tasks.find(t => t.id === taskId);
+                    if (task) {
+                        task.receipt = e.target.result;
+                        showToast("RM1 汇款收据上传成功！");
+                        renderMyPendingTasks();
+                    }
+                };
                 reader.readAsDataURL(file);
             }
         }
@@ -1092,7 +934,11 @@
 
         function handlePostTask(event) {
             event.preventDefault();
-            if (!db.currentNickName) { alert("Please set your Nick Name first!"); switchTab('register'); return; }
+            if (!db.isLoggedIn || !db.currentNickName) {
+                alert("Please login first!");
+                switchTab('register');
+                return;
+            }
 
             let category = document.getElementById('taskCategory').value;
             if (category === 'Others') {
@@ -1110,10 +956,10 @@
                 id: Date.now(),
                 nickName: db.currentNickName,
                 category, location, price, whatsapp, desc, image,
-                status: 'pending', taskStatus: 'Active', review: null, comments: []
+                status: 'pending', taskStatus: 'Active', receipt: null, review: null, comments: []
             });
 
-            alert("Task submitted! Please transfer RM1.");
+            alert("Task submitted! Please transfer RM1 and upload receipt.");
             document.getElementById('taskLocation').value = '';
             document.getElementById('taskPrice').value = '';
             document.getElementById('taskWhatsapp').value = '';
@@ -1128,22 +974,20 @@
         function renderPublicTasks() {
             const container = document.getElementById('publicTaskList');
             const approvedTasks = db.tasks.filter(t => t.status === 'approved');
-
             if (approvedTasks.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs italic text-center py-12">暂无已批准的任务 / No approved tasks available yet.</p>`;
+                container.innerHTML = `<p class="text-slate-400 text-xs italic text-center py-12">暂无已批准的任务。</p>`;
                 return;
             }
-
             container.innerHTML = approvedTasks.map(t => {
                 const isCompleted = t.taskStatus === 'Completed';
                 const statusBadge = isCompleted 
-                    ? `<span class="text-[10px] bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full font-bold">✅ 已完成 / Completed</span>`
-                    : `<span class="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">🔥 寻找中 / Active</span>`;
+                    ? `<span class="text-[10px] bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full font-bold">✅ 已完成</span>`
+                    : `<span class="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">🔥 寻找中</span>`;
 
                 const reviewSection = isCompleted && t.review ? `
                     <div class="mt-3 p-3 bg-amber-50/60 border border-amber-200 rounded-xl text-xs space-y-1">
                         <div class="flex justify-between items-center">
-                            <span class="font-bold text-amber-800">💬 真实社区评语 (Review):</span>
+                            <span class="font-bold text-amber-800">💬 真实社区评语:</span>
                             <span class="text-[11px] font-bold text-amber-700">${t.review.rating}</span>
                         </div>
                         <p class="text-slate-700 italic leading-relaxed">${t.review.text}</p>
@@ -1151,9 +995,9 @@
                 ` : '';
 
                 return `
-                    <div id="task-card-${t.id}" class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-3 transition duration-500 hover:border-indigo-400 cursor-pointer" onclick="openDetail(${t.id}, 'task')">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-3 transition hover:border-indigo-400 cursor-pointer" onclick="openDetail(${t.id}, 'task')">
                         <div class="flex flex-col sm:flex-row gap-4 items-center">
-                            <img src="${t.image}" alt="Task" class="w-full sm:w-28 h-28 object-cover rounded-lg border border-slate-200 cursor-pointer hover:opacity-90 transition" onclick="event.stopPropagation(); openImageViewer('${t.image}')" title="点击放大图片">
+                            <img src="${t.image}" alt="Task" class="w-full sm:w-28 h-28 object-cover rounded-lg border border-slate-200 cursor-pointer" onclick="event.stopPropagation(); openImageViewer('${t.image}')">
                             <div class="flex-grow space-y-1 w-full">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
@@ -1187,19 +1031,33 @@
         function renderMyPendingTasks() {
             const container = document.getElementById('myPendingList');
             const myTasks = db.tasks.filter(t => t.nickName === db.currentNickName && t.status === 'pending');
-
             if (myTasks.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无待处理任务 / No pending tasks.</p>`;
+                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无待处理任务。</p>`;
                 return;
             }
-
             container.innerHTML = myTasks.map(t => `
-                <div class="border border-amber-200 p-3.5 rounded-xl bg-amber-50/50 text-xs space-y-1.5">
-                    <span class="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md font-bold">Status: PENDING (Waiting for RM1 check)</span>
-                    <p class="font-bold text-slate-800">${t.category} - <span class="text-emerald-600">${t.price}</span></p>
-                    <p class="text-slate-600">📍 ${t.location} | 💬 ${t.whatsapp}</p>
-                    <p class="font-semibold text-slate-800">${t.desc}</p>
-                    <img src="${t.image}" alt="Task" class="mt-2 w-full h-24 object-cover rounded-lg border border-amber-200 cursor-pointer" onclick="openImageViewer('${t.image}')">
+                <div class="border border-amber-200 p-4 rounded-xl bg-amber-50/50 text-xs space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-md font-bold">Status: PENDING (Waiting for RM1 check)</span>
+                        <span class="font-bold text-emerald-600">${t.price}</span>
+                    </div>
+                    <p class="font-bold text-slate-800">${t.category} - 📍 ${t.location}</p>
+                    <p class="text-slate-600">${t.desc}</p>
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block mb-1">任务图片：</span>
+                            <img src="${t.image}" alt="Task" class="w-full h-20 object-cover rounded-lg border border-amber-200 cursor-pointer" onclick="openImageViewer('${t.image}')">
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 block mb-1">汇款收据凭证：</span>
+                            ${t.receipt ? `<img src="${t.receipt}" class="w-full h-20 object-cover rounded-lg border border-emerald-300">` : `
+                                <label class="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer bg-white">
+                                    <span class="text-[10px] text-amber-700 font-bold">📁 上传收据</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleReceiptUpload(event, ${t.id})">
+                                </label>
+                            `}
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
@@ -1229,29 +1087,23 @@
             document.getElementById('adminNoticeInput').value = db.noticeText;
             document.getElementById('adminAboutInput').value = db.aboutText;
             document.getElementById('adminHelpdeskInput').value = db.helpdeskText;
-
             const approvalContainer = document.getElementById('adminApprovalList');
             const pendingTasks = db.tasks.filter(t => t.status === 'pending');
-
             if (pendingTasks.length === 0) {
-                approvalContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无等待审核的任务 / No tasks awaiting approval.</p>`;
+                approvalContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无等待审核的任务。</p>`;
                 return;
             }
-
             approvalContainer.innerHTML = pendingTasks.map(t => `
                 <div class="border border-slate-200 p-4 rounded-xl bg-white flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div class="flex items-center gap-3">
-                        <img src="${t.image}" alt="Task" class="w-20 h-20 object-cover rounded-lg border border-slate-200 cursor-pointer" onclick="openImageViewer('${t.image}')">
+                        <img src="${t.image}" class="w-16 h-16 object-cover rounded-lg border cursor-pointer" onclick="openImageViewer('${t.image}')">
                         <div class="space-y-1">
                             <span class="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold">Pending Approval</span>
                             <p class="font-bold text-slate-800 text-xs">${t.category} <span class="text-emerald-600 font-bold">(${t.price})</span></p>
                             <p class="text-[11px] text-slate-600">📍 ${t.location} | 💬 ${t.whatsapp} | 👤 ${t.nickName}</p>
-                            <p class="text-[11px] text-slate-600">${t.desc}</p>
                         </div>
                     </div>
-                    <div>
-                        <button onclick="approveTask(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs whitespace-nowrap">Approve</button>
-                    </div>
+                    <button onclick="approveTask(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Approve</button>
                 </div>
             `).join('');
         }
@@ -1276,12 +1128,12 @@
             const item = type === 'task' ? db.tasks.find(t => t.id === id) : db.services.find(s => s.id === id);
             if (!item) return;
             currentActiveItemForShare = item;
-
             let rawBaseUrl = window.location.href.split('#')[0];
+            if (rawBaseUrl.startsWith('content://') || rawBaseUrl.startsWith('file://')) {
+                rawBaseUrl = 'https://taskhub-community.netlify.app/index.html';
+            }
             currentTaskDetailUrl = `${rawBaseUrl}#item-${type}-${item.id}`;
-
-            currentShareTextData = `🔗 点击直达详情与参与:\n${currentTaskDetailUrl}\n\n【TaskHub ${type === 'task' ? '任务分享' : '会员服务'}】\n分类: ${item.category}\n报价: ${item.price}\n地点: ${item.location}\nWhatsApp: ${item.whatsapp}\n详情: ${item.desc}\n提供者/发布人: ${item.nickName}`;
-
+            currentShareTextData = `🔗 点击直达详情与参与:\n${currentTaskDetailUrl}\n\n【TaskHub ${type === 'task' ? '任务分享' : '会员服务'}】\n分类: ${item.category}\n报价: ${item.price}\n地点: ${item.location}\nWhatsApp: ${item.whatsapp}\n详情: ${item.desc}\n发布人: ${item.nickName}`;
             document.getElementById('shareModal').classList.remove('hidden');
         }
 
@@ -1292,85 +1144,78 @@
             const item = currentActiveItemForShare;
             const canvas = document.getElementById('posterCanvas');
             const ctx = canvas.getContext('2d');
-            
-            canvas.width = 800;
-            canvas.height = 1000;
-
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#0f172a";
-            ctx.fillRect(0, 0, canvas.width, 100);
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 36px Inter, sans-serif";
+            canvas.width = 800; canvas.height = 1000;
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0f172a"; ctx.fillRect(0, 0, canvas.width, 100);
+            ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px Inter, sans-serif";
             ctx.fillText("TaskHub 多功能平台", 40, 62);
 
             const img = new Image();
             img.crossOrigin = "anonymous";
             img.src = item.image;
             img.onload = function() {
-                ctx.fillStyle = "#f1f5f9";
-                ctx.fillRect(40, 130, 720, 480);
-                
-                let hRatio = 720 / img.width;
-                let vRatio = 480 / img.height;
-                let ratio = Math.min(hRatio, vRatio);
-                let centerShift_x = (720 - img.width * ratio) / 2;
-                let centerShift_y = (480 - img.height * ratio) / 2;
-                ctx.drawImage(img, 0, 0, img.width, img.height, 40 + centerShift_x, 130 + centerShift_y, img.width * ratio, img.height * ratio);
+                ctx.fillStyle = "#f1f5f9"; ctx.fillRect(40, 130, 720, 480);
+                let ratio = Math.min(720 / img.width, 480 / img.height);
+                ctx.drawImage(img, 0, 0, img.width, img.height, 40 + (720 - img.width * ratio)/2, 130 + (480 - img.height * ratio)/2, img.width * ratio, img.height * ratio);
 
-                ctx.fillStyle = "#4f46e5";
-                ctx.beginPath();
-                ctx.roundRect(40, 640, 200, 50, 12);
-                ctx.fill();
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "bold 22px Inter, sans-serif";
-                ctx.fillText(item.category, 60, 672);
+                ctx.fillStyle = "#4f46e5"; ctx.beginPath(); ctx.roundRect(40, 640, 200, 50, 12); ctx.fill();
+                ctx.fillStyle = "#ffffff"; ctx.font = "bold 22px Inter, sans-serif"; ctx.fillText(item.category, 60, 672);
 
-                ctx.fillStyle = "#059669";
-                ctx.beginPath();
-                ctx.roundRect(260, 640, 180, 50, 12);
-                ctx.fill();
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText("💰 " + item.price, 280, 672);
+                ctx.fillStyle = "#059669"; ctx.beginPath(); ctx.roundRect(260, 640, 180, 50, 12); ctx.fill();
+                ctx.fillStyle = "#ffffff"; ctx.fillText("💰 " + item.price, 280, 672);
 
-                ctx.fillStyle = "#1e293b";
-                ctx.font = "bold 28px Inter, sans-serif";
-                ctx.fillText(item.desc, 40, 750);
+                ctx.fillStyle = "#1e293b"; ctx.font = "bold 28px Inter, sans-serif"; ctx.fillText(item.desc.substring(0, 35) + "...", 40, 750);
 
-                ctx.strokeStyle = "#e2e8f0";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(40, 800);
-                ctx.lineTo(760, 800);
-                ctx.stroke();
-
-                ctx.fillStyle = "#64748b";
-                ctx.font = "20px Inter, sans-serif";
+                ctx.fillStyle = "#64748b"; ctx.font = "20px Inter, sans-serif";
                 ctx.fillText("📍 地点: " + item.location, 40, 845);
                 ctx.fillText("💬 WhatsApp: " + item.whatsapp, 40, 880);
-                ctx.fillText("👤 发布人/提供者: " + item.nickName, 40, 915);
-
-                ctx.fillStyle = "#4f46e5";
-                ctx.font = "bold 15px Inter, sans-serif";
-                ctx.fillText("🔗 直达链接: " + currentTaskDetailUrl, 40, 965);
 
                 let link = document.createElement('a');
                 link.download = `TaskHub_poster.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
-                showToast("海报下载成功！");
+                showToast("海报下载成功！请前往相册查看");
             };
         }
 
         function copyShareText() {
-            navigator.clipboard.writeText(currentShareTextData).then(() => {
-                showToast("文案复制成功 (链接已置顶)！");
-            });
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(currentShareTextData).then(() => {
+                    showToast("文案复制成功 (链接已置顶)！");
+                }).catch(() => {
+                    fallbackCopyText(currentShareTextData);
+                });
+            } else {
+                fallbackCopyText(currentShareTextData);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("文案复制成功 (链接已置顶)！");
+                } else {
+                    alert("复制失败，请手动长按复制文案。");
+                }
+            } catch (err) {
+                alert("复制失败，请手动长按复制文案。");
+            }
+            document.body.removeChild(textArea);
         }
 
         function openFacebookApp() {
-            window.open("https://www.facebook.com/sharer/sharer.php", "_blank");
+            copyShareText();
+            setTimeout(() => {
+                const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentTaskDetailUrl)}`;
+                window.location.href = fbShareUrl;
+            }, 500);
         }
 
         function openImageViewer(imgSrc) {
@@ -1387,7 +1232,23 @@
             setTimeout(() => { toast.classList.add('hidden'); }, 2000);
         }
 
-        renderHomeData();
+        function checkUrlHashAndOpenDetail() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('#item-')) {
+                const parts = hash.replace('#item-', '').split('-');
+                if (parts.length >= 2) {
+                    const type = parts[0];
+                    const id = parts[1];
+                    openDetail(id, type);
+                }
+            } else {
+                renderHomeData();
+            }
+        }
+
+        window.onload = function() {
+            checkUrlHashAndOpenDetail();
+        };
     </script>
 </body>
 </html>

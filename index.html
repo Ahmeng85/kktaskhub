@@ -1252,3 +1252,257 @@
     </script>
 </body>
 </html>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full font-bold">${t.category}</span>
+                                        <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">💰 ${t.price}</span>
+                                    </div>
+                                    ${statusBadge}
+                                </div>
+                                <p class="text-xs font-semibold text-slate-800 leading-relaxed">${t.desc}</p>
+                                <div class="text-[11px] text-slate-500 space-y-0.5 pt-1">
+                                    <p>📍 地点: <span class="text-slate-700 font-medium">${t.location}</span></p>
+                                    <p>💬 WhatsApp: <span class="text-emerald-600 font-bold underline">${t.whatsapp}</span></p>
+                                    <p>👤 发布人: <span class="text-indigo-600 font-bold">${t.nickName}</span></p>
+                                </div>
+                            </div>
+                            <div>
+                                <button onclick="event.stopPropagation(); openShareModal(${t.id}, 'task')" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition shadow-xs whitespace-nowrap">Share</button>
+                            </div>
+                        </div>
+                        ${reviewSection}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderBankPage() {
+            document.getElementById('displayBankDetails').innerText = db.bankDetails;
+            document.getElementById('displayQRCode').src = db.qrCodeUrl;
+        }
+
+        function renderMyPendingTasks() {
+            const container = document.getElementById('myPendingList');
+            const myTasks = db.tasks.filter(t => t.nickName === db.currentNickName && t.status === 'pending');
+            if (myTasks.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无待处理任务。</p>`;
+                return;
+            }
+            container.innerHTML = myTasks.map(t => `
+                <div class="border border-amber-200 p-4 rounded-xl bg-amber-50/50 text-xs space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-md font-bold">Status: PENDING (Waiting for RM1 check)</span>
+                        <span class="font-bold text-emerald-600">${t.price}</span>
+                    </div>
+                    <p class="font-bold text-slate-800">${t.category} - 📍 ${t.location}</p>
+                    <p class="text-slate-600">${t.desc}</p>
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block mb-1">任务图片：</span>
+                            <img src="${t.image}" alt="Task" class="w-full h-20 object-cover rounded-lg border border-amber-200 cursor-pointer" onclick="openImageViewer('${t.image}')">
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 block mb-1">汇款收据凭证：</span>
+                            ${t.receipt ? `<img src="${t.receipt}" class="w-full h-20 object-cover rounded-lg border border-emerald-300">` : `
+                                <label class="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer bg-white">
+                                    <span class="text-[10px] text-amber-700 font-bold">📁 上传收据</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleReceiptUpload(event, ${t.id})">
+                                </label>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
+        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); document.getElementById('adminPasswordInput').value = ''; }
+        function verifyAdminPassword() {
+            if (document.getElementById('adminPasswordInput').value === 'super123') { closeAdminModal(); switchTab('admin'); } 
+            else { alert("Password incorrect!"); }
+        }
+
+        function renderMemberList() {
+            const memberContainer = document.getElementById('adminMemberList');
+            if (db.users.length === 0) { memberContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无注册会员</p>`; } 
+            else {
+                memberContainer.innerHTML = db.users.map(u => `
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5">
+                        <p><strong>Nick Name:</strong> <span class="text-indigo-600 font-bold">${u.nickName}</span></p>
+                        <p class="text-slate-600"><strong>Address (Secret):</strong> ${u.address || 'Not provided'}</p>
+                        <p class="text-slate-600"><strong>WhatsApp (Secret):</strong> ${u.whatsapp || 'Not provided'}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderSuperadminDashboard() {
+            document.getElementById('adminNoticeInput').value = db.noticeText;
+            document.getElementById('adminAboutInput').value = db.aboutText;
+            document.getElementById('adminHelpdeskInput').value = db.helpdeskText;
+            const approvalContainer = document.getElementById('adminApprovalList');
+            const pendingTasks = db.tasks.filter(t => t.status === 'pending');
+            if (pendingTasks.length === 0) {
+                approvalContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无等待审核的任务。</p>`;
+                return;
+            }
+            approvalContainer.innerHTML = pendingTasks.map(t => `
+                <div class="border border-slate-200 p-4 rounded-xl bg-white flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <img src="${t.image}" class="w-16 h-16 object-cover rounded-lg border cursor-pointer" onclick="openImageViewer('${t.image}')">
+                        <div class="space-y-1">
+                            <span class="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold">Pending Approval</span>
+                            <p class="font-bold text-slate-800 text-xs">${t.category} <span class="text-emerald-600 font-bold">(${t.price})</span></p>
+                            <p class="text-[11px] text-slate-600">📍 ${t.location} | 💬 ${t.whatsapp} | 👤 ${t.nickName}</p>
+                        </div>
+                    </div>
+                    <button onclick="approveTask(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Approve</button>
+                </div>
+            `).join('');
+        }
+
+        function saveAdminNotice() { db.noticeText = document.getElementById('adminNoticeInput').value.trim(); alert("Notice Updated!"); }
+        function saveAdminAbout() { db.aboutText = document.getElementById('adminAboutInput').value.trim(); alert("About Us Updated!"); }
+        function saveAdminHelpdesk() { db.helpdeskText = document.getElementById('adminHelpdeskInput').value.trim(); alert("Helpdesk Updated!"); }
+        function saveAdminSettings() {
+            const newBank = document.getElementById('adminBankInput').value.trim();
+            const newQR = document.getElementById('adminQRInput').value.trim();
+            if (newBank) db.bankDetails = newBank;
+            if (newQR) db.qrCodeUrl = newQR;
+            alert("Settings Updated!");
+        }
+
+        function approveTask(taskId) {
+            const task = db.tasks.find(t => t.id === taskId);
+            if (task) { task.status = 'approved'; alert("Task Approved!"); renderSuperadminDashboard(); }
+        }
+
+        function openShareModal(id, type = 'task') {
+            const item = type === 'task' ? db.tasks.find(t => t.id === id) : db.services.find(s => s.id === id);
+            if (!item) return;
+            currentActiveItemForShare = item;
+            let rawBaseUrl = window.location.href.split('#')[0];
+            if (rawBaseUrl.startsWith('content://') || rawBaseUrl.startsWith('file://')) {
+                rawBaseUrl = 'https://taskhub-community.netlify.app/index.html';
+            }
+            currentTaskDetailUrl = `${rawBaseUrl}#item-${type}-${item.id}`;
+            currentShareTextData = `🔗 点击直达详情与参与:\n${currentTaskDetailUrl}\n\n【TaskHub ${type === 'task' ? '任务分享' : '会员服务'}】\n分类: ${item.category}\n报价: ${item.price}\n地点: ${item.location}\nWhatsApp: ${item.whatsapp}\n详情: ${item.desc}\n发布人: ${item.nickName}`;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        function closeShareModal() { document.getElementById('shareModal').classList.add('hidden'); }
+
+        function downloadTaskPoster() {
+            if (!currentActiveItemForShare) return;
+            const item = currentActiveItemForShare;
+            const canvas = document.getElementById('posterCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 800; canvas.height = 1000;
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0f172a"; ctx.fillRect(0, 0, canvas.width, 100);
+            ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px Inter, sans-serif";
+            ctx.fillText("TaskHub 多功能平台", 40, 62);
+
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = item.image;
+            img.onload = function() {
+                ctx.fillStyle = "#f1f5f9"; ctx.fillRect(40, 130, 720, 480);
+                let ratio = Math.min(720 / img.width, 480 / img.height);
+                ctx.drawImage(img, 0, 0, img.width, img.height, 40 + (720 - img.width * ratio)/2, 130 + (480 - img.height * ratio)/2, img.width * ratio, img.height * ratio);
+
+                ctx.fillStyle = "#4f46e5"; ctx.beginPath(); ctx.roundRect(40, 640, 200, 50, 12); ctx.fill();
+                ctx.fillStyle = "#ffffff"; ctx.font = "bold 22px Inter, sans-serif"; ctx.fillText(item.category, 60, 672);
+
+                ctx.fillStyle = "#059669"; ctx.beginPath(); ctx.roundRect(260, 640, 180, 50, 12); ctx.fill();
+                ctx.fillStyle = "#ffffff"; ctx.fillText("💰 " + item.price, 280, 672);
+
+                ctx.fillStyle = "#1e293b"; ctx.font = "bold 28px Inter, sans-serif"; ctx.fillText(item.desc.substring(0, 35) + "...", 40, 750);
+
+                ctx.fillStyle = "#64748b"; ctx.font = "20px Inter, sans-serif";
+                ctx.fillText("📍 地点: " + item.location, 40, 845);
+                ctx.fillText("💬 WhatsApp: " + item.whatsapp, 40, 880);
+
+                let link = document.createElement('a');
+                link.download = `TaskHub_poster.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                showToast("海报下载成功！请前往相册查看");
+            };
+        }
+
+        function copyShareText() {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(currentShareTextData).then(() => {
+                    showToast("文案复制成功 (链接已置顶)！");
+                }).catch(() => {
+                    fallbackCopyText(currentShareTextData);
+                });
+            } else {
+                fallbackCopyText(currentShareTextData);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("文案复制成功 (链接已置顶)！");
+                } else {
+                    alert("复制失败，请手动长按复制文案。");
+                }
+            } catch (err) {
+                alert("复制失败，请手动长按复制文案。");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function openFacebookApp() {
+            copyShareText();
+            setTimeout(() => {
+                const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentTaskDetailUrl)}`;
+                window.location.href = fbShareUrl;
+            }, 500);
+        }
+
+        function openImageViewer(imgSrc) {
+            document.getElementById('viewerImage').src = imgSrc;
+            document.getElementById('imageViewerModal').classList.remove('hidden');
+        }
+
+        function closeImageViewer() { document.getElementById('imageViewerModal').classList.add('hidden'); }
+
+        function showToast(msg = "操作成功！") {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2000);
+        }
+
+        function checkUrlHashAndOpenDetail() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('#item-')) {
+                const parts = hash.replace('#item-', '').split('-');
+                if (parts.length >= 2) {
+                    const type = parts[0];
+                    const id = parts[1];
+                    openDetail(id, type);
+                }
+            } else {
+                renderHomeData();
+            }
+        }
+
+        window.onload = function() {
+            checkUrlHashAndOpenDetail();
+        };
+    </script>
+</body>
+</html>

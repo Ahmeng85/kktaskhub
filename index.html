@@ -1,3 +1,4 @@
+<!-- 【重要提示】请务必使用专门写代码的软件（如Acode）以 UTF-8 格式保存此文件！ -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -9,6 +10,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        /* 隐藏横向滚动条，让页面更美观 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-indigo-600 selection:text-white">
@@ -16,7 +20,6 @@
     <!-- 顶部导航栏 (Navbar) -->
     <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-6xl mx-auto px-4 h-18 flex justify-between items-center">
-            <!-- Logo -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
                 <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-extrabold text-white text-lg shadow-md shadow-indigo-600/30">TH</div>
                 <div>
@@ -24,35 +27,30 @@
                     <p class="text-[10px] text-slate-400">多功能平台 (v38)</p>
                 </div>
             </div>
-
-            <!-- 桌面端菜单 -->
             <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold text-slate-300">
                 <button onclick="switchTab('home')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Home</button>
                 <button onclick="switchTab('services')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Member Services</button>
                 <button onclick="switchTab('bank')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Bank Details</button>
-                <button onclick="switchTab('register')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Register</button>
-                <button onclick="handleProfileNavClick()" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition flex items-center gap-1">🔒 Profile</button>
+                <button id="navRegisterBtn" onclick="switchTab('register')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Register</button>
+                <button id="navLoginBtn" onclick="switchTab('profile')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition text-emerald-400 font-bold">🔑 Login</button>
+                <button id="navProfileBtn" onclick="handleProfileNavClick()" class="hidden hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition flex items-center gap-1">🔒 Profile</button>
                 <button onclick="switchTab('postTask')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Post Task</button>
                 <button onclick="switchTab('about')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">About Us</button>
                 <button onclick="switchTab('helpdesk')" class="hover:text-white hover:bg-slate-800 px-3 py-2 rounded-lg transition">Helpdesk</button>
                 <button onclick="openAdminModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-lg transition font-bold shadow-sm">Admin</button>
             </nav>
-
-            <!-- 手机端汉堡菜单按钮 -->
             <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
-
-        <!-- 手机端下拉折叠菜单 -->
         <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-t border-slate-800 px-4 py-4 space-y-2 text-sm font-medium">
             <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Home</button>
             <button onclick="switchTab('services'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Member Services</button>
             <button onclick="switchTab('bank'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Bank Details</button>
-            <button onclick="switchTab('register'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Register</button>
-            <button onclick="handleProfileNavClick(); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">🔒 Profile</button>
+            <button id="mobileRegisterBtn" onclick="switchTab('register'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Register</button>
+            <button id="mobileLoginBtn" onclick="switchTab('profile'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg text-emerald-400 hover:bg-slate-800 transition font-bold">🔑 Login / 登录</button>
+            <button id="mobileProfileBtn" onclick="handleProfileNavClick(); toggleMobileMenu();" class="hidden block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">🔒 Profile</button>
+            <button id="mobileLogoutBtn" onclick="handleLogout(); toggleMobileMenu();" class="hidden block w-full text-left px-4 py-2.5 rounded-lg text-rose-400 hover:bg-slate-800 transition font-bold">🚪 Logout / 退出登录</button>
             <button onclick="switchTab('postTask'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Post Task</button>
             <button onclick="switchTab('about'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">About Us</button>
             <button onclick="switchTab('helpdesk'); toggleMobileMenu();" class="block w-full text-left px-4 py-2.5 rounded-lg hover:bg-slate-800 transition">Helpdesk</button>
@@ -60,7 +58,6 @@
         </div>
     </header>
 
-    <!-- 主容器 -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
 
         <!-- 1. HOME TAB -->
@@ -68,19 +65,17 @@
             <div class="bg-indigo-600 text-white p-4 md:p-5 rounded-2xl shadow-sm flex items-start gap-3">
                 <span class="text-xl">📢</span>
                 <div class="flex-grow">
-                    <h3 class="font-bold text-xs uppercase tracking-wider mb-0.5 opacity-90">Platform Notice / 平台公告</h3>
+                    <h3 class="font-bold text-xs uppercase tracking-wider mb-0.5 opacity-90">Platform Notice / 平台公告 / Notis Platform</h3>
                     <p id="homeNoticeText" class="text-xs leading-relaxed font-medium">欢迎来到 TaskHub 多功能任务平台！发布任务前请先完成 RM1 汇款验证。</p>
                 </div>
             </div>
-
             <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 shadow-sm">
                 <div>
-                    <h3 class="font-bold text-sm">💡 寻找会员提供的专业服务？</h3>
+                    <h3 class="font-bold text-sm">💡 寻找会员提供的专业服务？ / Looking for Member Services? / Cari Perkhidmatan Ahli?</h3>
                     <p class="text-xs text-emerald-100 mt-0.5">查看会员提供的代驾、陪老人家、上门理发、绘图等多样化服务！</p>
                 </div>
                 <button onclick="switchTab('services')" class="bg-white text-emerald-800 px-4 py-2.5 rounded-xl text-xs font-bold transition hover:bg-emerald-50 whitespace-nowrap shadow-xs">浏览会员服务大厅 →</button>
             </div>
-
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="md:col-span-2 bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
@@ -93,7 +88,6 @@
                         <p class="text-slate-400 text-xs italic text-center py-12">暂无已批准的任务 / No approved tasks available yet.</p>
                     </div>
                 </div>
-
                 <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs h-fit space-y-5">
                     <div>
                         <h2 class="text-sm font-bold text-slate-900 mb-1 flex items-center gap-2">
@@ -101,9 +95,7 @@
                         </h2>
                         <p class="text-[11px] text-slate-500">发布前请先汇款 RM1 / Transfer RM1 before posting.</p>
                     </div>
-                    <button onclick="switchTab('bank')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl transition text-xs flex items-center justify-center gap-2 border border-slate-200">
-                        <span>🔍</span> 查看完整银行与二维码详情
-                    </button>
+                    <button onclick="switchTab('bank')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl transition text-xs flex items-center justify-center gap-2 border border-slate-200"><span>🔍</span> 查看完整银行与二维码详情</button>
                 </div>
             </div>
         </div>
@@ -127,25 +119,19 @@
         <!-- 1.3 TASK DETAIL TAB -->
         <div id="tab-taskDetail" class="tab-content hidden max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="flex justify-between items-center pb-4 border-b border-slate-100">
-                <button onclick="switchTab('home')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-                    <span>←</span> 返回列表 / Back
-                </button>
+                <button onclick="switchTab('home')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"><span>←</span> 返回列表 / Back</button>
                 <span id="detailStatusBadge" class="text-[11px] px-3 py-1 rounded-full font-bold"></span>
             </div>
-
             <div class="space-y-4">
                 <img id="detailImage" src="" alt="Image" class="w-full h-72 object-cover rounded-xl border border-slate-200 cursor-pointer shadow-sm hover:opacity-95 transition" onclick="openImageViewer(this.src)" title="点击放大图片">
-
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span id="detailCategory" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-bold"></span>
                     <span id="detailPrice" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-lg"></span>
                 </div>
-
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
                     <p id="detailDescTitle" class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">详细说明 / Description：</p>
-                    <p id="detailDesc" class="text-xs font-semibold text-slate-800 leading-relaxed"></p>
+                    <p id="detailDesc" class="text-xs font-semibold text-slate-800 leading-relaxed whitespace-pre-line"></p>
                 </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600 pt-2">
                     <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
                         <span class="font-bold text-slate-400 block text-[10px] uppercase mb-0.5">Location / 服务地点</span>
@@ -157,12 +143,18 @@
                     </div>
                 </div>
 
-                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs flex items-center justify-between">
+                <div id="detailWhatsappSection" class="hidden p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs flex items-center justify-between">
                     <div>
                         <span class="font-bold text-slate-400 block text-[10px] uppercase mb-0.5">WhatsApp Contact</span>
                         <a id="detailWhatsappLink" href="#" target="_blank" class="text-emerald-600 font-bold underline"></a>
                     </div>
                     <a id="detailWhatsappBtn" href="#" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Chat on WhatsApp</a>
+                </div>
+
+                <div id="detailWhatsappLocked" class="hidden p-5 bg-amber-50 border border-amber-200 rounded-xl text-center space-y-3">
+                    <p class="text-xs text-amber-900 font-bold">🔒 WhatsApp 联系方式仅限会员查看</p>
+                    <p class="text-[11px] text-amber-800">请先注册并登录，即可获取发布者的联系方式。</p>
+                    <button onclick="switchTab('profile')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-sm">立即登录 / 注册</button>
                 </div>
 
                 <div id="detailReviewContainer" class="hidden p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-1.5">
@@ -176,17 +168,22 @@
                 <div class="pt-4 border-t border-slate-100 space-y-4">
                     <h3 class="font-bold text-xs text-slate-900 flex items-center gap-2"><span>💬</span> 咨询与留言 / Discussion & Comments</h3>
                     <div id="detailCommentsList" class="space-y-3"></div>
-                    <form onsubmit="handlePostComment(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+
+                    <form id="commentForm" onsubmit="handlePostComment(event)" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                         <p class="text-[11px] font-bold text-slate-700">留下您的咨询或留言：</p>
                         <div><input type="text" id="commentAuthor" placeholder="Your Nick Name (您的昵称)" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" required></div>
                         <div><textarea id="commentText" placeholder="Write your comment or question here..." class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="2" required></textarea></div>
                         <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Post Comment</button>
                     </form>
+
+                    <div id="commentLocked" class="hidden p-5 bg-indigo-50 border border-indigo-200 rounded-xl text-center space-y-3">
+                        <p class="text-xs text-indigo-900 font-bold">🔒 留言功能仅限会员使用</p>
+                        <p class="text-[11px] text-indigo-800">请先注册并登录，即可发表您的留言或咨询。</p>
+                        <button onclick="switchTab('profile')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-sm">立即登录 / 注册</button>
+                    </div>
                 </div>
 
-                <button id="detailShareBtn" onclick="" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2 mt-4">
-                    <span>🔗</span> 分享此项目到 Facebook
-                </button>
+                <button id="detailShareBtn" onclick="" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2 mt-4"><span>🔗</span> 分享此项目到 Facebook</button>
             </div>
         </div>
 
@@ -248,1261 +245,1040 @@
         <!-- 4. PROFILE TAB -->
         <div id="tab-profile" class="tab-content hidden max-w-lg mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
             <div class="flex justify-between items-center pb-4 border-b border-slate-100">
-                <div>
-                    <h2 class="text-xl font-bold text-slate-900">Member Secure Profile</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">会员加密个人资料与任务历史</p>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs">🔒</span> 会员中心 / Profile
+                </h2>
+                <button onclick="switchTab('home')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition">← 返回</button>
+            </div>
+            <div id="profileLoginBox" class="space-y-4">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">🔑</div>
+                    <h3 class="text-base font-bold text-slate-900">会员登录 / Member Login</h3>
+                    <p class="text-xs text-slate-500 mt-1">还没账号？请先到 Register 页面注册。</p>
                 </div>
-                <button onclick="handleLogout()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl text-xs font-bold transition">🔒 Logout</button>
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Nick Name / 昵称</label>
+                        <input type="text" id="loginNickName" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Password / 密码</label>
+                        <input type="password" id="loginPassword" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    </div>
+                    <p id="loginError" class="text-[11px] text-rose-600 hidden font-bold">⚠️ 昵称或密码不正确！</p>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">Login</button>
+                </form>
+                <button onclick="switchTab('register')" class="w-full text-center text-xs font-bold text-indigo-600 hover:underline">还没有账号？立即注册 →</button>
             </div>
-            <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100 text-xs space-y-1.5">
-                <p><strong>当前登录昵称:</strong> <span id="profileDisplayNick" class="text-indigo-700 font-bold"></span></p>
-                <p><strong>住宅地址 (仅管理员可见):</strong> <span id="profileDisplayAddress" class="text-slate-700"></span></p>
-                <p><strong>WhatsApp (仅管理员可见):</strong> <span id="profileDisplayWhatsapp" class="text-slate-700"></span></p>
-            </div>
-            <div>
-                <h3 class="font-bold text-xs text-slate-900 mb-3">我发布的任务记录与审核状态：</h3>
-                <div id="profileMyTasksList" class="space-y-2"></div>
+            <div id="profileMainBox" class="hidden space-y-5">
+                <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                    <div id="profileAvatar" class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-extrabold text-lg shrink-0"></div>
+                    <div class="min-w-0">
+                        <p id="profileNick" class="text-sm font-bold text-slate-900 truncate"></p>
+                        <p id="profileSince" class="text-[11px] text-slate-500"></p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-3 text-xs">
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="font-bold text-slate-400 block text-[10px] uppercase mb-0.5">Home Address（仅管理员可见）</span>
+                        <span id="profileAddress" class="text-slate-800 font-semibold break-words"></span>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="font-bold text-slate-400 block text-[10px] uppercase mb-0.5">WhatsApp（仅管理员可见）</span>
+                        <span id="profileWhatsapp" class="text-slate-800 font-semibold"></span>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-100 space-y-3">
+                    <h3 class="font-bold text-xs text-slate-900 flex items-center justify-between">
+                        <span>📋 我发布的任务 / My Tasks</span>
+                        <button onclick="switchTab('postTask')" class="text-indigo-600 hover:underline text-[11px]">+ 发布新任务</button>
+                    </h3>
+                    <div id="myTasksList" class="space-y-3"></div>
+                </div>
+                <button onclick="handleLogout()" class="w-full bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-700 font-bold py-3 rounded-xl transition text-xs border border-slate-200">Logout / 退出登录</button>
             </div>
         </div>
 
         <!-- 5. POST TASK TAB -->
-        <div id="tab-postTask" class="tab-content hidden max-w-xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs">
-            <div class="text-center mb-6">
-                <h2 class="text-xl font-bold text-slate-900">Post a Task</h2>
-                <p class="text-xs text-slate-500 mt-1">发布任务（需登录会员身份，并汇款 RM1 费用于平台）</p>
+        <div id="tab-postTask" class="tab-content hidden max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs">📝</span> 发布任务 / Post a Task
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">发布前请先完成 RM1 汇款验证</p>
+                </div>
+                <button onclick="switchTab('bank')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap">💳 查看汇款资料</button>
             </div>
-            <div class="mb-5 p-3.5 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl text-xs text-indigo-900 flex justify-between items-center">
-                <p><strong>当前登录会员:</strong> <span id="postTaskMemberBadge" class="font-bold underline"></span></p>
-                <button onclick="switchTab('register')" class="bg-indigo-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition hover:bg-indigo-500 whitespace-nowrap">切换/注册账号</button>
+            <div id="postTaskGuard" class="hidden p-6 bg-amber-50 border border-amber-200 rounded-xl text-center space-y-3">
+                <p class="text-sm font-bold text-amber-900">⚠️ 请先登录会员账号</p>
+                <p class="text-xs text-amber-800">发布任务需要先注册并登录。</p>
+                <div class="flex gap-2 justify-center">
+                    <button onclick="switchTab('register')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Register</button>
+                    <button onclick="switchTab('profile')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition">Login</button>
+                </div>
             </div>
-            <div class="mb-5 p-3.5 bg-amber-50 border-l-4 border-amber-400 rounded-r-xl text-xs text-amber-900 flex justify-between items-center">
-                <p><strong>注意：</strong> 提交前请先参考银行与二维码页完成 RM1 汇款。</p>
-                <button onclick="switchTab('bank')" class="bg-amber-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition hover:bg-amber-500 whitespace-nowrap">查看汇款页</button>
-            </div>
-            <form onsubmit="handlePostTask(event)" class="space-y-4">
+            <form id="postTaskForm" onsubmit="handlePostTask(event)" class="hidden space-y-4">
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Category / 任务分类</label>
-                    <select id="taskCategory" onchange="handleCategoryChange()" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition">
-                        <option value="Cleaning Services">Cleaning Services / 清洁服务</option>
-                        <option value="Find Dog">Find Dog / 找狗</option>
-                        <option value="Coding">Coding / 写代码</option>
-                        <option value="Repair">Repair / 维修</option>
-                        <option value="Others">Others / 其他任务</option>
-                    </select>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Title / 任务标题</label>
+                    <input type="text" id="ptTitle" maxlength="60" placeholder="例如：周末帮忙代驾从 KL 到 Penang" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                 </div>
-                <div id="customCategoryContainer" class="hidden">
-                    <label class="block text-[11px] font-bold text-indigo-600 uppercase tracking-wide mb-1">Custom Task Name (必填)</label>
-                    <input type="text" id="customTaskName" placeholder="Enter custom task name" class="w-full px-4 py-3 rounded-xl bg-indigo-50/50 border border-indigo-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Location / 任务地点</label>
-                    <input type="text" id="taskLocation" placeholder="e.g. Kota Kinabalu, Sabah" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Offer Price / 任务报价 (RM)</label>
-                    <input type="text" id="taskPrice" placeholder="e.g. RM 50" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">WhatsApp / 联络号码</label>
-                    <input type="text" id="taskWhatsapp" placeholder="e.g. 012-3456789" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Description / 任务描述</label>
-                    <textarea id="taskDesc" placeholder="Describe your task details" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" rows="3" required></textarea>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Task Image / 任务图片</label>
-                    <div class="flex gap-2 items-center">
-                        <input type="text" id="taskImage" placeholder="Image URL or choose file ->" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
-                        <label class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-3 rounded-xl cursor-pointer transition whitespace-nowrap">
-                            Upload 📁
-                            <input type="file" id="taskImageFile" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-                        </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Category / 分类</label>
+                        <select id="ptCategory" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                            <option value="">-- 请选择 --</option>
+                            <option>代驾 / Driver</option>
+                            <option>陪老人家 / Elder Companion</option>
+                            <option>上门理发 / Home Barber</option>
+                            <option>绘图设计 / Design</option>
+                            <option>跑腿 / Errand</option>
+                            <option>清洁 / Cleaning</option>
+                            <option>家教 / Tuition</option>
+                            <option>维修 / Repair</option>
+                            <option>其他 / Others</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Price / 价格 (RM)</label>
+                        <input type="number" id="ptPrice" min="0" step="0.01" placeholder="0.00" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm mt-2">Submit Task (Pending)</button>
-            </form>
-            <div class="mt-8 border-t border-slate-100 pt-6">
-                <h3 class="font-bold text-xs text-slate-800 mb-3">My Pending Tasks / 我的待处理任务 (含收据上传)</h3>
-                <div id="myPendingList" class="space-y-3">
-                    <p class="text-slate-400 text-xs italic">暂无待处理任务 / No pending tasks.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Location / 地点</label>
+                        <input type="text" id="ptLocation" maxlength="50" placeholder="例如：Kuala Lumpur" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">WhatsApp</label>
+                        <input type="text" id="ptWhatsapp" maxlength="20" placeholder="例如：60123456789" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    </div>
                 </div>
-            </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Description / 详细说明</label>
+                    <textarea id="ptDesc" rows="4" maxlength="600" placeholder="请详细描述任务内容、时间、要求等..." class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required></textarea>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">Image / 图片（必填，会自动压缩）</label>
+                    <input type="file" id="ptImage" accept="image/*" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:text-[11px] file:font-bold" required>
+                    <div id="ptImagePreviewWrap" class="hidden mt-3">
+                        <img id="ptImagePreview" class="w-full h-44 object-cover rounded-xl border border-slate-200" alt="preview">
+                        <button type="button" onclick="clearPostImage()" class="mt-2 text-[11px] font-bold text-rose-600 hover:underline">✕ 移除图片</button>
+                    </div>
+                </div>
+                <label class="flex items-start gap-2.5 p-3 bg-teal-50 border border-teal-200 rounded-xl cursor-pointer">
+                    <input type="checkbox" id="ptIsService" class="mt-0.5 w-4 h-4 accent-teal-600">
+                    <span class="text-[11px] text-teal-900 font-semibold leading-relaxed">同时展示在「会员服务大厅」（适合代驾、陪老人家、上门理发、绘图等服务类）</span>
+                </label>
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <p class="text-[11px] font-bold text-slate-700">💳 汇款验证（RM1）</p>
+                    <input type="text" id="ptPayRef" maxlength="40" placeholder="汇款参考号 / Reference No." class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    <div class="mt-3">
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">上传汇款收据 / Upload Receipt</label>
+                        <input type="file" id="ptReceipt" accept="image/*" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:text-[11px] file:font-bold" required>
+                        <div id="ptReceiptPreviewWrap" class="hidden mt-3">
+                            <img id="ptReceiptPreview" class="w-full h-44 object-cover rounded-xl border border-slate-200" alt="receipt preview">
+                            <button type="button" onclick="clearPostReceipt()" class="mt-2 text-[11px] font-bold text-rose-600 hover:underline">✕ 移除收据</button>
+                        </div>
+                    </div>
+                    <label class="flex items-center gap-2.5 cursor-pointer mt-3">
+                        <input type="checkbox" id="ptPayConfirm" class="w-4 h-4 accent-indigo-600" required>
+                        <span class="text-[11px] text-slate-700 font-semibold">我确认已完成 RM1 汇款</span>
+                    </label>
+                </div>
+                <button type="submit" id="ptSubmitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl transition text-xs shadow-sm">提交任务（等待管理员审核）</button>
+            </form>
         </div>
 
-        <!-- 6. ABOUT US TAB -->
-        <div id="tab-about" class="tab-content hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
-            <div class="text-center">
-                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">🏢</div>
-                <h2 class="text-xl font-bold text-slate-900">About Us</h2>
-                <p class="text-xs text-slate-500 mt-1">了解 TaskHub 多功能任务平台</p>
+        <!-- 6. ABOUT TAB -->
+        <div id="tab-about" class="tab-content hidden max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
+            <div class="pb-4 border-b border-slate-100">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs">ℹ️</span> 关于我们 / About Us
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">TaskHub — 连接社区需求与专业服务的多功能平台</p>
             </div>
-            <div id="displayAboutContent" class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line"></div>
-            <button onclick="switchTab('home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">Back to Home</button>
+            <div class="space-y-4 text-xs text-slate-700 leading-relaxed">
+                <p>TaskHub 是一个面向马来西亚社区的多功能任务与服务平台。无论是找人代驾、陪伴老人家、上门理发，还是需要绘图设计、跑腿代办，你都可以在这里发布任务，或浏览其他会员提供的专业服务。</p>
+                <div class="grid sm:grid-cols-3 gap-4 pt-2">
+                    <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                        <p class="font-bold text-indigo-900 mb-1">🎯 我们的使命</p>
+                        <p class="text-[11px] text-indigo-800 leading-relaxed">让每个人的技能都能被看见，让每个需求都能被满足。</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                        <p class="font-bold text-emerald-900 mb-1">🛡️ 安全审核</p>
+                        <p class="text-[11px] text-emerald-800 leading-relaxed">所有任务经管理员人工审核后才公开显示，杜绝虚假与违规内容。</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-xl border border-amber-100">
+                        <p class="font-bold text-amber-900 mb-1">💰 低门槛</p>
+                        <p class="text-[11px] text-amber-800 leading-relaxed">每次发布仅需 RM1 平台验证费用，用于过滤垃圾信息。</p>
+                    </div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                    <p class="font-bold text-slate-900 mb-1.5">📌 使用流程</p>
+                    <ol class="text-[11px] text-slate-700 space-y-1 list-decimal list-inside">
+                        <li>注册成为会员（昵称 + 密码）</li>
+                        <li>汇款 RM1 到平台账户并记下参考号</li>
+                        <li>到「Post Task」填写任务并上传图片</li>
+                        <li>等待管理员审核通过后自动公开</li>
+                        <li>其他会员通过 WhatsApp 联系你</li>
+                    </ol>
+                </div>
+                <p class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">⚠️ 免责声明：本平台仅提供信息发布与撮合服务，不参与任何交易，亦不对用户之间的纠纷承担责任。请自行核实对方身份并注意人身与财产安全。</p>
+            </div>
         </div>
 
         <!-- 7. HELPDESK TAB -->
-        <div id="tab-helpdesk" class="tab-content hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
-            <div class="text-center">
-                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">🎧</div>
-                <h2 class="text-xl font-bold text-slate-900">Helpdesk & Support</h2>
-                <p class="text-xs text-slate-500 mt-1">帮助中心与客服支持</p>
-            </div>
-            <div id="displayHelpdeskContent" class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line"></div>
-            <button onclick="switchTab('home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">Back to Home</button>
-        </div>
-
-        <!-- 8. MEMBER LIST TAB -->
-        <div id="tab-memberList" class="tab-content hidden max-w-4xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
-            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
-                <div>
-                    <h2 class="text-xl font-bold text-indigo-600">Registered Members List</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">会员私密资料总览（仅管理员可见）</p>
-                </div>
-                <button onclick="switchTab('admin')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition">Back to Dashboard</button>
-            </div>
-            <div id="adminMemberList" class="space-y-3"></div>
-        </div>
-
-        <!-- 9. ADMIN DASHBOARD -->
-        <div id="tab-admin" class="tab-content hidden max-w-5xl mx-auto bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
-            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
-                <div>
-                    <h2 class="text-xl font-bold text-rose-600">Superadmin Dashboard</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">超级管理员后台控制台</p>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="switchTab('memberList')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3.5 py-2 rounded-xl text-xs font-bold transition">👥 View Member List Page</button>
-                    <button onclick="switchTab('home')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition">Exit Admin</button>
-                </div>
-            </div>
-
-            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">📢 Notice Settings</h3>
-                <div class="space-y-3">
-                    <textarea id="adminNoticeInput" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="3"></textarea>
-                    <button onclick="saveAdminNotice()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save Notice</button>
-                </div>
-            </div>
-
-            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">🏢 About Us Settings</h3>
-                <div class="space-y-3">
-                    <textarea id="adminAboutInput" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="4"></textarea>
-                    <button onclick="saveAdminAbout()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save About Us</button>
-                </div>
-            </div>
-
-            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">🎧 Helpdesk Settings</h3>
-                <div class="space-y-3">
-                    <textarea id="adminHelpdeskInput" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600" rows="4"></textarea>
-                    <button onclick="saveAdminHelpdesk()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save Helpdesk</button>
-                </div>
-            </div>
-
-            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                <h3 class="font-bold text-xs text-slate-900">⚙️ Platform Settings (Bank & QR)</h3>
-                <div class="space-y-3">
-                    <input type="text" id="adminBankInput" placeholder="Enter bank details" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                    <div class="flex gap-2 items-center">
-                        <input type="text" id="adminQRInput" placeholder="Enter QR image URL or upload ->" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                        <label class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl cursor-pointer transition whitespace-nowrap">
-                            Upload QR 📁
-                            <input type="file" id="adminQRFile" accept="image/*" class="hidden" onchange="handleAdminQRUpload(event)">
-                        </label>
-                    </div>
-                    <button onclick="saveAdminSettings()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">Save Settings</button>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="font-bold text-xs mb-3 text-slate-900">📝 Task Approvals</h3>
-                <div id="adminApprovalList" class="space-y-3"></div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Admin Password Modal (已隐藏明文密码) -->
-    <div id="adminModal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
-        <div class="bg-white p-6 rounded-2xl shadow-xl w-80 border border-slate-100">
-            <h3 class="font-bold text-base mb-1 text-slate-900">Admin Access</h3>
-            <p class="text-xs text-slate-500 mb-3">请输入超级管理员密码</p>
-            <input type="password" id="adminPasswordInput" placeholder="Enter password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 mb-4">
-            <div class="flex justify-end space-x-2">
-                <button onclick="closeAdminModal()" class="bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 transition">Cancel</button>
-                <button onclick="verifyAdminPassword()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">Login</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Login Modal -->
-    <div id="profileLoginModal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
-        <div class="bg-white p-6 rounded-2xl shadow-xl w-80 border border-slate-100 space-y-4">
-            <div>
-                <h3 class="font-bold text-base mb-1 text-slate-900">🔒 Profile Login</h3>
-                <p class="text-xs text-slate-500">请输入您的注册昵称与双重密码</p>
+        <div id="tab-helpdesk" class="tab-content hidden max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
+            <div class="pb-4 border-b border-slate-100">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs">🎧</span> 客服中心 / Helpdesk
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">常见问题与联系方式</p>
             </div>
             <div class="space-y-3">
-                <input type="text" id="profileLoginNick" placeholder="Your Nick Name" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                <input type="password" id="profileLoginPass" placeholder="Your Password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                <details class="group p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                    <summary class="text-xs font-bold text-slate-900 list-none flex justify-between items-center">为什么我的任务没有显示？<span class="text-slate-400 group-open:rotate-180 transition">▾</span></summary>
+                    <p class="text-[11px] text-slate-600 mt-3 leading-relaxed">所有新发布的任务默认处于「待审核」状态，需管理员审核通过后才会出现在公共任务栏。审核通常在 24 小时内完成。</p>
+                </details>
+                <details class="group p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                    <summary class="text-xs font-bold text-slate-900 list-none flex justify-between items-center">RM1 汇款是做什么用的？<span class="text-slate-400 group-open:rotate-180 transition">▾</span></summary>
+                    <p class="text-[11px] text-slate-600 mt-3 leading-relaxed">RM1 是平台验证费用，用于过滤垃圾信息与恶意发布。请在汇款后保留参考号，并在发布任务时填写。</p>
+                </details>
+                <details class="group p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                    <summary class="text-xs font-bold text-slate-900 list-none flex justify-between items-center">忘记密码怎么办？<span class="text-slate-400 group-open:rotate-180 transition">▾</span></summary>
+                    <p class="text-[11px] text-slate-600 mt-3 leading-relaxed">请联系客服并提供你的昵称与 WhatsApp 号码，管理员核实后可协助重置。</p>
+                </details>
+                <details class="group p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer">
+                    <summary class="text-xs font-bold text-slate-900 list-none flex justify-between items-center">我的个人资料会被别人看到吗？<span class="text-slate-400 group-open:rotate-180 transition">▾</span></summary>
+                    <p class="text-[11px] text-slate-600 mt-3 leading-relaxed">不会。你的住址与 WhatsApp 号码仅管理员可见。任务页面上只显示你填写的联系 WhatsApp。</p>
+                </details>
             </div>
-            <div class="flex justify-end space-x-2 pt-2">
-                <button onclick="document.getElementById('profileLoginModal').classList.add('hidden')" class="bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 transition">Cancel</button>
-                <button onclick="verifyProfileLogin()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">Login</button>
+            <div class="p-5 bg-indigo-50 rounded-xl border border-indigo-100 space-y-3">
+                <p class="text-xs font-bold text-indigo-900">📞 联系我们 / Contact Us</p>
+                <div class="grid sm:grid-cols-2 gap-3 text-[11px]">
+                    <a id="helpWhatsapp" href="#" target="_blank" class="flex items-center gap-2 p-3 bg-white rounded-xl border border-indigo-200 hover:border-indigo-400 transition font-semibold text-indigo-700"><span>💬</span> WhatsApp 客服</a>
+                    <a id="helpEmail" href="#" class="flex items-center gap-2 p-3 bg-white rounded-xl border border-indigo-200 hover:border-indigo-400 transition font-semibold text-indigo-700"><span>✉️</span> 邮件联系</a>
+                </div>
+                <p class="text-[10px] text-indigo-700/70">服务时间：周一至周日 9:00 AM – 9:00 PM</p>
             </div>
         </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-slate-900 text-slate-400 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px]">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-extrabold text-white text-xs">TH</div>
+                <div>
+                    <p class="font-bold text-white">TaskHub</p>
+                    <p class="text-slate-500">多功能任务与服务平台 · v38</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4 font-semibold">
+                <button onclick="switchTab('about')" class="hover:text-white transition">About Us</button>
+                <button onclick="switchTab('helpdesk')" class="hover:text-white transition">Helpdesk</button>
+                <button onclick="switchTab('bank')" class="hover:text-white transition">Bank Details</button>
+                <button onclick="openAdminModal()" class="hover:text-white transition">Admin</button>
+            </div>
+            <p class="text-slate-500">© <span id="footerYear"></span> TaskHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- 图片查看器 -->
+    <div id="imageViewer" class="hidden fixed inset-0 z-[120] bg-slate-950/90 backdrop-blur-sm items-center justify-center p-4" onclick="closeImageViewer()">
+        <button class="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl font-bold transition" onclick="closeImageViewer()">✕</button>
+        <img id="imageViewerImg" src="" alt="Preview" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl" onclick="event.stopPropagation()">
     </div>
 
-    <!-- Facebook Share Modal -->
-    <div id="shareModal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
-        <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 border border-slate-100 relative space-y-4">
-            <button onclick="closeShareModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg font-bold">×</button>
-            <div class="text-center">
+    <!-- 分享弹窗 -->
+    <div id="shareModal" class="hidden fixed inset-0 z-[150] bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto" onclick="closeShareModal(event)">
+        <div class="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-4 mx-auto my-8" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center">
                 <h3 class="text-base font-bold text-slate-900">Share to Facebook</h3>
-                <p class="text-[11px] text-slate-500 mt-0.5">为了在 Facebook 自动生成直达卡片，请按以下 2 步操作：</p>
+                <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
             </div>
-            <canvas id="posterCanvas" class="hidden"></canvas>
-            
-            <button onclick="downloadTaskPoster()" class="w-full bg-amber-500 hover:bg-amber-400 text-white font-bold py-3.5 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2">
-                <span>📥</span> 第一步：下载精美海报图片
-            </button>
-            
-            <button onclick="copyShareText()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2">
-                <span>📋</span> 第二步：一键复制文案 (链接已置顶)
-            </button>
-            
-            <button onclick="openFacebookApp()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition text-xs shadow-sm flex items-center justify-center gap-2">
-                <span>🚀</span> 打开 Facebook 发布 →
-            </button>
+            <p class="text-[11px] text-slate-500 text-center leading-relaxed">请按以下步骤，即可完成 Facebook 发帖：</p>
+            <button id="shareStep1Btn" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">📥 第一步：下载海报图片</button>
+            <div id="shareImageWrap" class="hidden">
+                <p class="text-[10px] text-slate-500 text-center mb-1">如未自动保存，请长按下方图片保存</p>
+                <img id="shareImagePreview" class="w-full rounded-xl border border-slate-200" alt="poster">
+            </div>
+            <button id="shareStep2Btn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">📋 第二步：一键复制文案</button>
+            <button id="shareStep3Btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm">🚀 第三步：打开 Facebook 发布 →</button>
+            <p class="text-[10px] text-slate-400 text-center leading-relaxed pt-2 border-t border-slate-100">💡 完成后回到 Facebook，粘贴文字 + 上传刚才保存的图片即可</p>
         </div>
     </div>
 
-    <!-- 全屏图片放大预览 Viewer Modal -->
-    <div id="imageViewerModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center hidden z-[100] p-4" onclick="closeImageViewer()">
-        <div class="relative max-w-4xl max-h-[90vh] flex items-center justify-center" onclick="event.stopPropagation()">
-            <button onclick="closeImageViewer()" class="absolute -top-12 right-0 text-white hover:text-slate-300 text-3xl font-bold px-3 py-1">×</button>
-            <img id="viewerImage" src="" alt="Zoomed Image" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-700">
+    <!-- Admin 模态框 -->
+    <div id="adminModal" class="hidden fixed inset-0 z-[110] bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="max-w-4xl mx-auto my-6 md:my-10 bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center sticky top-0 z-10">
+                <h2 class="font-bold text-sm flex items-center gap-2"><span>🛡️</span> Admin Dashboard</h2>
+                <button onclick="closeAdminModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 transition font-bold">✕</button>
+            </div>
+            <div id="adminLoginBox" class="p-8 max-w-sm mx-auto space-y-4">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center mx-auto text-lg mb-3 font-bold">🔐</div>
+                    <h3 class="text-base font-bold text-slate-900">管理员登录</h3>
+                    <p class="text-xs text-slate-500 mt-1">默认密码：admin123</p>
+                </div>
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                    <input type="password" id="adminPasswordInput" placeholder="Admin Password" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition" required>
+                    <p id="adminLoginError" class="text-[11px] text-rose-600 hidden font-bold">⚠️ 密码错误！</p>
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition text-xs">Enter Dashboard</button>
+                </form>
+            </div>
+            <div id="adminPanelBox" class="hidden">
+                <div class="flex gap-1 px-4 md:px-6 pt-4 border-b border-slate-200 overflow-x-auto text-xs font-bold">
+                    <button data-atab="tasks"    onclick="switchAdminTab('tasks')"    class="admin-tab-btn whitespace-nowrap px-4 py-2.5 rounded-t-lg transition">📋 任务审批</button>
+                    <button data-atab="users"    onclick="switchAdminTab('users')"    class="admin-tab-btn whitespace-nowrap px-4 py-2.5 rounded-t-lg transition">👥 会员</button>
+                    <button data-atab="services" onclick="switchAdminTab('services')" class="admin-tab-btn whitespace-nowrap px-4 py-2.5 rounded-t-lg transition">🛠️ 服务</button>
+                    <button data-atab="config"   onclick="switchAdminTab('config')"   class="admin-tab-btn whitespace-nowrap px-4 py-2.5 rounded-t-lg transition">⚙️ 配置</button>
+                    <button data-atab="data"     onclick="switchAdminTab('data')"     class="admin-tab-btn whitespace-nowrap px-4 py-2.5 rounded-t-lg transition">💾 数据</button>
+                    <button onclick="handleAdminLogout()" class="ml-auto whitespace-nowrap px-4 py-2.5 text-rose-600 hover:underline transition">Logout</button>
+                </div>
+                <div class="p-6 bg-slate-50/50">
+                    <div id="admin-tab-tasks"    class="admin-tab-content"></div>
+                    <div id="admin-tab-users"    class="admin-tab-content hidden"></div>
+                    <div id="admin-tab-services" class="admin-tab-content hidden"></div>
+                    <div id="admin-tab-config"   class="admin-tab-content hidden"></div>
+                    <div id="admin-tab-data"     class="admin-tab-content hidden"></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg hidden z-50 transition">
-        操作成功！
-    </div>
+    <!-- Toast -->
+    <div id="toastBox" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] space-y-2 pointer-events-none w-[calc(100%-2rem)] max-w-sm"></div>
 
-    <!-- JavaScript 逻辑 -->
+    <style>
+        .h-18 { height: 4.5rem; }
+        summary::-webkit-details-marker { display: none; }
+    </style>
+
     <script>
-        let db = {
-            users: [
-                { nickName: "Ahmeng", address: "Kota Kinabalu", whatsapp: "0123456789", password: "123" },
-                { nickName: "Sarah", address: "Penampang", whatsapp: "0169876543", password: "123" },
-                { nickName: "Uncle David", address: "Kepayan", whatsapp: "0125558899", password: "123" },
-                { nickName: "Emily", address: "Luyang", whatsapp: "0168887766", password: "123" },
-                { nickName: "Ryan", address: "Gaya Street", whatsapp: "0112233445", password: "123" }
-            ],
-            currentNickName: "",
-            isLoggedIn: false,
-            tasks: [
-                {
-                    id: 1710000001, nickName: "Ahmeng", category: "Find Dog", location: "Kota Kinabalu", price: "RM 50", whatsapp: "0123456789",
-                    desc: "寻找走失的小猎犬（名字叫 Lucky），特征是脖子上有蓝色项圈。请帮忙留意，找到必有谢酬！",
-                    image: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Active", receipt: null, review: null, comments: [{ author: "Ah Ming", text: "请问是在市区哪个路段走失的？", time: "2026-10-05 10:15" }]
-                },
-                {
-                    id: 1710000002, nickName: "Ah Chai", category: "Moving", location: "Inanam -> Likas", price: "RM 200", whatsapp: "0149992211",
-                    desc: "需要小型罗厘和人手帮忙搬运几件大型家具（沙发、冰箱）从下南南到里卡士。",
-                    image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Active", receipt: null, review: null, comments: []
-                },
-                {
-                    id: 1710000003, nickName: "Mr. Lee", category: "Interior Design", location: "Penampang, Sabah", price: "RM 500 (协商)", whatsapp: "0112233445",
-                    desc: "找人画图和设计新屋子，地点在兵南邦。寻找室内设计与绘图专员协助规划空间布局。",
-                    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Active", receipt: null, review: null, comments: []
-                },
-                {
-                    id: 1710000004, nickName: "Sarah", category: "Cleaning Services", location: "兵南邦 (Penampang)", price: "RM 120", whatsapp: "0169876543",
-                    desc: "Looking for a reliable cleaner for a 3-bedroom apartment post-renovation deep cleaning.",
-                    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“服务非常到位，装修后的灰尘清理得干干净净，极力推荐！👍”", rating: "★★★★★ (5/5)" }, comments: []
-                },
-                {
-                    id: 1710000005, nickName: "Hassan", category: "Repair", location: "达迈 (Damai, KK)", price: "RM 80", whatsapp: "0145551234",
-                    desc: "Perlukan bantuan untuk membaiki paip air sinki dapur yang bocor.",
-                    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“师傅手艺不错，水管修好后没有再漏水了。不过比约定时间迟到了半小时。”", rating: "★★★☆ (3.5/5)" }, comments: []
-                },
-                {
-                    id: 1710000006, nickName: "TechGuy", category: "Coding / IT Support", location: "亚庇 (Inanam)", price: "RM 150", whatsapp: "0118889999",
-                    desc: "紧急求助：需要懂网页前端开发 or WordPress 的技术人员协助修复一个小错误。",
-                    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“老板人很好，不到半小时就把网站 Bug 修复了，专业高效！”", rating: "★★★★★ (5/5)" }, comments: []
-                },
-                {
-                    id: 1710000007, nickName: "Teacher Lim", category: "Tuition / 补习", location: "Luyang, Kota Kinabalu", price: "RM 60 / 小时", whatsapp: "0128881122",
-                    desc: "寻找有经验的补习老师，辅导中学生数学与科学。",
-                    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“老师很有耐心，孩子原本对数学抗拒，上完几堂课后开窍了不少。”", rating: "★★★★★ (5/5)" }, comments: []
-                },
-                {
-                    id: 1710000008, nickName: "Amanda", category: "Yoga Class / 瑜伽", location: "Kepayan, Kota Kinabalu", price: "RM 40 / 节", whatsapp: "0163338899",
-                    desc: "寻找专业的私人瑜伽老师上门指导，适合初学者。",
-                    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“老师上课时一直看手机，感觉不够专心，体验一般般。”", rating: "★★☆☆☆ (2/5)" }, comments: []
-                },
-                {
-                    id: 1710000009, nickName: "Chef Wong", category: "Catering / 餐饮外烩", location: "Damai -> Kolombong", price: "RM 300", whatsapp: "0197773344",
-                    desc: "Cari cater untuk majlis kecil. Lokasi kerja di Damai, dan perlu balik ke Kolombong pukul 5 petang.",
-                    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“准时到达，食物分量足够而且味道很好，宾客都赞不绝口！”", rating: "★★★★☆ (4.5/5)" }, comments: []
-                },
-                {
-                    id: 1710000010, nickName: "Kelvin", category: "Car Services / 汽车美容", location: "Kepayan, Kota Kinabalu", price: "RM 70", whatsapp: "0163338899",
-                    desc: "寻找上门洗车或汽车深层清洁服务。",
-                    image: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“洗得很干净，车厢还帮忙吸尘和喷了香水，很方便。”", rating: "★★★★★ (5/5)" }, comments: []
-                },
-                {
-                    id: 1710000011, nickName: "Jessica", category: "Pet Care / 宠物照顾", location: "Luyang, Kota Kinabalu", price: "RM 35 / 天", whatsapp: "0125556677",
-                    desc: "寻找周末短期猫咪寄养家庭。",
-                    image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“每天都有发照片汇报。不过地方稍微有点小，整体还行。”", rating: "★★★☆☆ (3/5)" }, comments: []
-                },
-                {
-                    id: 1710000012, nickName: "Ray", category: "Photography / 摄影服务", location: "Sutera Harbour, KK", price: "RM 350", whatsapp: "0114443322",
-                    desc: "寻找半天生日派对摄影师（含底片全给）。",
-                    image: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“抓拍的照片很有氛围感，原片隔天就全发给我们了，赞！”", rating: "★★★★★ (5/5)" }, comments: []
-                },
-                {
-                    id: 1710000013, nickName: "Uncle Chong", category: "Repair / 家电维修", location: "Donggongon, Penampang", price: "RM 90 / 台", whatsapp: "0192228833",
-                    desc: "住宅冷气机化学清洗。",
-                    image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80",
-                    status: "approved", taskStatus: "Completed", receipt: null, review: { text: "“洗完之后地上弄得湿漉漉的没有清理干净，不太满意。”", rating: "★★☆☆☆ (2/5)" }, comments: []
-                }
-            ],
-            services: [
-                {
-                    id: 2710000001, nickName: "Uncle David", category: "Caregiving / 照顾服务", location: "Kepayan, Kota Kinabalu", price: "RM 25 / 小时", whatsapp: "0125558899",
-                    desc: "提供长者日常陪伴、陪同散步、协助就医复诊或去医院拿药。有爱心与耐性。",
-                    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-                    comments: [{ author: "Sarah", time: "2026-10-04 14:00", text: "请问周三下午有空陪老人家去复诊吗？" }]
-                },
-                {
-                    id: 2710000002, nickName: "Emily", category: "Errand & Help / 个人助理", location: "Luyang, Kota Kinabalu", price: "RM 30 / 小时", whatsapp: "0168887766",
-                    desc: "提供星期六专属个人时间协助：帮您代购、排队办理政务、代收文件或处理周末琐碎杂务。",
-                    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                    comments: []
-                },
-                {
-                    id: 2710000003, nickName: "Ryan", category: "Part-time / 兼职服务", location: "Gaya Street, Kota Kinabalu", price: "RM 15 / 小时", whatsapp: "0112233445",
-                    desc: "寻找周末或晚间咖啡馆（Cafe）短期兼职，有半年拉花与收银经验，上手快。",
-                    image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=600&q=80",
-                    comments: []
-                },
-                {
-                    id: 2710000004, nickName: "Architect Kenny", category: "Design & Drafting / 专业绘图", location: "Penampang, Sabah", price: "RM 120 起", whatsapp: "0194443322",
-                    desc: "提供专业建筑与室内空间绘图、AutoCAD 2D/3D 渲染及结构图纸修改服务。",
-                    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
-                    comments: []
-                },
-                {
-                    id: 2710000005, nickName: "hairstylist Jerry", category: "Personal Grooming / 上门理发", location: "Kolombong, Kota Kinabalu", price: "RM 40 / 次", whatsapp: "0143332211",
-                    desc: "专业上门剪发服务（自带工具，适合行动不便的老人家或忙碌上班族），干净卫生。",
-                    image: "https://images.unsplash.com/photo-1595476108010-b9d1f4d21e16?auto=format&fit=crop&w=600&q=80",
-                    comments: []
-                },
-                {
-                    id: 2710000006, nickName: "Nicole", category: "Pet Care / 宠物服务", location: "Damai, Kota Kinabalu", price: "RM 35 / 次", whatsapp: "0123334455",
-                    desc: "假期出远门不用担心！提供上门喂猫、清理猫砂及傍晚带狗狗散步服务。",
-                    image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=600&q=80",
-                    comments: []
-                },
-                {
-                    id: 2710000007, nickName: "Tech Sam", category: "IT Support / 电脑技术", location: "Inanam, Kota Kinabalu", price: "RM 80", whatsapp: "0162221188",
-                    desc: "解决电脑开机慢、蓝屏、系统重装、清理灰尘及安装办公软件。",
-                    image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80",
-                    comments: []
-                },
-                {
-                    id: 2710000008, nickName: "Teacher Jasmine", category: "Tuition / 课业辅导", location: "Donggongon, Penampang", price: "RM 50 / 小时", whatsapp: "0198882233",
-                    desc: "提供小学及初中全科作业辅导，培养良好的学习习惯，周末时间可议。",
-                    image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=600&q=80",
-                    comments: []
-                }
-            ],
-            bankDetails: "Bank: Maybank | Acc: 1234567890 (Platform Official)",
-            qrCodeUrl: "https://via.placeholder.com/180",
-            noticeText: "欢迎来到 TaskHub 多功能任务与服务平台！发布任务前请先完成 RM1 汇款验证。",
-            aboutText: "TaskHub 是一个专为社区打造的多功能任务平台，旨在连接寻找服务的用户与优质服务提供者。",
-            helpdeskText: "如果您在使用 TaskHub 平台时遇到任何问题，请通过 WhatsApp 联系客服: +6012-345 6789"
-        };
+    /* ==================================================================
+       TaskHub v38 — 应用逻辑
+       ================================================================== */
+    const LS = {
+        users:    'th_users',
+        tasks:    'th_tasks',
+        comments: 'th_comments',
+        config:   'th_config',
+        session:  'th_session',
+        admin:    'th_admin_session'
+    };
 
-        let currentActiveItemForShare = null;
-        let currentShareTextData = "";
-        let currentTaskDetailUrl = "";
-        let currentViewingId = null;
-        let currentItemType = 'task';
+    const DEFAULT_CONFIG = {
+        notice: '欢迎来到 TaskHub 多功能任务平台！发布任务前请先完成 RM1 汇款验证。 / Welcome to TaskHub! Complete RM1 payment verification before posting. / Selamat datang ke TaskHub! Sila selesaikan pembayaran RM1 sebelum menyiarkan.',
+        bank:   'Bank: Maybank | Acc: 1234567890 | Name: TASKHUB SDN BHD',
+        qr:     'https://via.placeholder.com/180',
+        whatsapp: '60123456789',
+        email:    'support@taskhub.my',
+        adminPassword: 'admin123',
+        siteUrl: ''
+    };
 
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
+    const TABS = ['home','services','taskDetail','bank','register','profile','postTask','about','helpdesk'];
+    let currentTaskId = null;
+    let currentAdminTab = 'tasks';
+    let currentShareTask = null;
+
+    function load(key, fallback) {
+        try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+        catch (e) { console.warn('load failed:', key, e); return fallback; }
+    }
+    function save(key, val) {
+        try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+        catch (e) { toast('存储失败：本地空间不足，请删除部分带图片的任务', 'error'); return false; }
+    }
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+    function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c])); }
+    function fmtDate(ts) { if (!ts) return '-'; const d = new Date(ts); const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; }
+    function hashPwd(pwd) { let h = 5381; const s = 'th$' + pwd; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return 'h' + h.toString(16); }
+
+    function toast(msg, type = 'success') {
+        const box = document.getElementById('toastBox');
+        const colors = { success: 'bg-emerald-600', error: 'bg-rose-600', info: 'bg-slate-900' };
+        const el = document.createElement('div');
+        el.className = `${colors[type] || colors.info} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-lg pointer-events-auto transition-all duration-300 opacity-0 translate-y-2`;
+        el.textContent = msg;
+        box.appendChild(el);
+        requestAnimationFrame(() => el.classList.remove('opacity-0', 'translate-y-2'));
+        setTimeout(() => { el.classList.add('opacity-0', 'translate-y-2'); setTimeout(() => el.remove(), 300); }, 2800);
+    }
+
+    function getSession() { return load(LS.session, null); }
+    function setSession(u) { u ? save(LS.session, u) : localStorage.removeItem(LS.session); }
+
+    function updateNavbar() {
+        const s = getSession();
+        const navProfileBtn = document.getElementById('navProfileBtn');
+        const navLoginBtn = document.getElementById('navLoginBtn');
+        const navRegisterBtn = document.getElementById('navRegisterBtn');
+        const mobileProfileBtn = document.getElementById('mobileProfileBtn');
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+        const mobileRegisterBtn = document.getElementById('mobileRegisterBtn');
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        if (s) {
+            if (navProfileBtn) { navProfileBtn.innerHTML = `👤 ${esc(s.nickName)}`; navProfileBtn.classList.remove('hidden'); }
+            if (navLoginBtn) navLoginBtn.classList.add('hidden');
+            if (navRegisterBtn) navRegisterBtn.classList.add('hidden');
+            if (mobileProfileBtn) { mobileProfileBtn.innerHTML = `👤 ${esc(s.nickName)}`; mobileProfileBtn.classList.remove('hidden'); }
+            if (mobileLoginBtn) mobileLoginBtn.classList.add('hidden');
+            if (mobileRegisterBtn) mobileRegisterBtn.classList.add('hidden');
+            if (mobileLogoutBtn) mobileLogoutBtn.classList.remove('hidden');
+        } else {
+            if (navProfileBtn) navProfileBtn.classList.add('hidden');
+            if (navLoginBtn) navLoginBtn.classList.remove('hidden');
+            if (navRegisterBtn) navRegisterBtn.classList.remove('hidden');
+            if (mobileProfileBtn) mobileProfileBtn.classList.add('hidden');
+            if (mobileLoginBtn) mobileLoginBtn.classList.remove('hidden');
+            if (mobileRegisterBtn) mobileRegisterBtn.classList.remove('hidden');
+            if (mobileLogoutBtn) mobileLogoutBtn.classList.add('hidden');
         }
+    }
 
-        function switchTab(tabId) {
-            if (tabId === 'postTask' && (!db.isLoggedIn || !db.currentNickName)) {
-                alert("Please register or login as a member first! / 您还没有登录会员账号，请先注册或登录！");
-                switchTab('register');
-                return;
-            }
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            
-            if (tabId === 'home') renderHomeData();
-            if (tabId === 'services') renderMemberServices();
-            if (tabId === 'bank') renderBankPage();
-            if (tabId === 'register') loadRegisterData();
-            if (tabId === 'profile') renderProfilePage();
-            if (tabId === 'postTask') {
-                renderMyPendingTasks();
-                handleCategoryChange();
-                const badge = document.getElementById('postTaskMemberBadge');
-                if (badge) badge.innerText = db.currentNickName;
-            }
-            if (tabId === 'about') renderAboutPage();
-            if (tabId === 'helpdesk') renderHelpdeskPage();
-            if (tabId === 'admin') renderSuperadminDashboard();
-            if (tabId === 'memberList') renderMemberList();
-        }
+    function switchTab(name) {
+        TABS.forEach(t => { const el = document.getElementById('tab-' + t); if (el) el.classList.toggle('hidden', t !== name); });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (name === 'home')      renderPublicTasks();
+        if (name === 'services')  renderMemberServices();
+        if (name === 'bank')      renderBank();
+        if (name === 'profile')   renderProfile();
+        if (name === 'postTask')  renderPostTaskGuard();
+        if (name === 'helpdesk')  renderHelpdesk();
+    }
+    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+    function handleProfileNavClick() { switchTab('profile'); }
 
-        function handleProfileNavClick() {
-            if (db.isLoggedIn && db.currentNickName) {
-                switchTab('profile');
-            } else {
-                document.getElementById('profileLoginNick').value = '';
-                document.getElementById('profileLoginPass').value = '';
-                document.getElementById('profileLoginModal').classList.remove('hidden');
-            }
-        }
+    function getApprovedTasks() { return load(LS.tasks, []).filter(t => t.status === 'approved'); }
 
-        function verifyProfileLogin() {
-            const nick = document.getElementById('profileLoginNick').value.trim();
-            const pass = document.getElementById('profileLoginPass').value;
-            const user = db.users.find(u => u.nickName === nick && u.password === pass);
-            if (user) {
-                db.currentNickName = user.nickName;
-                db.isLoggedIn = true;
-                document.getElementById('profileLoginModal').classList.add('hidden');
-                switchTab('profile');
-                showToast("登录个人中心成功！");
-            } else {
-                alert("昵称或密码错误！请检查后重试。");
-            }
-        }
-
-        function handleLogout() {
-            db.isLoggedIn = false;
-            db.currentNickName = "";
-            showToast("已成功登出");
-            switchTab('home');
-        }
-
-        function renderMemberServices() {
-            const container = document.getElementById('memberServicesList');
-            container.innerHTML = db.services.map(s => `
-                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between gap-3 hover:border-teal-400 cursor-pointer transition" onclick="openDetail(${s.id}, 'service')">
-                    <div class="flex gap-3 items-center">
-                        <img src="${s.image}" alt="Service" class="w-24 h-24 object-cover rounded-lg border border-slate-200 shrink-0">
-                        <div class="space-y-1 w-full">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full font-bold">${s.category}</span>
-                                <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">💰 ${s.price}</span>
-                            </div>
-                            <p class="text-xs font-semibold text-slate-800 leading-relaxed">${s.desc}</p>
-                            <div class="text-[11px] text-slate-500 pt-1">
-                                <p>📍 地点: <span class="text-slate-700 font-medium">${s.location}</span></p>
-                                <p>👤 提供者: <span class="text-teal-600 font-bold">${s.nickName}</span></p>
-                            </div>
-                        </div>
+    function renderPublicTasks() {
+        const list = document.getElementById('publicTaskList');
+        const tasks = getApprovedTasks().sort((a, b) => (b.approvedAt || b.createdAt) - (a.approvedAt || a.createdAt));
+        if (!tasks.length) { list.innerHTML = '<p class="text-slate-400 text-xs italic text-center py-12">暂无已批准的任务 / No approved tasks available yet.</p>'; return; }
+        list.innerHTML = tasks.map(t => `
+            <article onclick="openTaskDetail('${t.id}')" class="flex gap-4 p-4 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:shadow-sm transition cursor-pointer">
+                <img src="${esc(t.image)}" alt="" class="w-20 h-20 object-cover rounded-xl border border-slate-200 shrink-0">
+                <div class="min-w-0 flex-grow">
+                    <div class="flex justify-between items-start gap-2">
+                        <h3 class="text-sm font-bold text-slate-900 truncate">${esc(t.title)}</h3>
+                        <span class="text-xs font-bold text-emerald-600 whitespace-nowrap">RM ${Number(t.price).toFixed(2)}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">${esc(t.desc)}</p>
+                    <div class="flex flex-wrap items-center gap-2 mt-2">
+                        <span class="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-bold">${esc(t.category)}</span>
+                        <span class="text-[10px] text-slate-500">📍 ${esc(t.location)}</span>
+                        <span class="text-[10px] text-slate-400 ml-auto">${fmtDate(t.approvedAt || t.createdAt)}</span>
                     </div>
                 </div>
-            `).join('');
-        }
+            </article>
+        `).join('');
+    }
 
-        function openDetail(id, type = 'task') {
-            currentItemType = type;
-            let item = type === 'task' ? db.tasks.find(t => t.id == id) : db.services.find(s => s.id == id);
-            if (!item) return;
-            currentViewingId = item.id;
-
-            document.getElementById('detailImage').src = item.image;
-            document.getElementById('detailCategory').innerText = item.category;
-            document.getElementById('detailPrice').innerText = "💰 " + item.price;
-            document.getElementById('detailDesc').innerText = item.desc;
-            document.getElementById('detailLocation').innerText = item.location;
-            document.getElementById('detailPublisher').innerText = item.nickName;
-            document.getElementById('detailDescTitle').innerText = type === 'task' ? "Task Description：" : "Service Details：";
-
-            const waLink = `https://wa.me/${item.whatsapp}`;
-            document.getElementById('detailWhatsappLink').href = waLink;
-            document.getElementById('detailWhatsappLink').innerText = item.whatsapp;
-            document.getElementById('detailWhatsappBtn').href = waLink;
-
-            const isCompleted = item.taskStatus === 'Completed';
-            const statusBadge = document.getElementById('detailStatusBadge');
-            if (type === 'service') {
-                statusBadge.className = "text-[11px] bg-teal-50 text-teal-700 border border-teal-200 px-3 py-1 rounded-full font-bold";
-                statusBadge.innerText = "🛠️ 会员提供服务";
-            } else if (isCompleted) {
-                statusBadge.className = "text-[11px] bg-slate-100 text-slate-700 border border-slate-300 px-3 py-1 rounded-full font-bold";
-                statusBadge.innerText = "✅ 已完成";
-            } else {
-                statusBadge.className = "text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-bold";
-                statusBadge.innerText = "🔥 寻找中";
-            }
-
-            const reviewContainer = document.getElementById('detailReviewContainer');
-            if (type === 'task' && isCompleted && item.review) {
-                reviewContainer.classList.remove('hidden');
-                document.getElementById('detailRating').innerText = item.review.rating;
-                document.getElementById('detailReviewText').innerText = item.review.text;
-            } else {
-                reviewContainer.classList.add('hidden');
-            }
-
-            if (db.currentNickName) document.getElementById('commentAuthor').value = db.currentNickName;
-            renderComments(item);
-
-            document.getElementById('detailShareBtn').onclick = function() { openShareModal(item.id, type); };
-
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-taskDetail').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderComments(item) {
-            const container = document.getElementById('detailCommentsList');
-            if (!item.comments || item.comments.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无留言，快来留下第一条评论吧！</p>`;
-                return;
-            }
-            container.innerHTML = item.comments.map(c => `
-                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
-                    <div class="flex justify-between items-center text-[11px]">
-                        <span class="font-bold text-indigo-600">👤 ${c.author}</span>
-                        <span class="text-slate-400">${c.time}</span>
+    function renderMemberServices() {
+        const box = document.getElementById('memberServicesList');
+        const services = getApprovedTasks().filter(t => t.isService);
+        if (!services.length) { box.innerHTML = '<p class="text-slate-400 text-xs italic text-center py-12 sm:col-span-2">暂无会员服务，敬请期待 / No member services yet.</p>'; return; }
+        box.innerHTML = services.map(t => `
+            <article onclick="openTaskDetail('${t.id}')" class="bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-teal-400 hover:shadow-md transition cursor-pointer">
+                <img src="${esc(t.image)}" alt="" class="w-full h-36 object-cover">
+                <div class="p-4 space-y-2">
+                    <div class="flex justify-between items-start gap-2">
+                        <h3 class="text-sm font-bold text-slate-900 truncate">${esc(t.title)}</h3>
+                        <span class="text-xs font-bold text-emerald-600 whitespace-nowrap">RM ${Number(t.price).toFixed(2)}</span>
                     </div>
-                    <p class="text-slate-700 leading-relaxed">${c.text}</p>
+                    <p class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">${esc(t.desc)}</p>
+                    <div class="flex flex-wrap items-center gap-2 pt-1">
+                        <span class="text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full font-bold">${esc(t.category)}</span>
+                        <span class="text-[10px] text-slate-500">📍 ${esc(t.location)}</span>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-[10px] text-indigo-600 font-bold">👤 ${esc(t.publisher)}</span>
+                        <span class="text-[10px] font-bold text-emerald-600">💬 联系他 →</span>
+                    </div>
                 </div>
-            `).join('');
+            </article>
+        `).join('');
+    }
+
+    function openTaskDetail(id) {
+        const task = load(LS.tasks, []).find(t => t.id === id);
+        if (!task) { toast('任务不存在或已被删除', 'error'); return; }
+        currentTaskId = id;
+        document.getElementById('detailImage').src = task.image;
+        document.getElementById('detailCategory').textContent = task.category;
+        document.getElementById('detailPrice').textContent = 'RM ' + Number(task.price).toFixed(2);
+        document.getElementById('detailDesc').textContent = task.desc;
+        document.getElementById('detailLocation').textContent = task.location;
+        document.getElementById('detailPublisher').textContent = task.publisher;
+        const s = getSession();
+        const waSection = document.getElementById('detailWhatsappSection');
+        const waLocked = document.getElementById('detailWhatsappLocked');
+        if (s) {
+            waSection.classList.remove('hidden');
+            waLocked.classList.add('hidden');
+            const wa = String(task.whatsapp || '').replace(/\D/g, '');
+            const waLink = document.getElementById('detailWhatsappLink');
+            const waBtn  = document.getElementById('detailWhatsappBtn');
+            const waUrl  = wa ? `https://wa.me/${wa}?text=${encodeURIComponent('你好，我在 TaskHub 看到你的任务：' + task.title)}` : '#';
+            waLink.textContent = task.whatsapp;
+            waLink.href = waUrl;
+            waBtn.href = waUrl;
+        } else {
+            waSection.classList.add('hidden');
+            waLocked.classList.remove('hidden');
         }
-
-        function handlePostComment(event) {
-            event.preventDefault();
-            const author = document.getElementById('commentAuthor').value.trim();
-            const text = document.getElementById('commentText').value.trim();
-            if (!author || !text) return;
-            let item = currentItemType === 'task' ? db.tasks.find(t => t.id == currentViewingId) : db.services.find(s => s.id == currentViewingId);
-            if (item) {
-                if (!item.comments) item.comments = [];
-                const now = new Date();
-                const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-                item.comments.push({ author, text, time: timeStr });
-                document.getElementById('commentText').value = '';
-                renderComments(item);
-                showToast("留言发表成功！");
-            }
+        const commentForm = document.getElementById('commentForm');
+        const commentLocked = document.getElementById('commentLocked');
+        if (s) {
+            commentForm.classList.remove('hidden');
+            commentLocked.classList.add('hidden');
+            document.getElementById('commentAuthor').value = s.nickName;
+        } else {
+            commentForm.classList.add('hidden');
+            commentLocked.classList.remove('hidden');
         }
+        const badge = document.getElementById('detailStatusBadge');
+        const statusMap = { approved: ['已通过审核', 'bg-emerald-50 text-emerald-700 border border-emerald-200'], pending: ['待审核', 'bg-amber-50 text-amber-700 border border-amber-200'], rejected: ['已拒绝', 'bg-rose-50 text-rose-700 border border-rose-200'] };
+        const [txt, cls] = statusMap[task.status] || statusMap.pending;
+        badge.textContent = txt;
+        badge.className = `text-[11px] px-3 py-1 rounded-full font-bold ${cls}`;
+        const rBox = document.getElementById('detailReviewContainer');
+        if (task.reviewText) { rBox.classList.remove('hidden'); document.getElementById('detailRating').textContent = '★'.repeat(Math.round(task.rating || 0)) + ` ${task.rating || 0}/5`; document.getElementById('detailReviewText').textContent = task.reviewText; } else { rBox.classList.add('hidden'); }
+        document.getElementById('detailShareBtn').onclick = () => { openShareModal(id, task); };
+        renderComments(id);
+        switchTab('taskDetail');
+    }
 
-        function handleCategoryChange() {
-            const categorySelect = document.getElementById('taskCategory');
-            const customContainer = document.getElementById('customCategoryContainer');
-            const customInput = document.getElementById('customTaskName');
-            if (categorySelect.value === 'Others') {
-                customContainer.classList.remove('hidden');
-                customInput.setAttribute('required', 'true');
-            } else {
-                customContainer.classList.add('hidden');
-                customInput.removeAttribute('required');
-                customInput.value = '';
-            }
-        }
+    function renderComments(taskId) {
+        const box = document.getElementById('detailCommentsList');
+        const all = load(LS.comments, {});
+        const list = (all[taskId] || []).slice().sort((a, b) => b.at - a.at);
+        if (!list.length) { box.innerHTML = '<p class="text-slate-400 text-xs italic text-center py-4">还没有留言，来抢沙发吧～</p>'; return; }
+        box.innerHTML = list.map(c => `
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-1 gap-2">
+                    <span class="text-xs font-bold text-indigo-600 truncate">${esc(c.author)}</span>
+                    <span class="text-[10px] text-slate-400 whitespace-nowrap">${fmtDate(c.at)}</span>
+                </div>
+                <p class="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap break-words">${esc(c.text)}</p>
+            </div>
+        `).join('');
+    }
 
-        function renderHomeData() {
-            document.getElementById('homeNoticeText').innerText = db.noticeText;
-            renderPublicTasks();
-        }
+    function handlePostComment(e) {
+        e.preventDefault();
+        if (!currentTaskId) return;
+        const s = getSession();
+        if (!s) { toast('请先登录才能留言', 'error'); return; }
+        const author = document.getElementById('commentAuthor').value.trim();
+        const text   = document.getElementById('commentText').value.trim();
+        if (!author || !text) return;
+        const all = load(LS.comments, {});
+        if (!all[currentTaskId]) all[currentTaskId] = [];
+        all[currentTaskId].push({ author, text, at: Date.now() });
+        if (save(LS.comments, all)) { document.getElementById('commentText').value = ''; renderComments(currentTaskId); toast('留言已发布'); }
+    }
 
-        function renderAboutPage() { document.getElementById('displayAboutContent').innerText = db.aboutText; }
-        function renderHelpdeskPage() { document.getElementById('displayHelpdeskContent').innerText = db.helpdeskText; }
-
-        function loadRegisterData() {
-            const user = db.users.find(u => u.nickName === db.currentNickName);
-            if (user) {
-                document.getElementById('regNickName').value = user.nickName || '';
-                document.getElementById('regAddress').value = user.address || '';
-                document.getElementById('regWhatsapp').value = user.whatsapp || '';
-                document.getElementById('regPassword').value = user.password || '';
-                document.getElementById('regConfirmPassword').value = user.password || '';
-            }
-        }
-
-        function handleRegister(event) {
-            event.preventDefault();
-            const nickName = document.getElementById('regNickName').value.trim();
-            const address = document.getElementById('regAddress').value.trim();
-            const whatsapp = document.getElementById('regWhatsapp').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-            const errorEl = document.getElementById('regPasswordError');
-
-            if (password !== confirmPassword) {
-                errorEl.classList.remove('hidden');
+    /* 分享弹窗逻辑 */
+    function openShareModal(id, task) {
+        currentShareTask = task;
+        document.getElementById('shareImageWrap').classList.add('hidden');
+        document.getElementById('shareImagePreview').src = '';
+        document.getElementById('shareModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeShareModal(e) {
+        if (e && e.target !== e.currentTarget) return;
+        document.getElementById('shareModal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+    async function showShareImage() {
+        if (!currentShareTask || !currentShareTask.image) { toast('没有可下载的图片', 'error'); return; }
+        const url = currentShareTask.image;
+        const filename = `taskhub-${currentShareTask.id}.jpg`;
+        const wrap = document.getElementById('shareImageWrap');
+        const img = document.getElementById('shareImagePreview');
+        img.src = url;
+        wrap.classList.remove('hidden');
+        try {
+            if (url.startsWith('data:')) {
+                const a = document.createElement('a');
+                a.href = url; a.download = filename;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                toast('✅ 图片已下载！如未保存成功，请长按上方图片');
                 return;
-            } else {
-                errorEl.classList.add('hidden');
             }
-
-            let existing = db.users.find(u => u.nickName === nickName);
-            if (!existing) { db.users.push({ nickName, address, whatsapp, password }); } 
-            else { existing.address = address; existing.whatsapp = whatsapp; existing.password = password; }
-
-            db.currentNickName = nickName;
-            db.isLoggedIn = true;
-            alert("Member Registered & Verified Successfully! / 注册成功！现在您可以发布任务了。");
-            switchTab('postTask');
+            toast('正在下载图片…', 'info');
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('网络错误');
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl; a.download = filename;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+            toast('✅ 图片已下载！如未保存成功，请长按上方图片');
+        } catch (err) {
+            console.warn('Download failed:', err);
+            toast('⚠️ 如未自动保存，请长按上方图片保存', 'info');
         }
-
-        function renderProfilePage() {
-            const user = db.users.find(u => u.nickName === db.currentNickName);
-            if (user) {
-                document.getElementById('profileDisplayNick').innerText = user.nickName;
-                document.getElementById('profileDisplayAddress').innerText = user.address;
-                document.getElementById('profileDisplayWhatsapp').innerText = user.whatsapp;
-                const myTasks = db.tasks.filter(t => t.nickName === db.currentNickName);
-                const container = document.getElementById('profileMyTasksList');
-                if (myTasks.length === 0) {
-                    container.innerHTML = `<p class="text-slate-400 text-xs italic">您还没有发布过任务。</p>`;
-                } else {
-                    container.innerHTML = myTasks.map(t => `
-                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs flex justify-between items-center">
-                            <div>
-                                <span class="font-bold text-slate-800">${t.category}: ${t.desc.substring(0, 30)}...</span>
-                                <span class="text-emerald-600 font-bold ml-2">${t.price}</span>
-                            </div>
-                            <span class="text-[10px] px-2 py-0.5 rounded font-bold ${t.status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${t.status.toUpperCase()}</span>
-                        </div>
-                    `).join('');
-                }
-            }
+    }
+    function copyShareText() {
+        if (!currentShareTask) return;
+        const t = currentShareTask;
+        const cfg = load(LS.config, DEFAULT_CONFIG);
+        let baseUrl = cfg.siteUrl ? cfg.siteUrl.replace(/\/$/, '') : location.href.split('#')[0];
+        if (baseUrl.startsWith('content://') || baseUrl.startsWith('file://')) {
+            toast('警告：当前为本地路径，Facebook 无法打开。请先在后台设置"网站链接"！', 'error');
         }
+        const url = baseUrl + '#task-' + t.id;
+        const text = `【TaskHub 任务推荐】\n📋 任务：${t.title}\n💰 价格：RM ${Number(t.price).toFixed(2)}\n📍 地点：${t.location}\n🔗 链接：${url}`;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => { toast('✅ 文案已复制！'); }).catch(() => { fallbackCopyText(text); });
+        } else { fallbackCopyText(text); }
+    }
+    function fallbackCopyText(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text; textArea.style.position = "fixed"; textArea.style.opacity = "0";
+        document.body.appendChild(textArea); textArea.focus(); textArea.select();
+        try { document.execCommand('copy'); toast('✅ 文案已复制！'); } catch (err) { toast('复制失败，请手动长按选择复制', 'error'); }
+        document.body.removeChild(textArea);
+    }
+    function openShareFacebook() {
+        const cfg = load(LS.config, DEFAULT_CONFIG);
+        let baseUrl = cfg.siteUrl ? cfg.siteUrl.replace(/\/$/, '') : location.href.split('#')[0];
+        const url = baseUrl + '#task-' + (currentShareTask ? currentShareTask.id : '');
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
+        toast('正在打开 Facebook…', 'info');
+        closeShareModal();
+    }
 
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { document.getElementById('taskImage').value = e.target.result; };
-                reader.readAsDataURL(file);
-            }
-        }
+    function renderBank() {
+        const cfg = load(LS.config, DEFAULT_CONFIG);
+        document.getElementById('displayBankDetails').textContent = cfg.bank;
+        document.getElementById('displayQRCode').src = cfg.qr;
+        document.getElementById('homeNoticeText').textContent = cfg.notice;
+    }
 
-        function handleReceiptUpload(event, taskId) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const task = db.tasks.find(t => t.id === taskId);
-                    if (task) {
-                        task.receipt = e.target.result;
-                        showToast("RM1 汇款收据上传成功！");
-                        renderMyPendingTasks();
-                    }
+    function handleRegister(e) {
+        e.preventDefault();
+        const nick = document.getElementById('regNickName').value.trim();
+        const address = document.getElementById('regAddress').value.trim();
+        const whatsapp = document.getElementById('regWhatsapp').value.trim();
+        const pwd = document.getElementById('regPassword').value;
+        const pwd2 = document.getElementById('regConfirmPassword').value;
+        const errEl = document.getElementById('regPasswordError');
+        if (pwd !== pwd2) { errEl.classList.remove('hidden'); return; }
+        errEl.classList.add('hidden');
+        const users = load(LS.users, []);
+        if (users.some(u => u.nickName.toLowerCase() === nick.toLowerCase())) { toast('该昵称已被注册，请换一个', 'error'); return; }
+        const user = { id: uid(), nickName: nick, address, whatsapp, password: hashPwd(pwd), role: 'member', createdAt: Date.now() };
+        users.push(user);
+        if (!save(LS.users, users)) return;
+        setSession({ id: user.id, nickName: user.nickName });
+        e.target.reset(); clearPostImage(); clearPostReceipt();
+        updateNavbar();
+        toast('注册成功，已自动登录！'); switchTab('profile');
+    }
+    function handleLogin(e) {
+        e.preventDefault();
+        const nick = document.getElementById('loginNickName').value.trim();
+        const pwd = document.getElementById('loginPassword').value;
+        const errEl = document.getElementById('loginError');
+        const users = load(LS.users, []);
+        const user = users.find(u => u.nickName.toLowerCase() === nick.toLowerCase() && u.password === hashPwd(pwd));
+        if (!user) { errEl.classList.remove('hidden'); return; }
+        errEl.classList.add('hidden');
+        setSession({ id: user.id, nickName: user.nickName });
+        e.target.reset(); clearPostImage(); clearPostReceipt();
+        updateNavbar();
+        toast('登录成功，欢迎回来 ' + user.nickName); renderProfile();
+    }
+    function handleLogout() {
+        setSession(null); clearPostImage(); clearPostReceipt(); updateNavbar();
+        toast('已退出登录', 'info'); renderProfile();
+    }
+
+    function renderProfile() {
+        const loginBox = document.getElementById('profileLoginBox');
+        const mainBox  = document.getElementById('profileMainBox');
+        const s = getSession();
+        if (!s) { loginBox.classList.remove('hidden'); mainBox.classList.add('hidden'); return; }
+        const users = load(LS.users, []);
+        const user = users.find(u => u.id === s.id);
+        if (!user) { setSession(null); renderProfile(); return; }
+        loginBox.classList.add('hidden'); mainBox.classList.remove('hidden');
+        document.getElementById('profileAvatar').textContent = user.nickName.slice(0, 1).toUpperCase();
+        document.getElementById('profileNick').textContent = user.nickName;
+        document.getElementById('profileSince').textContent = '注册于 ' + fmtDate(user.createdAt);
+        document.getElementById('profileAddress').textContent = user.address;
+        document.getElementById('profileWhatsapp').textContent = user.whatsapp;
+        const myTasks = load(LS.tasks, []).filter(t => t.userId === user.id).sort((a, b) => b.createdAt - a.createdAt);
+        const box = document.getElementById('myTasksList');
+        if (!myTasks.length) { box.innerHTML = '<p class="text-slate-400 text-[11px] italic text-center py-6">你还没有发布过任务</p>'; return; }
+        const badgeMap = { approved: ['已通过', 'bg-emerald-50 text-emerald-700 border-emerald-200'], pending: ['待审核', 'bg-amber-50 text-amber-700 border-amber-200'], rejected: ['已拒绝', 'bg-rose-50 text-rose-700 border-rose-200'] };
+        box.innerHTML = myTasks.map(t => {
+            const [txt, cls] = badgeMap[t.status] || badgeMap.pending;
+            return `<div class="flex gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200"><img src="${esc(t.image)}" class="w-14 h-14 object-cover rounded-lg border border-slate-200 shrink-0" alt=""><div class="min-w-0 flex-grow"><p class="text-xs font-bold text-slate-900 truncate">${esc(t.title)}</p><p class="text-[10px] text-slate-500 mt-0.5">RM ${Number(t.price).toFixed(2)} · ${esc(t.category)}</p><div class="flex items-center gap-2 mt-1.5"><span class="text-[10px] px-2 py-0.5 rounded-full font-bold border ${cls}">${txt}</span><button onclick="deleteMyTask('${t.id}')" class="text-[10px] font-bold text-rose-600 hover:underline ml-auto">删除</button></div>${t.rejectReason ? `<p class="text-[10px] text-rose-600 mt-1.5">拒绝原因：${esc(t.rejectReason)}</p>` : ''}</div></div>`;
+        }).join('');
+    }
+    function deleteMyTask(id) {
+        const s = getSession(); if (!s) return;
+        if (!confirm('确定删除这个任务吗？此操作不可恢复。')) return;
+        const tasks = load(LS.tasks, []);
+        const idx = tasks.findIndex(t => t.id === id && t.userId === s.id);
+        if (idx === -1) { toast('无权删除该任务', 'error'); return; }
+        tasks.splice(idx, 1); save(LS.tasks, tasks);
+        const all = load(LS.comments, {}); delete all[id]; save(LS.comments, all);
+        toast('任务已删除'); renderProfile();
+    }
+
+    let ptImageData = null;
+    let ptReceiptData = null;
+    function renderPostTaskGuard() {
+        const s = getSession();
+        document.getElementById('postTaskGuard').classList.toggle('hidden', !!s);
+        document.getElementById('postTaskForm').classList.toggle('hidden', !s);
+    }
+    function compressImage(file, maxSize = 900, quality = 0.72) {
+        return new Promise((resolve, reject) => {
+            if (!file.type.startsWith('image/')) return reject(new Error('不是图片文件'));
+            const reader = new FileReader();
+            reader.onload = ev => {
+                const img = new Image();
+                img.onload = () => {
+                    let w = img.width, h = img.height;
+                    if (w > h && w > maxSize) { h = Math.round(h * maxSize / w); w = maxSize; } else if (h >= w && h > maxSize) { w = Math.round(w * maxSize / h); h = maxSize; }
+                    const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+                    const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h); ctx.drawImage(img, 0, 0, w, h);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
                 };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function handleAdminQRUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { document.getElementById('adminQRInput').value = e.target.result; alert("QR Code Uploaded!"); };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function handlePostTask(event) {
-            event.preventDefault();
-            if (!db.isLoggedIn || !db.currentNickName) {
-                alert("Please login first!");
-                switchTab('register');
-                return;
-            }
-
-            let category = document.getElementById('taskCategory').value;
-            if (category === 'Others') {
-                const customName = document.getElementById('customTaskName').value.trim();
-                if (customName) category = customName;
-            }
-
-            const location = document.getElementById('taskLocation').value.trim();
-            const price = document.getElementById('taskPrice').value.trim();
-            const whatsapp = document.getElementById('taskWhatsapp').value.trim();
-            const desc = document.getElementById('taskDesc').value.trim();
-            const image = document.getElementById('taskImage').value.trim();
-
-            db.tasks.push({
-                id: Date.now(),
-                nickName: db.currentNickName,
-                category, location, price, whatsapp, desc, image,
-                status: 'pending', taskStatus: 'Active', receipt: null, review: null, comments: []
-            });
-
-            alert("Task submitted! Please transfer RM1 and upload receipt.");
-            document.getElementById('taskLocation').value = '';
-            document.getElementById('taskPrice').value = '';
-            document.getElementById('taskWhatsapp').value = '';
-            document.getElementById('taskDesc').value = '';
-            document.getElementById('taskImage').value = '';
-            document.getElementById('customTaskName').value = '';
-            document.getElementById('taskCategory').value = 'Cleaning Services';
-            handleCategoryChange();
-            renderMyPendingTasks();
-        }
-
-        function renderPublicTasks() {
-            const container = document.getElementById('publicTaskList');
-            const approvedTasks = db.tasks.filter(t => t.status === 'approved');
-            if (approvedTasks.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs italic text-center py-12">暂无已批准的任务。</p>`;
-                return;
-            }
-            container.innerHTML = approvedTasks.map(t => {
-                const isCompleted = t.taskStatus === 'Completed';
-                const statusBadge = isCompleted 
-                    ? `<span class="text-[10px] bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full font-bold">✅ 已完成</span>`
-                    : `<span class="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">🔥 寻找中</span>`;
-
-                const reviewSection = isCompleted && t.review ? `
-                    <div class="mt-3 p-3 bg-amber-50/60 border border-amber-200 rounded-xl text-xs space-y-1">
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-amber-800">💬 真实社区评语:</span>
-                            <span class="text-[11px] font-bold text-amber-700">${t.review.rating}</span>
-                        </div>
-                        <p class="text-slate-700 italic leading-relaxed">${t.review.text}</p>
-                    </div>
-                ` : '';
-
-                return `
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-3 transition hover:border-indigo-400 cursor-pointer" onclick="openDetail(${t.id}, 'task')">
-                        <div class="flex flex-col sm:flex-row gap-4 items-center">
-                            <img src="${t.image}" alt="Task" class="w-full sm:w-28 h-28 object-cover rounded-lg border border-slate-200 cursor-pointer" onclick="event.stopPropagation(); openImageViewer('${t.image}')">
-                            <div class="flex-grow space-y-1 w-full">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full font-bold">${t.category}</span>
-                                        <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">💰 ${t.price}</span>
-                                    </div>
-                                    ${statusBadge}
-                                </div>
-                                <p class="text-xs font-semibold text-slate-800 leading-relaxed">${t.desc}</p>
-                                <div class="text-[11px] text-slate-500 space-y-0.5 pt-1">
-                                    <p>📍 地点: <span class="text-slate-700 font-medium">${t.location}</span></p>
-                                    <p>💬 WhatsApp: <span class="text-emerald-600 font-bold underline">${t.whatsapp}</span></p>
-                                    <p>👤 发布人: <span class="text-indigo-600 font-bold">${t.nickName}</span></p>
-                                </div>
-                            </div>
-                            <div>
-                                <button onclick="event.stopPropagation(); openShareModal(${t.id}, 'task')" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition shadow-xs whitespace-nowrap">Share</button>
-                            </div>
-                        </div>
-                        ${reviewSection}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderBankPage() {
-            document.getElementById('displayBankDetails').innerText = db.bankDetails;
-            document.getElementById('displayQRCode').src = db.qrCodeUrl;
-        }
-
-        function renderMyPendingTasks() {
-            const container = document.getElementById('myPendingList');
-            const myTasks = db.tasks.filter(t => t.nickName === db.currentNickName && t.status === 'pending');
-            if (myTasks.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无待处理任务。</p>`;
-                return;
-            }
-            container.innerHTML = myTasks.map(t => `
-                <div class="border border-amber-200 p-4 rounded-xl bg-amber-50/50 text-xs space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-md font-bold">Status: PENDING (Waiting for RM1 check)</span>
-                        <span class="font-bold text-emerald-600">${t.price}</span>
-                    </div>
-                    <p class="font-bold text-slate-800">${t.category} - 📍 ${t.location}</p>
-                    <p class="text-slate-600">${t.desc}</p>
-                    <div class="grid grid-cols-2 gap-2 pt-2">
-                        <div>
-                            <span class="text-[10px] text-slate-400 block mb-1">任务图片：</span>
-                            <img src="${t.image}" alt="Task" class="w-full h-20 object-cover rounded-lg border border-amber-200 cursor-pointer" onclick="openImageViewer('${t.image}')">
-                        </div>
-                        <div>
-                            <span class="text-[10px] text-slate-400 block mb-1">汇款收据凭证：</span>
-                            ${t.receipt ? `<img src="${t.receipt}" class="w-full h-20 object-cover rounded-lg border border-emerald-300">` : `
-                                <label class="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer bg-white">
-                                    <span class="text-[10px] text-amber-700 font-bold">📁 上传收据</span>
-                                    <input type="file" accept="image/*" class="hidden" onchange="handleReceiptUpload(event, ${t.id})">
-                                </label>
-                            `}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
-        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); document.getElementById('adminPasswordInput').value = ''; }
-        function verifyAdminPassword() {
-            if (document.getElementById('adminPasswordInput').value === 'super123') { closeAdminModal(); switchTab('admin'); } 
-            else { alert("Password incorrect!"); }
-        }
-
-        function renderMemberList() {
-            const memberContainer = document.getElementById('adminMemberList');
-            if (db.users.length === 0) { memberContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无注册会员</p>`; } 
-            else {
-                memberContainer.innerHTML = db.users.map(u => `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5">
-                        <p><strong>Nick Name:</strong> <span class="text-indigo-600 font-bold">${u.nickName}</span></p>
-                        <p class="text-slate-600"><strong>Address (Secret):</strong> ${u.address || 'Not provided'}</p>
-                        <p class="text-slate-600"><strong>WhatsApp (Secret):</strong> ${u.whatsapp || 'Not provided'}</p>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function renderSuperadminDashboard() {
-            document.getElementById('adminNoticeInput').value = db.noticeText;
-            document.getElementById('adminAboutInput').value = db.aboutText;
-            document.getElementById('adminHelpdeskInput').value = db.helpdeskText;
-            const approvalContainer = document.getElementById('adminApprovalList');
-            const pendingTasks = db.tasks.filter(t => t.status === 'pending');
-            if (pendingTasks.length === 0) {
-                approvalContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无等待审核的任务。</p>`;
-                return;
-            }
-            approvalContainer.innerHTML = pendingTasks.map(t => `
-                <div class="border border-slate-200 p-4 rounded-xl bg-white flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <img src="${t.image}" class="w-16 h-16 object-cover rounded-lg border cursor-pointer" onclick="openImageViewer('${t.image}')">
-                        <div class="space-y-1">
-                            <span class="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold">Pending Approval</span>
-                            <p class="font-bold text-slate-800 text-xs">${t.category} <span class="text-emerald-600 font-bold">(${t.price})</span></p>
-                            <p class="text-[11px] text-slate-600">📍 ${t.location} | 💬 ${t.whatsapp} | 👤 ${t.nickName}</p>
-                        </div>
-                    </div>
-                    <button onclick="approveTask(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Approve</button>
-                </div>
-            `).join('');
-        }
-
-        function saveAdminNotice() { db.noticeText = document.getElementById('adminNoticeInput').value.trim(); alert("Notice Updated!"); }
-        function saveAdminAbout() { db.aboutText = document.getElementById('adminAboutInput').value.trim(); alert("About Us Updated!"); }
-        function saveAdminHelpdesk() { db.helpdeskText = document.getElementById('adminHelpdeskInput').value.trim(); alert("Helpdesk Updated!"); }
-        function saveAdminSettings() {
-            const newBank = document.getElementById('adminBankInput').value.trim();
-            const newQR = document.getElementById('adminQRInput').value.trim();
-            if (newBank) db.bankDetails = newBank;
-            if (newQR) db.qrCodeUrl = newQR;
-            alert("Settings Updated!");
-        }
-
-        function approveTask(taskId) {
-            const task = db.tasks.find(t => t.id === taskId);
-            if (task) { task.status = 'approved'; alert("Task Approved!"); renderSuperadminDashboard(); }
-        }
-
-        function openShareModal(id, type = 'task') {
-            const item = type === 'task' ? db.tasks.find(t => t.id === id) : db.services.find(s => s.id === id);
-            if (!item) return;
-            currentActiveItemForShare = item;
-            let rawBaseUrl = window.location.href.split('#')[0];
-            if (rawBaseUrl.startsWith('content://') || rawBaseUrl.startsWith('file://')) {
-                rawBaseUrl = 'https://taskhub-community.netlify.app/index.html';
-            }
-            currentTaskDetailUrl = `${rawBaseUrl}#item-${type}-${item.id}`;
-            currentShareTextData = `🔗 点击直达详情与参与:\n${currentTaskDetailUrl}\n\n【TaskHub ${type === 'task' ? '任务分享' : '会员服务'}】\n分类: ${item.category}\n报价: ${item.price}\n地点: ${item.location}\nWhatsApp: ${item.whatsapp}\n详情: ${item.desc}\n发布人: ${item.nickName}`;
-            document.getElementById('shareModal').classList.remove('hidden');
-        }
-
-        function closeShareModal() { document.getElementById('shareModal').classList.add('hidden'); }
-
-        function downloadTaskPoster() {
-            if (!currentActiveItemForShare) return;
-            const item = currentActiveItemForShare;
-            const canvas = document.getElementById('posterCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 800; canvas.height = 1000;
-            ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0f172a"; ctx.fillRect(0, 0, canvas.width, 100);
-            ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px Inter, sans-serif";
-            ctx.fillText("TaskHub 多功能平台", 40, 62);
-
-            const img = new Image();
-            img.crossOrigin = "anonymous";
-            img.src = item.image;
-            img.onload = function() {
-                ctx.fillStyle = "#f1f5f9"; ctx.fillRect(40, 130, 720, 480);
-                let ratio = Math.min(720 / img.width, 480 / img.height);
-                ctx.drawImage(img, 0, 0, img.width, img.height, 40 + (720 - img.width * ratio)/2, 130 + (480 - img.height * ratio)/2, img.width * ratio, img.height * ratio);
-
-                ctx.fillStyle = "#4f46e5"; ctx.beginPath(); ctx.roundRect(40, 640, 200, 50, 12); ctx.fill();
-                ctx.fillStyle = "#ffffff"; ctx.font = "bold 22px Inter, sans-serif"; ctx.fillText(item.category, 60, 672);
-
-                ctx.fillStyle = "#059669"; ctx.beginPath(); ctx.roundRect(260, 640, 180, 50, 12); ctx.fill();
-                ctx.fillStyle = "#ffffff"; ctx.fillText("💰 " + item.price, 280, 672);
-
-                ctx.fillStyle = "#1e293b"; ctx.font = "bold 28px Inter, sans-serif"; ctx.fillText(item.desc.substring(0, 35) + "...", 40, 750);
-
-                ctx.fillStyle = "#64748b"; ctx.font = "20px Inter, sans-serif";
-                ctx.fillText("📍 地点: " + item.location, 40, 845);
-                ctx.fillText("💬 WhatsApp: " + item.whatsapp, 40, 880);
-
-                let link = document.createElement('a');
-                link.download = `TaskHub_poster.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                showToast("海报下载成功！请前往相册查看");
+                img.onerror = () => reject(new Error('图片解析失败'));
+                img.src = ev.target.result;
             };
-        }
+            reader.onerror = () => reject(new Error('文件读取失败'));
+            reader.readAsDataURL(file);
+        });
+    }
+    function clearPostImage() {
+        ptImageData = null;
+        const input = document.getElementById('ptImage'); const wrap = document.getElementById('ptImagePreviewWrap'); const preview = document.getElementById('ptImagePreview');
+        if (input) input.value = ''; if (wrap) wrap.classList.add('hidden'); if (preview) preview.src = '';
+    }
+    function clearPostReceipt() {
+        ptReceiptData = null;
+        const input = document.getElementById('ptReceipt'); const wrap = document.getElementById('ptReceiptPreviewWrap'); const preview = document.getElementById('ptReceiptPreview');
+        if (input) input.value = ''; if (wrap) wrap.classList.add('hidden'); if (preview) preview.src = '';
+    }
+    function handlePostTask(e) {
+        e.preventDefault();
+        const btn = document.getElementById('ptSubmitBtn');
+        if (btn && btn.disabled) return;
+        const s = getSession(); if (!s) { toast('请先登录', 'error'); return; }
+        if (!ptImageData) { toast('请上传一张任务图片', 'error'); return; }
+        if (!ptReceiptData) { toast('请上传汇款收据截图', 'error'); return; }
+        const title = document.getElementById('ptTitle').value.trim();
+        const price = parseFloat(document.getElementById('ptPrice').value);
+        if (!Number.isFinite(price) || price < 0) { toast('请输入有效价格', 'error'); return; }
+        const originalLabel = btn ? btn.textContent : '';
+        if (btn) { btn.disabled = true; btn.textContent = '提交中…'; }
+        const unlock = () => { if (btn) { btn.disabled = false; btn.textContent = originalLabel; } };
+        const task = { id: uid(), userId: s.id, title, category: document.getElementById('ptCategory').value, price: price.toFixed(2), location: document.getElementById('ptLocation').value.trim(), whatsapp: document.getElementById('ptWhatsapp').value.trim(), desc: document.getElementById('ptDesc').value.trim(), image: ptImageData, receiptImage: ptReceiptData, isService: document.getElementById('ptIsService').checked, payRef: document.getElementById('ptPayRef').value.trim(), publisher: s.nickName, status: 'pending', rating: 0, reviewText: '', rejectReason: '', createdAt: Date.now(), approvedAt: null };
+        const tasks = load(LS.tasks, []); tasks.push(task);
+        if (!save(LS.tasks, tasks)) { unlock(); return; }
+        e.target.reset(); clearPostImage(); clearPostReceipt();
+        toast('提交成功！请等待管理员审核');
+        setTimeout(unlock, 500); switchTab('profile');
+    }
 
-        function copyShareText() {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(currentShareTextData).then(() => {
-                    showToast("文案复制成功 (链接已置顶)！");
-                }).catch(() => {
-                    fallbackCopyText(currentShareTextData);
-                });
-            } else {
-                fallbackCopyText(currentShareTextData);
-            }
-        }
+    function openImageViewer(src) {
+        if (!src) return;
+        const viewer = document.getElementById('imageViewer');
+        document.getElementById('imageViewerImg').src = src;
+        viewer.classList.remove('hidden'); viewer.classList.add('flex'); document.body.style.overflow = 'hidden';
+    }
+    function closeImageViewer() {
+        const viewer = document.getElementById('imageViewer');
+        viewer.classList.add('hidden'); viewer.classList.remove('flex'); document.body.style.overflow = '';
+    }
 
-        function fallbackCopyText(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("文案复制成功 (链接已置顶)！");
-                } else {
-                    alert("复制失败，请手动长按复制文案。");
-                }
-            } catch (err) {
-                alert("复制失败，请手动长按复制文案。");
-            }
-            document.body.removeChild(textArea);
-        }
+    function openAdminModal() {
+        document.getElementById('adminModal').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+        const isAdmin = sessionStorage.getItem(LS.admin) === '1';
+        document.getElementById('adminLoginBox').classList.toggle('hidden', isAdmin);
+        document.getElementById('adminPanelBox').classList.toggle('hidden', !isAdmin);
+        if (isAdmin) { switchAdminTab(currentAdminTab); } else { document.getElementById('adminPasswordInput').value = ''; document.getElementById('adminLoginError').classList.add('hidden'); }
+    }
+    function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); document.body.style.overflow = ''; }
+    function handleAdminLogin(e) {
+        e.preventDefault(); const cfg = load(LS.config, DEFAULT_CONFIG);
+        const input = document.getElementById('adminPasswordInput').value;
+        if (input !== cfg.adminPassword) { document.getElementById('adminLoginError').classList.remove('hidden'); return; }
+        sessionStorage.setItem(LS.admin, '1'); document.getElementById('adminLoginBox').classList.add('hidden'); document.getElementById('adminPanelBox').classList.remove('hidden'); switchAdminTab('tasks'); toast('管理员登录成功');
+    }
+    function handleAdminLogout() { sessionStorage.removeItem(LS.admin); document.getElementById('adminLoginBox').classList.remove('hidden'); document.getElementById('adminPanelBox').classList.add('hidden'); toast('已退出管理员', 'info'); }
 
-        function openFacebookApp() {
-            copyShareText();
-            setTimeout(() => {
-                const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentTaskDetailUrl)}`;
-                window.location.href = fbShareUrl;
-            }, 500);
-        }
+    function switchAdminTab(name) {
+        currentAdminTab = name;
+        document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+        const target = document.getElementById('admin-tab-' + name); if (target) target.classList.remove('hidden');
+        document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+            const active = btn.dataset.atab === name;
+            btn.className = 'admin-tab-btn whitespace-nowrap px-4 py-2.5 rounded-t-lg transition ' + (active ? 'bg-slate-50 text-indigo-700 border border-slate-200 border-b-transparent -mb-px' : 'text-slate-500 hover:text-slate-900');
+        });
+        if (name === 'tasks')    renderAdminTasks();
+        if (name === 'users')    renderAdminUsers();
+        if (name === 'services') renderAdminServices();
+        if (name === 'config')   renderAdminConfig();
+        if (name === 'data')     renderAdminData();
+    }
 
-        function openImageViewer(imgSrc) {
-            document.getElementById('viewerImage').src = imgSrc;
-            document.getElementById('imageViewerModal').classList.remove('hidden');
-        }
-
-        function closeImageViewer() { document.getElementById('imageViewerModal').classList.add('hidden'); }
-
-        function showToast(msg = "操作成功！") {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.remove('hidden');
-            setTimeout(() => { toast.classList.add('hidden'); }, 2000);
-        }
-
-        function checkUrlHashAndOpenDetail() {
-            const hash = window.location.hash;
-            if (hash && hash.includes('#item-')) {
-                const parts = hash.replace('#item-', '').split('-');
-                if (parts.length >= 2) {
-                    const type = parts[0];
-                    const id = parts[1];
-                    openDetail(id, type);
-                }
-            } else {
-                renderHomeData();
-            }
-        }
-
-        window.onload = function() {
-            checkUrlHashAndOpenDetail();
-        };
-    </script>
-</body>
-</html>
-
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full font-bold">${t.category}</span>
-                                        <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">💰 ${t.price}</span>
-                                    </div>
-                                    ${statusBadge}
-                                </div>
-                                <p class="text-xs font-semibold text-slate-800 leading-relaxed">${t.desc}</p>
-                                <div class="text-[11px] text-slate-500 space-y-0.5 pt-1">
-                                    <p>📍 地点: <span class="text-slate-700 font-medium">${t.location}</span></p>
-                                    <p>💬 WhatsApp: <span class="text-emerald-600 font-bold underline">${t.whatsapp}</span></p>
-                                    <p>👤 发布人: <span class="text-indigo-600 font-bold">${t.nickName}</span></p>
-                                </div>
-                            </div>
-                            <div>
-                                <button onclick="event.stopPropagation(); openShareModal(${t.id}, 'task')" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition shadow-xs whitespace-nowrap">Share</button>
-                            </div>
-                        </div>
-                        ${reviewSection}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderBankPage() {
-            document.getElementById('displayBankDetails').innerText = db.bankDetails;
-            document.getElementById('displayQRCode').src = db.qrCodeUrl;
-        }
-
-        function renderMyPendingTasks() {
-            const container = document.getElementById('myPendingList');
-            const myTasks = db.tasks.filter(t => t.nickName === db.currentNickName && t.status === 'pending');
-            if (myTasks.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-xs italic">暂无待处理任务。</p>`;
-                return;
-            }
-            container.innerHTML = myTasks.map(t => `
-                <div class="border border-amber-200 p-4 rounded-xl bg-amber-50/50 text-xs space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-md font-bold">Status: PENDING (Waiting for RM1 check)</span>
-                        <span class="font-bold text-emerald-600">${t.price}</span>
-                    </div>
-                    <p class="font-bold text-slate-800">${t.category} - 📍 ${t.location}</p>
-                    <p class="text-slate-600">${t.desc}</p>
-                    <div class="grid grid-cols-2 gap-2 pt-2">
-                        <div>
-                            <span class="text-[10px] text-slate-400 block mb-1">任务图片：</span>
-                            <img src="${t.image}" alt="Task" class="w-full h-20 object-cover rounded-lg border border-amber-200 cursor-pointer" onclick="openImageViewer('${t.image}')">
-                        </div>
-                        <div>
-                            <span class="text-[10px] text-slate-400 block mb-1">汇款收据凭证：</span>
-                            ${t.receipt ? `<img src="${t.receipt}" class="w-full h-20 object-cover rounded-lg border border-emerald-300">` : `
-                                <label class="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer bg-white">
-                                    <span class="text-[10px] text-amber-700 font-bold">📁 上传收据</span>
-                                    <input type="file" accept="image/*" class="hidden" onchange="handleReceiptUpload(event, ${t.id})">
-                                </label>
-                            `}
-                        </div>
-                    </div>
+    function renderAdminTasks() {
+        const box = document.getElementById('admin-tab-tasks');
+        const tasks = load(LS.tasks, []).sort((a, b) => b.createdAt - a.createdAt);
+        const pending = tasks.filter(t => t.status === 'pending');
+        const approved = tasks.filter(t => t.status === 'approved');
+        const rejected = tasks.filter(t => t.status === 'rejected');
+        const card = (t, showActions) => `
+            <div class="flex flex-col sm:flex-row gap-3 p-4 bg-white rounded-xl border border-slate-200">
+                <img src="${esc(t.image)}" class="w-full sm:w-24 h-32 sm:h-24 object-cover rounded-lg border border-slate-200 shrink-0 cursor-pointer" onclick="openImageViewer(this.src)" alt="">
+                <div class="min-w-0 flex-grow space-y-1.5">
+                    <div class="flex justify-between items-start gap-2"><h4 class="text-xs font-bold text-slate-900">${esc(t.title)}</h4><span class="text-xs font-bold text-emerald-600 whitespace-nowrap">RM ${Number(t.price).toFixed(2)}</span></div>
+                    <p class="text-[11px] text-slate-600 leading-relaxed line-clamp-2">${esc(t.desc)}</p>
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-slate-500"><span>👤 ${esc(t.publisher)}</span><span>📂 ${esc(t.category)}</span><span>📍 ${esc(t.location)}</span><span>💬 ${esc(t.whatsapp)}</span></div>
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-slate-400"><span>发布：${fmtDate(t.createdAt)}</span><span>汇款参考：${esc(t.payRef || '-')}</span>${t.receiptImage ? `<span class="text-indigo-600 font-bold cursor-pointer hover:underline" onclick="openImageViewer('${t.receiptImage}')">📷 查看汇款收据</span>` : ''}${t.isService ? '<span class="text-teal-600 font-bold">服务大厅</span>' : ''}</div>
+                    ${t.rejectReason ? `<p class="text-[10px] text-rose-600 font-semibold">拒绝原因：${esc(t.rejectReason)}</p>` : ''}
+                    ${showActions ? `<div class="flex gap-2 pt-1.5"><button onclick="approveTask('${t.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold transition">✓ 批准</button><button onclick="rejectTask('${t.id}')" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold transition">✕ 拒绝</button><button onclick="deleteTask('${t.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-[11px] font-bold transition ml-auto">删除</button></div>` : `<div class="flex gap-2 pt-1.5"><button onclick="deleteTask('${t.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-[11px] font-bold transition">删除</button></div>`}
                 </div>
-            `).join('');
-        }
+            </div>`;
+        box.innerHTML = `<div class="space-y-6"><section class="space-y-3"><h3 class="text-xs font-bold text-slate-900 flex items-center gap-2">⏳ 待审核 <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[10px]">${pending.length}</span></h3>${pending.length ? pending.map(t => card(t, true)).join('') : '<p class="text-[11px] text-slate-400 italic text-center py-6">暂无待审核任务</p>'}</section><section class="space-y-3"><h3 class="text-xs font-bold text-slate-900 flex items-center gap-2">✅ 已批准 <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px]">${approved.length}</span></h3>${approved.length ? approved.map(t => card(t, false)).join('') : '<p class="text-[11px] text-slate-400 italic text-center py-6">暂无已批准任务</p>'}</section><section class="space-y-3"><h3 class="text-xs font-bold text-slate-900 flex items-center gap-2">❌ 已拒绝 <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full text-[10px]">${rejected.length}</span></h3>${rejected.length ? rejected.map(t => card(t, false)).join('') : '<p class="text-[11px] text-slate-400 italic text-center py-6">暂无已拒绝任务</p>'}</section></div>`;
+    }
+    function approveTask(id) {
+        const tasks = load(LS.tasks, []); const t = tasks.find(x => x.id === id); if (!t) return;
+        t.status = 'approved'; t.approvedAt = Date.now(); t.rejectReason = '';
+        if (save(LS.tasks, tasks)) { toast('任务已批准并公开'); renderAdminTasks(); }
+    }
+    function rejectTask(id) {
+        const reason = prompt('请输入拒绝原因（会显示给发布者）：', '内容不符合平台规范'); if (reason === null) return;
+        const tasks = load(LS.tasks, []); const t = tasks.find(x => x.id === id); if (!t) return;
+        t.status = 'rejected'; t.rejectReason = reason.trim() || '未说明原因'; t.approvedAt = null;
+        if (save(LS.tasks, tasks)) { toast('任务已拒绝', 'info'); renderAdminTasks(); }
+    }
+    function deleteTask(id) {
+        if (!confirm('确定删除此任务？')) return;
+        let tasks = load(LS.tasks, []); tasks = tasks.filter(t => t.id !== id); if (!save(LS.tasks, tasks)) return;
+        const all = load(LS.comments, {}); delete all[id]; save(LS.comments, all);
+        toast('任务已删除'); renderAdminTasks();
+    }
 
-        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
-        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); document.getElementById('adminPasswordInput').value = ''; }
-        function verifyAdminPassword() {
-            if (document.getElementById('adminPasswordInput').value === 'super123') { closeAdminModal(); switchTab('admin'); } 
-            else { alert("Password incorrect!"); }
-        }
+    function renderAdminUsers() {
+        const box = document.getElementById('admin-tab-users');
+        const users = load(LS.users, []).sort((a, b) => b.createdAt - a.createdAt);
+        const tasks = load(LS.tasks, []);
+        if (!users.length) { box.innerHTML = '<p class="text-[11px] text-slate-400 italic text-center py-8">暂无注册会员</p>'; return; }
+        box.innerHTML = `<div class="flex gap-4 overflow-x-auto pb-6 pt-2 px-1 snap-x no-scrollbar">${users.map(u => { const count = tasks.filter(t => t.userId === u.id).length; return `<div class="min-w-[280px] w-72 shrink-0 bg-white rounded-xl border border-slate-200 p-4 space-y-3 snap-center shadow-sm"><div class="flex items-center justify-between gap-2"><div class="flex items-center gap-2.5 min-w-0"><div class="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-extrabold text-xs shrink-0">${esc(u.nickName.slice(0,1).toUpperCase())}</div><div class="min-w-0"><p class="text-xs font-bold text-slate-900 truncate">${esc(u.nickName)}</p><p class="text-[10px] text-slate-400">注册于 ${fmtDate(u.createdAt)}</p></div></div><button onclick="deleteUser('${u.id}')" class="text-[11px] font-bold text-rose-600 hover:underline shrink-0">删除</button></div><div class="text-[10px] text-slate-500 bg-slate-50 p-2 rounded-lg border border-slate-100 text-center">📦 共发布 <span class="font-bold text-indigo-600">${count}</span> 个任务</div><div class="space-y-2 text-[10px]"><div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200"><span class="font-bold text-slate-400 block uppercase mb-0.5">Address</span><span class="text-slate-800 font-semibold break-words line-clamp-2">${esc(u.address)}</span></div><div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200"><span class="font-bold text-slate-400 block uppercase mb-0.5">WhatsApp</span><a href="https://wa.me/${esc(String(u.whatsapp).replace(/\D/g,''))}" target="_blank" class="text-emerald-600 font-bold hover:underline">${esc(u.whatsapp)}</a></div></div></div>`; }).join('')}</div>`;
+    }
 
-        function renderMemberList() {
-            const memberContainer = document.getElementById('adminMemberList');
-            if (db.users.length === 0) { memberContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无注册会员</p>`; } 
-            else {
-                memberContainer.innerHTML = db.users.map(u => `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5">
-                        <p><strong>Nick Name:</strong> <span class="text-indigo-600 font-bold">${u.nickName}</span></p>
-                        <p class="text-slate-600"><strong>Address (Secret):</strong> ${u.address || 'Not provided'}</p>
-                        <p class="text-slate-600"><strong>WhatsApp (Secret):</strong> ${u.whatsapp || 'Not provided'}</p>
-                    </div>
-                `).join('');
-            }
-        }
+    function deleteUser(id) {
+        if (!confirm('删除会员会同时删除其所有任务和留言，确定继续？')) return;
+        let users = load(LS.users, []).filter(u => u.id !== id); if (!save(LS.users, users)) return;
+        let tasks = load(LS.tasks, []); const removedIds = tasks.filter(t => t.userId === id).map(t => t.id); tasks = tasks.filter(t => t.userId !== id); save(LS.tasks, tasks);
+        const all = load(LS.comments, {}); removedIds.forEach(tid => delete all[tid]); save(LS.comments, all);
+        const s = getSession(); if (s && s.id === id) { setSession(null); updateNavbar(); }
+        toast('会员已删除', 'info'); renderAdminUsers();
+    }
 
-        function renderSuperadminDashboard() {
-            document.getElementById('adminNoticeInput').value = db.noticeText;
-            document.getElementById('adminAboutInput').value = db.aboutText;
-            document.getElementById('adminHelpdeskInput').value = db.helpdeskText;
-            const approvalContainer = document.getElementById('adminApprovalList');
-            const pendingTasks = db.tasks.filter(t => t.status === 'pending');
-            if (pendingTasks.length === 0) {
-                approvalContainer.innerHTML = `<p class="text-slate-400 text-xs italic">暂无等待审核的任务。</p>`;
-                return;
-            }
-            approvalContainer.innerHTML = pendingTasks.map(t => `
-                <div class="border border-slate-200 p-4 rounded-xl bg-white flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <img src="${t.image}" class="w-16 h-16 object-cover rounded-lg border cursor-pointer" onclick="openImageViewer('${t.image}')">
-                        <div class="space-y-1">
-                            <span class="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-bold">Pending Approval</span>
-                            <p class="font-bold text-slate-800 text-xs">${t.category} <span class="text-emerald-600 font-bold">(${t.price})</span></p>
-                            <p class="text-[11px] text-slate-600">📍 ${t.location} | 💬 ${t.whatsapp} | 👤 ${t.nickName}</p>
-                        </div>
-                    </div>
-                    <button onclick="approveTask(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs">Approve</button>
+    function renderAdminServices() {
+        const box = document.getElementById('admin-tab-services');
+        const services = load(LS.tasks, []).filter(t => t.isService);
+        if (!services.length) { box.innerHTML = '<p class="text-[11px] text-slate-400 italic text-center py-8">暂无会员服务</p>'; return; }
+        box.innerHTML = `<p class="text-[11px] text-slate-500 mb-4">勾选的任务会同时展示在「会员服务大厅」。取消勾选后该任务只会出现在公共任务栏。</p><div class="space-y-3">${services.map(t => `<div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-200"><img src="${esc(t.image)}" class="w-14 h-14 object-cover rounded-lg border border-slate-200 shrink-0" alt=""><div class="min-w-0 flex-grow"><p class="text-xs font-bold text-slate-900 truncate">${esc(t.title)}</p><p class="text-[10px] text-slate-500">${esc(t.category)} · RM ${Number(t.price).toFixed(2)} · ${esc(t.publisher)}</p><span class="text-[10px] font-bold ${t.status === 'approved' ? 'text-emerald-600' : t.status === 'pending' ? 'text-amber-600' : 'text-rose-600'}">${t.status === 'approved' ? '已公开' : t.status === 'pending' ? '待审核' : '已拒绝'}</span></div><label class="flex items-center gap-1.5 cursor-pointer shrink-0"><input type="checkbox" class="w-4 h-4 accent-teal-600" ${t.isService ? 'checked' : ''} onchange="toggleServiceFlag('${t.id}', this.checked)"></label></div>`).join('')}</div>`;
+    }
+    function toggleServiceFlag(id, on) {
+        const tasks = load(LS.tasks, []); const t = tasks.find(x => x.id === id); if (!t) return; t.isService = !!on;
+        if (save(LS.tasks, tasks)) { toast(on ? '已加入服务大厅' : '已移出服务大厅', 'info'); }
+    }
+
+    function renderAdminConfig() {
+        const box = document.getElementById('admin-tab-config');
+        const cfg = load(LS.config, DEFAULT_CONFIG);
+        box.innerHTML = `
+            <form onsubmit="handleSaveConfig(event)" class="space-y-4 max-w-xl">
+                <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-3">
+                    <p class="text-[11px] font-bold text-rose-900">🌐 网站链接设置（用于分享）</p>
+                    <input type="text" id="cfgSiteUrl" value="${esc(cfg.siteUrl)}" placeholder="例如：https://taskhub.netlify.app" class="w-full px-4 py-3 rounded-xl bg-white border border-rose-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500 transition">
+                    <p class="text-[10px] text-rose-700">⚠️ 填写你部署后的真实网址。不填的话，分享按钮会使用本地路径，别人是打不开的！</p>
                 </div>
-            `).join('');
-        }
+                <div><label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">首页公告 / Platform Notice</label><textarea id="cfgNotice" rows="3" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition">${esc(cfg.notice)}</textarea></div>
+                <div><label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">银行账户 / Bank Details</label><input type="text" id="cfgBank" value="${esc(cfg.bank)}" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"></div>
+                <div><label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">收款二维码 / QR Code</label><input type="text" id="cfgQr" value="${esc(cfg.qr)}" placeholder="输入网址 或 上传图片" oninput="document.getElementById('cfgQrPreviewWrap').classList.toggle('hidden', !this.value.startsWith('data:image'))" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"><div class="mt-3"><label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">上传二维码图片 / Upload QR Image</label><input type="file" id="cfgQrUpload" accept="image/*" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:text-[11px] file:font-bold" onchange="handleAdminQrUpload(this)"><div id="cfgQrPreviewWrap" class="${cfg.qr && cfg.qr.startsWith('data:image') ? '' : 'hidden'} mt-3"><img id="cfgQrPreview" src="${esc(cfg.qr)}" class="w-32 h-32 object-cover rounded-xl border border-slate-200" alt="QR Preview"></div></div></div>
+                <div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">客服 WhatsApp</label><input type="text" id="cfgWhatsapp" value="${esc(cfg.whatsapp)}" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"></div><div><label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">客服 Email</label><input type="email" id="cfgEmail" value="${esc(cfg.email)}" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"></div></div>
+                <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-3"><p class="text-[11px] font-bold text-amber-900">🔑 修改管理员密码</p><input type="text" id="cfgAdminPwd" value="${esc(cfg.adminPassword)}" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 transition"><p class="text-[10px] text-amber-800">⚠️ 前端密码仅用于演示，真实项目必须放在后端验证。</p></div>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-3 rounded-xl transition text-xs shadow-sm">保存配置</button>
+            </form>`;
+    }
+    async function handleAdminQrUpload(input) {
+        const file = input.files[0]; if (!file) return; toast('正在处理二维码图片…', 'info');
+        try { const base64 = await compressImage(file, 600, 0.8); document.getElementById('cfgQr').value = base64; document.getElementById('cfgQrPreview').src = base64; document.getElementById('cfgQrPreviewWrap').classList.remove('hidden'); toast('二维码图片已就绪，请记得点击下方保存！'); } catch (err) { toast('图片处理失败: ' + err.message, 'error'); }
+    }
+    function handleSaveConfig(e) {
+        e.preventDefault();
+        const cfg = { notice: document.getElementById('cfgNotice').value.trim(), bank: document.getElementById('cfgBank').value.trim(), qr: document.getElementById('cfgQr').value.trim(), whatsapp: document.getElementById('cfgWhatsapp').value.trim(), email: document.getElementById('cfgEmail').value.trim(), adminPassword: document.getElementById('cfgAdminPwd').value.trim() || 'admin123', siteUrl: document.getElementById('cfgSiteUrl').value.trim() };
+        if (!save(LS.config, cfg)) return;
+        renderBank(); renderHelpdesk(); toast('配置已保存');
+    }
 
-        function saveAdminNotice() { db.noticeText = document.getElementById('adminNoticeInput').value.trim(); alert("Notice Updated!"); }
-        function saveAdminAbout() { db.aboutText = document.getElementById('adminAboutInput').value.trim(); alert("About Us Updated!"); }
-        function saveAdminHelpdesk() { db.helpdeskText = document.getElementById('adminHelpdeskInput').value.trim(); alert("Helpdesk Updated!"); }
-        function saveAdminSettings() {
-            const newBank = document.getElementById('adminBankInput').value.trim();
-            const newQR = document.getElementById('adminQRInput').value.trim();
-            if (newBank) db.bankDetails = newBank;
-            if (newQR) db.qrCodeUrl = newQR;
-            alert("Settings Updated!");
-        }
-
-        function approveTask(taskId) {
-            const task = db.tasks.find(t => t.id === taskId);
-            if (task) { task.status = 'approved'; alert("Task Approved!"); renderSuperadminDashboard(); }
-        }
-
-        function openShareModal(id, type = 'task') {
-            const item = type === 'task' ? db.tasks.find(t => t.id === id) : db.services.find(s => s.id === id);
-            if (!item) return;
-            currentActiveItemForShare = item;
-            let rawBaseUrl = window.location.href.split('#')[0];
-            if (rawBaseUrl.startsWith('content://') || rawBaseUrl.startsWith('file://')) {
-                rawBaseUrl = 'https://taskhub-community.netlify.app/index.html';
-            }
-            currentTaskDetailUrl = `${rawBaseUrl}#item-${type}-${item.id}`;
-            currentShareTextData = `🔗 点击直达详情与参与:\n${currentTaskDetailUrl}\n\n【TaskHub ${type === 'task' ? '任务分享' : '会员服务'}】\n分类: ${item.category}\n报价: ${item.price}\n地点: ${item.location}\nWhatsApp: ${item.whatsapp}\n详情: ${item.desc}\n发布人: ${item.nickName}`;
-            document.getElementById('shareModal').classList.remove('hidden');
-        }
-
-        function closeShareModal() { document.getElementById('shareModal').classList.add('hidden'); }
-
-        function downloadTaskPoster() {
-            if (!currentActiveItemForShare) return;
-            const item = currentActiveItemForShare;
-            const canvas = document.getElementById('posterCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 800; canvas.height = 1000;
-            ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0f172a"; ctx.fillRect(0, 0, canvas.width, 100);
-            ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px Inter, sans-serif";
-            ctx.fillText("TaskHub 多功能平台", 40, 62);
-
-            const img = new Image();
-            img.crossOrigin = "anonymous";
-            img.src = item.image;
-            img.onload = function() {
-                ctx.fillStyle = "#f1f5f9"; ctx.fillRect(40, 130, 720, 480);
-                let ratio = Math.min(720 / img.width, 480 / img.height);
-                ctx.drawImage(img, 0, 0, img.width, img.height, 40 + (720 - img.width * ratio)/2, 130 + (480 - img.height * ratio)/2, img.width * ratio, img.height * ratio);
-
-                ctx.fillStyle = "#4f46e5"; ctx.beginPath(); ctx.roundRect(40, 640, 200, 50, 12); ctx.fill();
-                ctx.fillStyle = "#ffffff"; ctx.font = "bold 22px Inter, sans-serif"; ctx.fillText(item.category, 60, 672);
-
-                ctx.fillStyle = "#059669"; ctx.beginPath(); ctx.roundRect(260, 640, 180, 50, 12); ctx.fill();
-                ctx.fillStyle = "#ffffff"; ctx.fillText("💰 " + item.price, 280, 672);
-
-                ctx.fillStyle = "#1e293b"; ctx.font = "bold 28px Inter, sans-serif"; ctx.fillText(item.desc.substring(0, 35) + "...", 40, 750);
-
-                ctx.fillStyle = "#64748b"; ctx.font = "20px Inter, sans-serif";
-                ctx.fillText("📍 地点: " + item.location, 40, 845);
-                ctx.fillText("💬 WhatsApp: " + item.whatsapp, 40, 880);
-
-                let link = document.createElement('a');
-                link.download = `TaskHub_poster.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                showToast("海报下载成功！请前往相册查看");
-            };
-        }
-
-        function copyShareText() {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(currentShareTextData).then(() => {
-                    showToast("文案复制成功 (链接已置顶)！");
-                }).catch(() => {
-                    fallbackCopyText(currentShareTextData);
-                });
-            } else {
-                fallbackCopyText(currentShareTextData);
-            }
-        }
-
-        function fallbackCopyText(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("文案复制成功 (链接已置顶)！");
-                } else {
-                    alert("复制失败，请手动长按复制文案。");
-                }
-            } catch (err) {
-                alert("复制失败，请手动长按复制文案。");
-            }
-            document.body.removeChild(textArea);
-        }
-
-        function openFacebookApp() {
-            copyShareText();
-            setTimeout(() => {
-                const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentTaskDetailUrl)}`;
-                window.location.href = fbShareUrl;
-            }, 500);
-        }
-
-        function openImageViewer(imgSrc) {
-            document.getElementById('viewerImage').src = imgSrc;
-            document.getElementById('imageViewerModal').classList.remove('hidden');
-        }
-
-        function closeImageViewer() { document.getElementById('imageViewerModal').classList.add('hidden'); }
-
-        function showToast(msg = "操作成功！") {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.remove('hidden');
-            setTimeout(() => { toast.classList.add('hidden'); }, 2000);
-        }
-
-        function checkUrlHashAndOpenDetail() {
-            const hash = window.location.hash;
-            if (hash && hash.includes('#item-')) {
-                const parts = hash.replace('#item-', '').split('-');
-                if (parts.length >= 2) {
-                    const type = parts[0];
-                    const id = parts[1];
-                    openDetail(id, type);
-                }
-            } else {
-                renderHomeData();
-            }
-        }
-
-        window.onload = function() {
-            checkUrlHashAndOpenDetail();
+    function renderAdminData() {
+        const box = document.getElementById('admin-tab-data');
+        const stats = { users: load(LS.users, []).length, tasks: load(LS.tasks, []).length, pending: load(LS.tasks, []).filter(t => t.status === 'pending').length, approved: load(LS.tasks, []).filter(t => t.status === 'approved').length, rejected: load(LS.tasks, []).filter(t => t.status === 'rejected').length };
+        let bytes = 0;
+        [LS.users, LS.tasks, LS.comments, LS.config, LS.session].forEach(k => { const v = localStorage.getItem(k); if (v) bytes += v.length * 2; });
+        const kb = (bytes / 1024).toFixed(1);
+        box.innerHTML = `<div class="space-y-5 max-w-2xl"><div class="grid grid-cols-2 sm:grid-cols-5 gap-3">${[['会员', stats.users, 'text-indigo-600'], ['任务总数', stats.tasks, 'text-slate-900'], ['待审核', stats.pending, 'text-amber-600'], ['已批准', stats.approved, 'text-emerald-600'], ['已拒绝', stats.rejected, 'text-rose-600']].map(([label, val, cls]) => `<div class="p-3 bg-white rounded-xl border border-slate-200 text-center"><p class="text-lg font-extrabold ${cls}">${val}</p><p class="text-[10px] text-slate-500 font-bold mt-0.5">${label}</p></div>`).join('')}</div><div class="p-4 bg-white rounded-xl border border-slate-200 space-y-3"><p class="text-xs font-bold text-slate-900">💾 本地存储占用：约 ${kb} KB / 5120 KB</p><div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-indigo-600 transition-all" style="width:${Math.min(100, bytes / (5 * 1024 * 1024) * 100).toFixed(1)}%"></div></div><p class="text-[10px] text-slate-500">图片以 base64 存储，上传前已自动压缩。接近上限时请导出备份并清理旧数据。</p></div><div class="p-4 bg-white rounded-xl border border-slate-200 space-y-3"><p class="text-xs font-bold text-slate-900">📤 导出 / 导入备份</p><div class="flex flex-wrap gap-2"><button onclick="exportData()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-[11px] font-bold transition">导出 JSON</button><label class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-[11px] font-bold transition cursor-pointer">导入 JSON<input type="file" accept="application/json" class="hidden" onchange="importData(event)"></label><button onclick="clearAllData()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-4 py-2.5 rounded-xl text-[11px] font-bold transition ml-auto">清空所有数据</button></div></div></div>`;
+    }
+    function exportData() {
+        const dump = { version: 38, exportedAt: new Date().toISOString(), users: load(LS.users, []), tasks: load(LS.tasks, []), comments: load(LS.comments, {}), config: load(LS.config, DEFAULT_CONFIG) };
+        const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `taskhub-backup-${Date.now()}.json`; a.click(); URL.revokeObjectURL(a.href); toast('备份已导出');
+    }
+    function importData(e) {
+        const file = e.target.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try { const dump = JSON.parse(ev.target.result); if (!dump || typeof dump !== 'object') throw new Error('格式错误'); if (!confirm('导入会覆盖当前所有数据，确定继续？')) return;
+                if (dump.users) save(LS.users, dump.users); if (dump.tasks) save(LS.tasks, dump.tasks); if (dump.comments) save(LS.comments, dump.comments); if (dump.config) save(LS.config, dump.config);
+                renderBank(); renderHelpdesk(); switchAdminTab(currentAdminTab); toast('数据导入成功');
+            } catch (err) { toast('导入失败：' + err.message, 'error'); }
         };
+        reader.readAsText(file); e.target.value = '';
+    }
+    function clearAllData() {
+        if (!confirm('⚠️ 这会删除所有会员、任务、留言与配置，且无法恢复。确定继续？')) return;
+        if (!confirm('再次确认：真的要清空所有数据吗？')) return;
+        [LS.users, LS.tasks, LS.comments, LS.config, LS.session].forEach(k => localStorage.removeItem(k));
+        sessionStorage.removeItem(LS.admin); toast('所有数据已清空', 'info'); setTimeout(() => location.reload(), 900);
+    }
+
+    function renderHelpdesk() {
+        const cfg = load(LS.config, DEFAULT_CONFIG);
+        const wa = String(cfg.whatsapp || '').replace(/\D/g, '');
+        document.getElementById('helpWhatsapp').href = wa ? `https://wa.me/${wa}` : '#';
+        document.getElementById('helpEmail').href = `mailto:${cfg.email}`;
+    }
+
+    /* ==================================================================
+       ★ 深链接处理（增强版）
+       - 兼容 Facebook 带来的 URL 参数（如 ?fbclid=xxx）
+       - 兼容首次加载、hashchange、popstate
+       - 找不到任务会重试一次（避免虚拟数据未生成时命中失败）
+       ================================================================== */
+    function handleDeepLink(retry = true) {
+        try {
+            // 先看 hash 里有没有 #task-xxx
+            let hash = location.hash || '';
+            // 去掉可能的查询参数（Facebook 有时会加 ?fbclid=...）
+            hash = hash.split('?')[0];
+            const m = hash.match(/#task-([A-Za-z0-9_-]+)/);
+            if (!m) return false;
+
+            const taskId = m[1];
+            const tasks = load(LS.tasks, []);
+            const task = tasks.find(x => x.id === taskId);
+
+            if (task) {
+                openTaskDetail(task.id);
+                console.log('✅ 深链接已打开任务：', task.title);
+                return true;
+            } else {
+                if (retry) {
+                    // 可能虚拟数据还没生成，延迟 300ms 重试一次
+                    console.warn('⚠️ 任务未找到，300ms 后重试：', taskId);
+                    setTimeout(() => handleDeepLink(false), 300);
+                    return false;
+                }
+                console.warn('❌ 深链接任务不存在：', taskId);
+                toast('任务不存在或已被删除', 'error');
+                switchTab('home');
+                return false;
+            }
+        } catch (e) {
+            console.error('深链接处理错误：', e);
+            return false;
+        }
+    }
+    // ====================================================================
+
+    function seedVirtualData() {
+        const existingUsers = load(LS.users, []);
+        const existingTasks = load(LS.tasks, []);
+        if (existingUsers.length > 0 || existingTasks.length > 0) return;
+
+        const virtualUsers = [
+            { id: 'u_v1', nickName: 'Alex Tan', address: 'Sunway Velocity, KL', whatsapp: '60111111111', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 8 },
+            { id: 'u_v2', nickName: 'Siti Aminah', address: 'Damai, Kuching', whatsapp: '60122222222', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 7 },
+            { id: 'u_v3', nickName: '黄伟伟 Wei Wei', address: 'Cheras, KL', whatsapp: '60133333333', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 6 },
+            { id: 'u_v4', nickName: 'Muthu Kumar', address: 'Bayan Lepas, Penang', whatsapp: '60144444444', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 5 },
+            { id: 'u_v5', nickName: 'Ah Meng 阿明', address: 'Kepong, KL', whatsapp: '60155555555', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 4 },
+            { id: 'u_v6', nickName: 'Jessica Lim', address: 'Mont Kiara, KL', whatsapp: '60166666666', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 3 },
+            { id: 'u_v7', nickName: 'Raj Patel', address: 'Brickfields, KL', whatsapp: '60177777777', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 2 },
+            { id: 'u_v8', nickName: 'Lina 丽娜', address: 'Ampang, KL', whatsapp: '60188888888', password: hashPwd('123456'), role: 'member', createdAt: Date.now() - 86400000 * 1 }
+        ];
+
+        const virtualTasks = [
+            { id: 't_v1', userId: 'u_v1', publisher: 'Alex Tan', title: '找专业代驾 / Looking for Professional Driver / Mencari Pemandu Profesional', category: '代驾 / Driver', price: '150.00', location: 'Kuala Lumpur', whatsapp: '60111111111', desc: '【中文】周末晚上需要代驾，从 KL Sentral 去 Penang 的酒店。车是 Honda City，大概 4 个小时车程。需要有经验的司机。\n【English】Need a driver on weekend night, from KL Sentral to a hotel in Penang. Honda City, about 4 hours drive. Experienced driver required.\n【Bahasa】Perlukan pemandu pada malam hujung minggu, dari KL Sentral ke hotel di Penang. Kereta Honda City, kira-kira 4 jam perjalanan. Pemandu berpengalaman diperlukan.', image: 'https://picsum.photos/seed/driver/600/400', receiptImage: 'https://picsum.photos/seed/receipt1/400/600', isService: true, payRef: 'REF123456', status: 'approved', rating: 4.5, reviewText: '很好的客户，沟通顺畅，工资准时给！ Great customer, smooth communication! Pelanggan yang baik!', rejectReason: '', createdAt: Date.now() - 86400000 * 8, approvedAt: Date.now() - 86400000 * 7 },
+            { id: 't_v2', userId: 'u_v2', publisher: 'Siti Aminah', title: '专业居家清洁服务 / Professional Home Cleaning / Perkhidmatan Pembersihan Rumah', category: '清洁 / Cleaning', price: '60.00', location: 'Damai', whatsapp: '60122222222', desc: '【中文】提供家庭深度清洁服务，包括抹窗、吸尘、洗厕所、厨房去油。自带清洁工具。周末时间可预约。\n【English】Provide deep cleaning service including window wiping, vacuuming, toilet washing, kitchen degreasing. Bring own tools. Weekend booking available.\n【Bahasa】Menyediakan perkhidmatan pembersihan mendalam termasuk lap tingkap, vakum, cuci tandas, buang minyak dapur. Bawa alat sendiri. Boleh tempah pada hujung minggu.', image: 'https://picsum.photos/seed/clean/600/400', receiptImage: 'https://picsum.photos/seed/receipt2/400/600', isService: true, payRef: 'REF789012', status: 'approved', rating: 5.0, reviewText: '清洁得很干净，人也很有礼貌！ Very clean and polite! Bersih dan sopan!', rejectReason: '', createdAt: Date.now() - 86400000 * 7, approvedAt: Date.now() - 86400000 * 6 },
+            { id: 't_v3', userId: 'u_v3', publisher: '黄伟伟 Wei Wei', title: '小学数学/华语补习老师 / Primary Math & Chinese Tuition / Tutor Matematik & Bahasa Cina', category: '家教 / Tuition', price: '40.00', location: 'Cheras', whatsapp: '60133333333', desc: '【中文】本人是大学教育系学生，有 2 年补习经验。专门教小学 1-6 年级数学和华语。可以上门，也可以线上。\n【English】I am an education student with 2 years of tuition experience. Teach primary 1-6 Math and Chinese. Home visit or online.\n【Bahasa】Saya pelajar pendidikan dengan 2 tahun pengalaman mengajar. Mengajar Matematik dan Bahasa Cina sekolah rendah 1-6. Boleh ke rumah atau dalam talian.', image: 'https://picsum.photos/seed/tuition/600/400', receiptImage: 'https://picsum.photos/seed/receipt3/400/600', isService: true, payRef: 'REF345678', status: 'approved', rating: 4.8, reviewText: '老师很有耐心，孩子进步很多！ Patient teacher! Guru penyabar!', rejectReason: '', createdAt: Date.now() - 86400000 * 6, approvedAt: Date.now() - 86400000 * 5 },
+            { id: 't_v4', userId: 'u_v1', publisher: 'Alex Tan', title: '帮忙去 Mid Valley 取包裹 / Help Pick Up Parcel at Mid Valley / Tolong Ambil Bungkusan di Mid Valley', category: '跑腿 / Errand', price: '15.00', location: 'Petaling Jaya', whatsapp: '60111111111', desc: '【中文】有个包裹在 Mid Valley 的 Pos Laju 需要帮忙取一下，送到 PJ SS2 附近。感谢！\n【English】There is a parcel at Pos Laju Mid Valley that needs to be picked up and delivered to PJ SS2 area. Thank you!\n【Bahasa】Ada bungkusan di Pos Laju Mid Valley yang perlu diambil dan dihantar ke kawasan PJ SS2. Terima kasih!', image: 'https://picsum.photos/seed/parcel/600/400', receiptImage: 'https://picsum.photos/seed/receipt4/400/600', isService: true, payRef: 'REF901234', status: 'approved', rating: 0, reviewText: '', rejectReason: '', createdAt: Date.now() - 86400000 * 5, approvedAt: Date.now() - 86400000 * 4 },
+            { id: 't_v5', userId: 'u_v4', publisher: 'Muthu Kumar', title: '修理漏水的水龙头（紧急）/ Fix Leaking Faucet (Urgent) / Baiki Paip Bocor (Segera)', category: '维修 / Repair', price: '30.00', location: 'Bayan Lepas', whatsapp: '60144444444', desc: '【中文】厨房的水龙头一直漏水，需要师傅上门帮忙换一个新的。水龙头我已经买好了。\n【English】Kitchen faucet is leaking, need a technician to come and replace it. I already bought the new faucet.\n【Bahasa】Paip dapur bocor, perlukan tukang untuk datang dan gantikan yang baru. Paip baru sudah saya beli.', image: 'https://picsum.photos/seed/plumbing/600/400', receiptImage: 'https://picsum.photos/seed/receipt5/400/600', isService: false, payRef: 'REF567890', status: 'pending', rating: 0, reviewText: '', rejectReason: '', createdAt: Date.now() - 3600000, approvedAt: null },
+            { id: 't_v6', userId: 'u_v5', publisher: 'Ah Meng 阿明', title: '专业上门理发服务 (只限男士) / Professional Home Barber (Men Only) / Perkhidmatan Gunting Rambut (Lelaki Sahaja)', category: '上门理发 / Home Barber', price: '30.00', location: 'Kepong, KL', whatsapp: '60155555555', desc: '【中文】本人有 10 年理发经验，提供上门理发服务。剪发、洗头、刮胡子都可以。只限男士，时间可以商量。\n【English】I have 10 years of barber experience, providing home barber service. Haircut, shampoo, shaving all available. Men only, timing negotiable.\n【Bahasa】Saya ada 10 tahun pengalaman gunting rambut, menyediakan perkhidmatan di rumah. Gunting, cuci rambut, cukur semua ada. Lelaki sahaja, masa boleh dirunding.', image: 'https://picsum.photos/seed/barber/600/400', receiptImage: 'https://picsum.photos/seed/receipt6/400/600', isService: true, payRef: 'REF112233', status: 'approved', rating: 4.9, reviewText: '剪得很好看，师傅很专业！ Great haircut! Potongan sangat bagus!', rejectReason: '', createdAt: Date.now() - 86400000 * 4, approvedAt: Date.now() - 86400000 * 3 },
+            { id: 't_v7', userId: 'u_v6', publisher: 'Jessica Lim', title: '专业平面设计 / Logo 设计 / Professional Graphic & Logo Design / Reka Bentuk Grafik & Logo', category: '绘图设计 / Design', price: '100.00', location: 'Mont Kiara', whatsapp: '60166666666', desc: '【中文】提供 Logo 设计、海报设计、名片设计等。有 5 年经验，作品可以看我的 portfolio。价格根据复杂度调整。\n【English】Provide Logo design, poster design, business card design etc. 5 years experience, portfolio available. Price based on complexity.\n【Bahasa】Menyediakan reka bentuk Logo, poster, kad perniagaan dll. 5 tahun pengalaman, portfolio boleh dilihat. Harga bergantung kepada kerumitan.', image: 'https://picsum.photos/seed/design/600/400', receiptImage: 'https://picsum.photos/seed/receipt7/400/600', isService: true, payRef: 'REF445566', status: 'approved', rating: 5.0, reviewText: '设计得非常有创意，强烈推荐！ Very creative! Sangat kreatif!', rejectReason: '', createdAt: Date.now() - 86400000 * 3, approvedAt: Date.now() - 86400000 * 2 },
+            { id: 't_v8', userId: 'u_v7', publisher: 'Raj Patel', title: '耐心陪伴老人家 / 聊天散步 / Patient Companion for Elderly / Peneman Warga Emas', category: '陪老人家 / Elder Companion', price: '50.00', location: 'Brickfields', whatsapp: '60177777777', desc: '【中文】可以帮忙陪伴家里的老人家，聊天、散步、去医院复诊都可以。本人有耐心，会说中文、英文、马来文和 Tamil。\n【English】Can accompany elderly at home, chat, walk, go to hospital. Patient, can speak Chinese, English, Malay and Tamil.\n【Bahasa】Boleh menemani warga emas di rumah, berbual, berjalan, pergi hospital. Penyabar, boleh bertutur Bahasa Cina, Inggeris, Melayu dan Tamil.', image: 'https://picsum.photos/seed/elder/600/400', receiptImage: 'https://picsum.photos/seed/receipt8/400/600', isService: true, payRef: 'REF778899', status: 'approved', rating: 4.7, reviewText: '很有耐心的年轻人，我妈妈很喜欢他。 Patient young man! Pemuda yang penyabar!', rejectReason: '', createdAt: Date.now() - 86400000 * 2, approvedAt: Date.now() - 86400000 * 1 },
+            { id: 't_v9', userId: 'u_v8', publisher: 'Lina 丽娜', title: '宠物保姆 / 上门喂猫遛狗 / Pet Sitter / Penjaga Haiwan Peliharaan', category: '其他 / Others', price: '25.00', location: 'Ampang, KL', whatsapp: '60188888888', desc: '【中文】提供宠物保姆服务，可以上门喂猫、遛狗、清理猫砂。有养宠物经验，喜欢小动物。\n【English】Provide pet sitter service, can visit home to feed cats, walk dogs, clean litter. Experienced, love animals.\n【Bahasa】Menyediakan perkhidmatan penjaga haiwan, boleh datang ke rumah untuk beri makan kucing, jalan anjing, bersihkan pasir kucing. Berpengalaman, suka haiwan.', image: 'https://picsum.photos/seed/pet/600/400', receiptImage: 'https://picsum.photos/seed/receipt9/400/600', isService: true, payRef: 'REF998877', status: 'approved', rating: 5.0, reviewText: '把我的猫照顾得很好，还发了照片！ Took great care of my cat! Jaga kucing saya dengan baik!', rejectReason: '', createdAt: Date.now() - 86400000 * 1, approvedAt: Date.now() - 3600000 * 12 },
+            { id: 't_v10', userId: 'u_v3', publisher: '黄伟伟 Wei Wei', title: '帮忙搬家（两人）/ Help Moving (2 Persons) / Tolong Pindah Rumah (2 Orang)', category: '跑腿 / Errand', price: '80.00', location: 'Cheras', whatsapp: '60133333333', desc: '【中文】周末需要两个人帮忙搬家，从 Cheras 搬到 Puchong。东西不多，主要是家具和电器。有提供 van 最好。\n【English】Need 2 people to help move on weekend, from Cheras to Puchong. Not much stuff, mostly furniture. Van is a plus.\n【Bahasa】Perlukan 2 orang untuk tolong pindah pada hujung minggu, dari Cheras ke Puchong. Barang tidak banyak. Jika ada van lebih baik.', image: 'https://picsum.photos/seed/moving/600/400', receiptImage: 'https://picsum.photos/seed/receipt10/400/600', isService: true, payRef: 'REF334455', status: 'pending', rating: 0, reviewText: '', rejectReason: '', createdAt: Date.now() - 1800000, approvedAt: null }
+        ];
+
+        save(LS.users, virtualUsers);
+        save(LS.tasks, virtualTasks);
+        save(LS.comments, {});
+        toast('✨ 已生成 8 个虚拟会员和 10 个三语任务！');
+    }
+
+    (function init() {
+        if (!localStorage.getItem(LS.config)) save(LS.config, DEFAULT_CONFIG);
+        document.getElementById('footerYear').textContent = new Date().getFullYear();
+        seedVirtualData();
+        renderBank(); renderHelpdesk(); renderPublicTasks(); renderProfile();
+        updateNavbar();
+
+        document.getElementById('ptImage').addEventListener('change', async function () {
+            const file = this.files[0]; if (!file) return; toast('正在压缩图片…', 'info');
+            try { ptImageData = await compressImage(file); document.getElementById('ptImagePreview').src = ptImageData; document.getElementById('ptImagePreviewWrap').classList.remove('hidden'); const kb = (ptImageData.length * 0.75 / 1024).toFixed(0); toast(`图片已就绪（约 ${kb} KB）`); }
+            catch (err) { ptImageData = null; this.value = ''; document.getElementById('ptImagePreviewWrap').classList.add('hidden'); toast(err.message || '图片处理失败', 'error'); }
+        });
+        document.getElementById('ptReceipt').addEventListener('change', async function () {
+            const file = this.files[0]; if (!file) return; toast('正在压缩收据…', 'info');
+            try { ptReceiptData = await compressImage(file, 800, 0.6); document.getElementById('ptReceiptPreview').src = ptReceiptData; document.getElementById('ptReceiptPreviewWrap').classList.remove('hidden'); const kb = (ptReceiptData.length * 0.75 / 1024).toFixed(0); toast(`收据已就绪（约 ${kb} KB）`); }
+            catch (err) { ptReceiptData = null; this.value = ''; document.getElementById('ptReceiptPreviewWrap').classList.add('hidden'); toast(err.message || '收据处理失败', 'error'); }
+        });
+
+        document.getElementById('shareStep1Btn').addEventListener('click', showShareImage);
+        document.getElementById('shareStep2Btn').addEventListener('click', copyShareText);
+        document.getElementById('shareStep3Btn').addEventListener('click', openShareFacebook);
+
+        document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; closeImageViewer(); closeAdminModal(); closeShareModal(); document.getElementById('mobileMenu').classList.add('hidden'); });
+        document.getElementById('adminModal').addEventListener('click', function (e) { if (e.target === this) closeAdminModal(); });
+
+        // ★ 深链接处理：首次加载
+        setTimeout(() => handleDeepLink(true), 100);
+        // ★ 深链接处理：hash 变化
+        window.addEventListener('hashchange', () => handleDeepLink(true));
+        // ★ 深链接处理：浏览器前进/后退
+        window.addEventListener('popstate', () => handleDeepLink(true));
+    })();
     </script>
 </body>
 </html>
